@@ -26,43 +26,27 @@ lr = 0.01
 wd = 1e-3
 
 # grid search vars results; look at using different step sizes with this
-sequence_length = 8
-num_layers = 1
-hidden_size = 70
+sequence_length = 12
+num_layers = 2
+hidden_size = 40
 STEP_SIZE = 10
 vars_keep = [False, True, True, False, True, True]
-
-# # first grid search results
-# sequence_length = 8
-# num_layers = 1
-# hidden_size = 30
-# STEP_SIZE = 10
-# vars_keep = [True, True, True, True, True, True]
 
 dtype = torch.float
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 d = pickle.load(open("dataset_formatted.pkl", "rb"))
 sequences_04hr_train = d.get("sequences_04hr_train_np")
-sequences_06hr_train = d.get("sequences_06hr_train_np")
 sequences_08hr_train = d.get("sequences_08hr_train_np")
-sequences_10hr_train = d.get("sequences_10hr_train_np")
 sequences_12hr_train = d.get("sequences_12hr_train_np")
-sequences_14hr_train = d.get("sequences_14hr_train_np")
 sequences_16hr_train = d.get("sequences_16hr_train_np")
 sequences_04hr_valid = d.get("sequences_04hr_valid_np")
-sequences_06hr_valid = d.get("sequences_06hr_valid_np")
 sequences_08hr_valid = d.get("sequences_08hr_valid_np")
-sequences_10hr_valid = d.get("sequences_10hr_valid_np")
 sequences_12hr_valid = d.get("sequences_12hr_valid_np")
-sequences_14hr_valid = d.get("sequences_14hr_valid_np")
 sequences_16hr_valid = d.get("sequences_16hr_valid_np")
 sequences_04hr_test = d.get("sequences_04hr_test_np")
-sequences_06hr_test = d.get("sequences_06hr_test_np")
 sequences_08hr_test = d.get("sequences_08hr_test_np")
-sequences_10hr_test = d.get("sequences_10hr_test_np")
 sequences_12hr_test = d.get("sequences_12hr_test_np")
-sequences_14hr_test = d.get("sequences_14hr_test_np")
 sequences_16hr_test = d.get("sequences_16hr_test_np")
 forecasts_train = d.get("forecasts_train_np")
 forecasts_valid = d.get("forecasts_valid_np")
@@ -74,34 +58,22 @@ forecasts_train_max = d.get("forecasts_train_max")
 
 # normalize
 sequences_04hr_train_norm = (sequences_04hr_train - sequences_train_min) / (sequences_train_max - sequences_train_min)
-sequences_06hr_train_norm = (sequences_06hr_train - sequences_train_min) / (sequences_train_max - sequences_train_min)
 sequences_08hr_train_norm = (sequences_08hr_train - sequences_train_min) / (sequences_train_max - sequences_train_min)
-sequences_10hr_train_norm = (sequences_10hr_train - sequences_train_min) / (sequences_train_max - sequences_train_min)
 sequences_12hr_train_norm = (sequences_12hr_train - sequences_train_min) / (sequences_train_max - sequences_train_min)
-sequences_14hr_train_norm = (sequences_14hr_train - sequences_train_min) / (sequences_train_max - sequences_train_min)
 sequences_16hr_train_norm = (sequences_16hr_train - sequences_train_min) / (sequences_train_max - sequences_train_min)
 sequences_04hr_valid_norm = (sequences_04hr_valid - sequences_train_min) / (sequences_train_max - sequences_train_min)
-sequences_06hr_valid_norm = (sequences_06hr_valid - sequences_train_min) / (sequences_train_max - sequences_train_min)
 sequences_08hr_valid_norm = (sequences_08hr_valid - sequences_train_min) / (sequences_train_max - sequences_train_min)
-sequences_10hr_valid_norm = (sequences_10hr_valid - sequences_train_min) / (sequences_train_max - sequences_train_min)
 sequences_12hr_valid_norm = (sequences_12hr_valid - sequences_train_min) / (sequences_train_max - sequences_train_min)
-sequences_14hr_valid_norm = (sequences_14hr_valid - sequences_train_min) / (sequences_train_max - sequences_train_min)
 sequences_16hr_valid_norm = (sequences_16hr_valid - sequences_train_min) / (sequences_train_max - sequences_train_min)
 forecasts_train_norm = (forecasts_train - forecasts_train_min) / (forecasts_train_max - forecasts_train_min)
 
 sequences_04hr_train_tensor = torch.tensor(sequences_04hr_train_norm[:,:,vars_keep], dtype=dtype)
-sequences_06hr_train_tensor = torch.tensor(sequences_06hr_train_norm[:,:,vars_keep], dtype=dtype)
 sequences_08hr_train_tensor = torch.tensor(sequences_08hr_train_norm[:,:,vars_keep], dtype=dtype)
-sequences_10hr_train_tensor = torch.tensor(sequences_10hr_train_norm[:,:,vars_keep], dtype=dtype)
 sequences_12hr_train_tensor = torch.tensor(sequences_12hr_train_norm[:,:,vars_keep], dtype=dtype)
-sequences_14hr_train_tensor = torch.tensor(sequences_14hr_train_norm[:,:,vars_keep], dtype=dtype)
 sequences_16hr_train_tensor = torch.tensor(sequences_16hr_train_norm[:,:,vars_keep], dtype=dtype)
 sequences_04hr_valid_tensor = torch.tensor(sequences_04hr_valid_norm[:,:,vars_keep], dtype=dtype)
-sequences_06hr_valid_tensor = torch.tensor(sequences_06hr_valid_norm[:,:,vars_keep], dtype=dtype)
 sequences_08hr_valid_tensor = torch.tensor(sequences_08hr_valid_norm[:,:,vars_keep], dtype=dtype)
-sequences_10hr_valid_tensor = torch.tensor(sequences_10hr_valid_norm[:,:,vars_keep], dtype=dtype)
 sequences_12hr_valid_tensor = torch.tensor(sequences_12hr_valid_norm[:,:,vars_keep], dtype=dtype)
-sequences_14hr_valid_tensor = torch.tensor(sequences_14hr_valid_norm[:,:,vars_keep], dtype=dtype)
 sequences_16hr_valid_tensor = torch.tensor(sequences_16hr_valid_norm[:,:,vars_keep], dtype=dtype)
 forecasts_train_tensor = torch.tensor(forecasts_train_norm, dtype=dtype)
 
