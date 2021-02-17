@@ -27,9 +27,9 @@ wd = 1e-3
 
 sequence_length = 16
 num_layers = 2
-hidden_size = 50
+hidden_size = 40
 STEP_SIZE = 10
-vars_keep = [True, True, True, False, False, True]
+vars_keep = [False, True, True, False, True, True]
 
 dtype = torch.float
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

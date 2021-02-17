@@ -2,7 +2,7 @@
 """
 Created on Sun Feb  7 12:57:44 2021
 
-@author: 17405
+@author: Mitchell Grose
 """
 
 import pickle
@@ -28,7 +28,7 @@ forecasts_train = d.get("forecasts_train_df")
 forecasts_valid = d.get("forecasts_valid_df")
 forecasts_test = d.get("forecasts_test_df")
 
-#%% sequences
+# sequences
 dts_sequences_train = np.empty((0, 32))
 temp_train = np.empty((0, 32))
 press_train = np.empty((0, 32))
@@ -147,7 +147,7 @@ wind_spd_test_unique = wind_spd_test.flatten()[idx_test_sequences_unique]
 solar_irr_test_unique = solar_irr_test.flatten()[idx_test_sequences_unique]
 cn2_sequences_test_unique = cn2_sequences_test.flatten()[idx_test_sequences_unique]
 
-#%% forecasts
+# forecasts
 dts_forecasts_train = np.empty((0, 8))
 cn2_forecasts_train = np.empty((0, 8))
 for x in forecasts_train:
@@ -189,7 +189,7 @@ cn2_forecasts_train_unique = cn2_forecasts_train.flatten()[idx_train_forecasts_u
 cn2_forecasts_valid_unique = cn2_forecasts_valid.flatten()[idx_valid_forecasts_unique]
 cn2_forecasts_test_unique = cn2_forecasts_test.flatten()[idx_test_forecasts_unique]
 
-#%% temporal plots
+# temporal plots
 plt.figure(figsize=(8, 5))
 plt.plot(dts_sequences_train_unique, temp_train_unique, 'k.', label='train')
 plt.plot(dts_sequences_valid_unique, temp_valid_unique, 'b.', label='valid')
@@ -279,7 +279,7 @@ plt.grid(True, which='major')
 plt.grid(True, which='minor')
 plt.tight_layout()
 
-#%% histogram plots
+# histogram plots
 nbins = 50
 _, bins = np.histogram(
     np.concatenate(
@@ -395,34 +395,7 @@ plt.grid(True, which='major')
 plt.grid(True, which='minor')
 plt.tight_layout()
 
-#%%
-# sequences_04hr_train = d.get("sequences_04hr_train_np")
-# sequences_08hr_train = d.get("sequences_08hr_train_np")
-# sequences_12hr_train = d.get("sequences_12hr_train_np")
-# sequences_16hr_train = d.get("sequences_16hr_train_np")
-# sequences_04hr_valid = d.get("sequences_04hr_valid_np")
-# sequences_08hr_valid = d.get("sequences_08hr_valid_np")
-# sequences_12hr_valid = d.get("sequences_12hr_valid_np")
-# sequences_16hr_valid = d.get("sequences_16hr_valid_np")
-# sequences_04hr_test = d.get("sequences_04hr_test_np")
-# sequences_08hr_test = d.get("sequences_08hr_test_np")
-# sequences_12hr_test = d.get("sequences_12hr_test_np")
-# sequences_16hr_test = d.get("sequences_16hr_test_np")
-# forecasts_train = d.get("forecasts_train_np")
-# forecasts_valid = d.get("forecasts_valid_np")
-# forecasts_test = d.get("forecasts_test_np")
-
-# combine train/validation datasets; get training min/max
-# sequences_04hr_train = np.concatenate((sequences_04hr_train, sequences_04hr_valid))
-# sequences_08hr_train = np.concatenate((sequences_08hr_train, sequences_08hr_valid))
-# sequences_12hr_train = np.concatenate((sequences_12hr_train, sequences_12hr_valid))
-# sequences_16hr_train = np.concatenate((sequences_16hr_train, sequences_16hr_valid))
-# forecasts_train = np.concatenate((forecasts_train, forecasts_valid))
-# sequences_train_min = sequences_16hr_train.min(axis=(0, 1))
-# sequences_train_max = sequences_16hr_train.max(axis=(0, 1))
-# forecasts_train_min = forecasts_train.min()
-# forecasts_train_max = forecasts_train.max()
-
+###############################################################################
 # %% unformatted dataset
 # dataset = pickle.load(open('dataset_unformatted.pkl', 'rb'))
 

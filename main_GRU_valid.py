@@ -25,7 +25,6 @@ BATCH_SIZE = 32
 lr = 0.01
 wd = 1e-3
 
-# grid search vars results; look at using different step sizes with this
 sequence_length = 12
 num_layers = 2
 hidden_size = 40

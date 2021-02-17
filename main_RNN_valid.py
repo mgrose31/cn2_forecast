@@ -31,7 +31,6 @@ hidden_size = 50
 STEP_SIZE = 10
 vars_keep = [False, True, True, False, True, True]
 
-
 dtype = torch.float
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

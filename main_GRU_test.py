@@ -25,12 +25,11 @@ BATCH_SIZE = 32
 lr = 0.01
 wd = 1e-3
 
-# grid search vars results; look at using different step sizes with this
-sequence_length = 8
-num_layers = 1
-hidden_size = 30
+sequence_length = 12
+num_layers = 2
+hidden_size = 40
 STEP_SIZE = 10
-vars_keep = [True, True, True, True, True, True]
+vars_keep = [False, True, True, False, True, True]
 
 dtype = torch.float
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
