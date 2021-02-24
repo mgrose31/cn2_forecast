@@ -33,7 +33,7 @@ sequence_length = 12
 num_layers = 2
 hidden_size = 40
 STEP_SIZE = 10
-vars_keep = [False, True, True, False, True, True]
+vars_keep = [False, False, True, False, True, True]
 
 dtype = torch.float
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -192,49 +192,49 @@ for hh in range(NUM_NETS):
         cn2_forecast = out_test[d0_idx,:]
         rmse_array[hh,j] = np.sqrt(np.mean((cn2_truth - cn2_forecast)**2))
     
-    # d0 = ds_unique[-2]
-    # d0_idx = np.logical_and(forecasts_test_first_ds == d0,
-    #                         pd.Series(forecasts_test_first_dts).dt.minute==0)
+    d0 = ds_unique[-2]
+    d0_idx = np.logical_and(forecasts_test_first_ds == d0,
+                            pd.Series(forecasts_test_first_dts).dt.minute==0)
     
-    # dts_plot = forecasts_test_dts[d0_idx,:]
-    # cn2_truth = forecasts_test[d0_idx,:]
-    # cn2_forecast = out_test[d0_idx,:]
-    # rmses_plot = np.sqrt(np.mean((cn2_truth - cn2_forecast)**2, axis=1))
+    dts_plot = forecasts_test_dts[d0_idx,:]
+    cn2_truth = forecasts_test[d0_idx,:]
+    cn2_forecast = out_test[d0_idx,:]
+    rmses_plot = np.sqrt(np.mean((cn2_truth - cn2_forecast)**2, axis=1))
     
-    # # get unique times to plot so the truth curves do not overlap
-    # dts_truth_plot, i = np.unique(dts_plot, return_index=True)
-    # cn2_truth_plot = cn2_truth.flatten()[i]
+    # get unique times to plot so the truth curves do not overlap
+    dts_truth_plot, i = np.unique(dts_plot, return_index=True)
+    cn2_truth_plot = cn2_truth.flatten()[i]
     
-    # # plot
-    # hours_plot = [x[0].hour for x in dts_plot]
-    # cmap = plt.get_cmap('cool')
-    # norm = matplotlib.colors.Normalize(vmin=hours_plot[0], vmax=hours_plot[-1])
-    # clrs = cmap(norm(hours_plot))
+    # plot
+    hours_plot = [x[0].hour for x in dts_plot]
+    cmap = plt.get_cmap('cool')
+    norm = matplotlib.colors.Normalize(vmin=hours_plot[0], vmax=hours_plot[-1])
+    clrs = cmap(norm(hours_plot))
     
-    # fig, ax = plt.subplots()
-    # for ii in range(len(dts_plot)):
-    #     plt.plot(dts_plot[ii,:], 10**cn2_forecast[ii,:], '-o', color=clrs[ii,:])
-    # plt.plot(dts_truth_plot, 10**cn2_truth_plot, 'k-o', label='truth')
-    # ax.xaxis.set_major_formatter(myFmt)
-    # cbar = fig.colorbar(
-    #     matplotlib.cm.ScalarMappable(norm=norm, cmap=cmap), ticks=hours_plot)
-    # cbar_str = [
-    #     r'{:02d} ({:.3f})'.format(h, z) for (h, z) in zip(hours_plot, rmses_plot)]
-    # cbar.ax.set_yticklabels(cbar_str)
-    # cbar.ax.set_title('Forecast (RMSE)')
+    fig, ax = plt.subplots()
+    for ii in range(len(dts_plot)):
+        plt.plot(dts_plot[ii,:], 10**cn2_forecast[ii,:], '-o', color=clrs[ii,:])
+    plt.plot(dts_truth_plot, 10**cn2_truth_plot, 'k-o', label='truth')
+    ax.xaxis.set_major_formatter(myFmt)
+    cbar = fig.colorbar(
+        matplotlib.cm.ScalarMappable(norm=norm, cmap=cmap), ticks=hours_plot)
+    cbar_str = [
+        r'{:02d} ({:.3f})'.format(h, z) for (h, z) in zip(hours_plot, rmses_plot)]
+    cbar.ax.set_yticklabels(cbar_str)
+    cbar.ax.set_title('Forecast (RMSE)')
     
-    # plt.yscale('log')
-    # plt.xlim(datetime.combine(d0, time(0, 0, 0)),
-    #           datetime.combine(d0 + timedelta(days=1), time(0, 0, 0)))
-    # plt.ylim(1e-17, 1e-14)
-    # plt.title(d0.strftime('%m-%d-%Y'))
-    # plt.xlabel('local time')
-    # plt.ylabel('$C_{n}^{2} (m^{-2/3})$')
-    # plt.legend(loc='upper right')
-    # plt.xticks(rotation=30)
-    # plt.grid(True)
-    # plt.tight_layout()
-    # plt.show()
+    plt.yscale('log')
+    plt.xlim(datetime.combine(d0, time(0, 0, 0)),
+              datetime.combine(d0 + timedelta(days=1), time(0, 0, 0)))
+    plt.ylim(1e-17, 1e-14)
+    plt.title(d0.strftime('%m-%d-%Y'))
+    plt.xlabel('local time')
+    plt.ylabel('$C_{n}^{2} (m^{-2/3})$')
+    plt.legend(loc='upper right')
+    plt.xticks(rotation=30)
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
 
 # plot all train/test loss curves and the average
 loss_array0_train_mean = np.mean(loss_array0_train, axis=0)
