@@ -170,17 +170,20 @@ for i in range(NUM_EPOCHS):
           .format(i, loss_train, loss_test))
 
 # Plot training and validation loss curves
-plt.figure()
-plt.plot(range(1, len(loss_array_train)+1), loss_array_train, label="train loss (last = {:.3f})".format(loss_array_train[-1]))
-plt.plot(range(1, len(loss_array_test)+1), loss_array_test, label="test loss (last = {:.3f})".format(loss_array_test[-1]))
+plt.figure(figsize=(8, 5))
+plt.plot(range(1, len(loss_array_train)+1), loss_array_train,
+         label="train loss (last = {:.3f})".format(loss_array_train[-1]))
+plt.plot(range(1, len(loss_array_test)+1), loss_array_test,
+         label="test loss (last = {:.3f})".format(loss_array_test[-1]))
 plt.ylim(0.1, 0.4)
 # plt.gca().set_ylim(bottom=0)
 plt.title("Model Losses")
 plt.xlabel("Epoch")
-plt.ylabel("MSE Loss")
+plt.ylabel("$log_{10}(C_{n}^{2})$ RMSE loss")
 plt.legend(loc='upper right')
 plt.grid(True)
 plt.tight_layout()
+plt.show()
 
 # %%
 out_train = net(sequences_train_tensor.to(device, dtype))
@@ -239,5 +242,250 @@ for d0 in ds_unique:
     plt.legend(loc='upper right')
     plt.xticks(rotation=30)
     plt.grid(True)
+    plt.grid(True, which='minor')
     plt.tight_layout()
     plt.show()
+
+#%% scatter plot analysis
+forecast_idx_loss = np.sqrt(np.mean((forecasts_test - out_test)**2, axis=0))
+plt.figure()
+plt.plot(np.arange(1, len(forecast_idx_loss)+1)*0.5, forecast_idx_loss, '-o')
+plt.ylim(0.1, 0.25)
+plt.title('GRU Average Performance vs. Forecast Length')
+plt.xlabel('forecast length')
+plt.ylabel('average $log_{10}(C_{n}^{2})$ RMSE loss')
+plt.grid(True)
+plt.grid(True, which='minor')
+plt.tight_layout()
+plt.show()
+
+# different scatter plot for each forecast index
+scatter_titles = ['0.5 Hour Forecast', '1.0 Hour Forecast',
+                  '1.5 Hour Forecast', '2.0 Hour Forecast',
+                  '2.5 Hour Forecast', '3.0 Hour Forecast',
+                  '3.5 Hour Forecast', '4.0 Hour Forecast']
+for ii in range(len(forecast_idx_loss)):
+    plt.figure()
+    plt.plot(10**forecasts_test[:,ii], 10**out_test[:,ii],
+             'g.', label='GRU (RMSE = {:.3f})'.format(forecast_idx_loss[ii]))
+    plt.plot(10**forecasts_test[:,ii], 10**forecasts_test[:,ii],
+             'k.', label='truth')
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.xlim(1e-17, 1e-14)
+    plt.ylim(1e-17, 1e-14)
+    plt.title(scatter_titles[ii])
+    plt.xlabel('measured $C_{n}^{2} (m^{-2/3})$')
+    plt.ylabel('forecasted $C_{n}^{2} (m^{-2/3})$')
+    plt.grid(True)
+    plt.grid(True, which='minor')
+    plt.legend(loc='upper left')
+    plt.tight_layout()
+    plt.show()
+
+# scatter plot with all the forecast indices
+plt.figure()
+for ii in range(len(forecast_idx_loss)):
+    plt.plot(10**forecasts_test[:,ii], 10**out_test[:,ii],
+             '.', label=f'forecast hour {(ii+1)/2}')
+for ii in range(len(forecast_idx_loss)):
+    plt.plot(10**forecasts_test[:,ii], 10**forecasts_test[:,ii], 'k.')
+plt.xscale('log')
+plt.yscale('log')
+plt.xlim(1e-17, 1e-14)
+plt.ylim(1e-17, 1e-14)
+plt.title('GRU Test Performance')
+plt.xlabel('measured $C_{n}^{2} (m^{-2/3})$')
+plt.ylabel('forecasted $C_{n}^{2} (m^{-2/3})$')
+plt.grid(True)
+plt.grid(True, which='minor')
+plt.legend(loc='lower right')
+plt.tight_layout()
+plt.show()
+
+#%% get the train datetimes
+forecasts_train_df = d.get("forecasts_train_df")
+forecasts_train_dts = np.array([x.index.to_pydatetime() for x in forecasts_train_df])
+forecasts_valid_df = d.get("forecasts_valid_df")
+forecasts_valid_dts = np.array([x.index.to_pydatetime() for x in forecasts_valid_df])
+forecasts_train_dts = np.concatenate((forecasts_train_dts, forecasts_valid_dts))
+
+#%% illustrate model performance
+seq_train = sequences_12hr_train[:,:,vars_keep].copy()
+seq_test_tmp = sequences_12hr_test[:,:,vars_keep].copy()
+cdf_percentiles = np.array([0.2, 0.5, 0.8])
+
+# 8/9 12:00 is the best forecast in the entire test set!
+day = 6
+first_hour = 14
+idx_analyze = np.logical_and(
+    pd.Series(forecasts_train_dts[:,0]).dt.hour==first_hour,
+    pd.Series(forecasts_train_dts[:,0]).dt.minute==0)
+dts_train_analyze = forecasts_train_dts[idx_analyze,:]
+seq_train_analyze = seq_train[idx_analyze,:,:]
+truth_train_analyze = forecasts_train[idx_analyze,:]
+out_train_analyze = out_train[idx_analyze,:]
+
+dt_test_analyze = datetime(2020, 8, day, first_hour, 0, 0)
+idx_test_analyze = forecasts_test_dts[:,0]==dt_test_analyze
+dts_test_analyze = forecasts_test_dts[idx_test_analyze,:].squeeze()
+truth_test_analyze = forecasts_test[idx_test_analyze,:].squeeze()
+out_test_analyze = out_test[idx_test_analyze,:].squeeze()
+
+truth_cumsum = np.cumsum([1/len(truth_train_analyze)]*len(truth_train_analyze))
+truth_sorted4cumsum = np.sort(truth_train_analyze, axis=0)
+truth_cn2_percentiles = np.empty((3, truth_sorted4cumsum.shape[-1]))
+for ii in range(truth_sorted4cumsum.shape[-1]):
+    truth_cn2_percentiles[:,ii] = np.interp(
+        cdf_percentiles, truth_cumsum, truth_sorted4cumsum[:,ii])
+
+out_cumsum = np.cumsum([1/len(out_train_analyze)]*len(out_train_analyze))
+out_sorted4cumsum = np.sort(out_train_analyze, axis=0)
+out_cn2_percentiles = np.empty((3, out_sorted4cumsum.shape[-1]))
+for ii in range(out_sorted4cumsum.shape[-1]):
+    out_cn2_percentiles[:,ii] = np.interp(
+        cdf_percentiles, out_cumsum, out_sorted4cumsum[:,ii])
+
+fig, ax = plt.subplots(figsize=(8, 5))
+plt.plot(dts_train_analyze[0,:], 10**truth_train_analyze[0,:],
+         'k.', label='train: truth all')
+for ii in range(1, len(dts_train_analyze)):
+    plt.plot(dts_train_analyze[0,:], 10**truth_train_analyze[ii,:], 'k.')
+plt.plot(dts_train_analyze[0,:], 10**truth_cn2_percentiles[0,:],
+         '-o', label='train: truth {}%'.format(int(cdf_percentiles[0]*100)))
+plt.plot(dts_train_analyze[0,:], 10**truth_cn2_percentiles[1,:],
+         '-o', label='train: truth {}%'.format(int(cdf_percentiles[1]*100)))
+plt.plot(dts_train_analyze[0,:], 10**truth_cn2_percentiles[2,:],
+         '-o', label='train: truth {}%'.format(int(cdf_percentiles[2]*100)))
+plt.plot(dts_train_analyze[0,:], 10**truth_test_analyze,
+         '-o', label='test: truth')
+plt.plot(dts_train_analyze[0,:], 10**out_test_analyze,
+         '-o', label='test: GRU')
+plt.yscale('log')
+plt.xlim(datetime(2020, 6, 1, 12, 0, 0), datetime(2020, 6, 1, 20, 0, 0))
+# plt.xlim(datetime(2020, 6, 1, 11, 0, 0), datetime(2020, 6, 1, 17, 0, 0))
+plt.ylim(1e-17, 1e-14)
+plt.title("Test Forecast: {}".format(dt_test_analyze))
+plt.xlabel('local time (EST)')
+plt.ylabel('$C_{n}^{2} (m^{-2/3})$')
+ax.xaxis.set_major_formatter(myFmt)
+plt.grid(True)
+plt.grid(True, which='minor')
+plt.legend(loc='lower left')
+plt.tight_layout()
+plt.show()
+
+fig, ax = plt.subplots(figsize=(8, 5))
+plt.plot(dts_train_analyze[0,:], 10**truth_train_analyze[0,:],
+         'k.', label='train: truth all')
+for ii in range(1, len(dts_train_analyze)):
+    plt.plot(dts_train_analyze[0,:], 10**truth_train_analyze[ii,:], 'k.')
+plt.plot(dts_train_analyze[0,:], 10**truth_cn2_percentiles[0,:],
+         '-o', color='tab:blue', label='train: truth {}%'.format(int(cdf_percentiles[0]*100)))
+plt.plot(dts_train_analyze[0,:], 10**truth_cn2_percentiles[1,:],
+         '-o', color='tab:orange', label='train: truth {}%'.format(int(cdf_percentiles[1]*100)))
+plt.plot(dts_train_analyze[0,:], 10**truth_cn2_percentiles[2,:],
+         '-o', color='tab:green', label='train: truth {}%'.format(int(cdf_percentiles[2]*100)))
+plt.plot(dts_train_analyze[0,:], 10**out_cn2_percentiles[0,:],
+         '--X', color='tab:blue', label='train: GRU {}%'.format(int(cdf_percentiles[0]*100)))
+plt.plot(dts_train_analyze[0,:], 10**out_cn2_percentiles[1,:],
+         '--X', color='tab:orange', label='train: GRU {}%'.format(int(cdf_percentiles[1]*100)))
+plt.plot(dts_train_analyze[0,:], 10**out_cn2_percentiles[2,:],
+         '--X', color='tab:green', label='train: GRU {}%'.format(int(cdf_percentiles[2]*100)))
+plt.plot(dts_train_analyze[0,:], 10**truth_test_analyze,
+          '-P', color='tab:red', label='test: truth')
+plt.plot(dts_train_analyze[0,:], 10**out_test_analyze,
+          '-P', color='tab:purple', label='test: GRU')
+plt.yscale('log')
+# plt.xlim(datetime(2020, 6, 1, 15, 0, 0), datetime(2020, 6, 1, 23, 59, 59))
+plt.xlim(datetime(2020, 6, 1, 12, 0, 0), datetime(2020, 6, 1, 20, 0, 0))
+# plt.xlim(datetime(2020, 6, 1, 11, 0, 0), datetime(2020, 6, 1, 17, 0, 0))
+plt.ylim(1e-17, 1e-14)
+plt.title("Test Forecast: {}".format(dt_test_analyze))
+plt.xlabel('local time (EST)')
+plt.ylabel('$C_{n}^{2} (m^{-2/3})$')
+ax.xaxis.set_major_formatter(myFmt)
+plt.grid(True)
+plt.grid(True, which='minor')
+plt.legend(loc='lower left', prop={'size': 10})
+plt.tight_layout()
+plt.show()
+
+# =============================================================================
+# #%%
+# num_show = 10
+# idx = -1
+# 
+# seq_test = seq_test_tmp[idx_test_analyze,:,:].squeeze()
+# 
+# a = np.sqrt(np.mean((truth_train_analyze - out_test_analyze)**2, axis=1))
+# # a = np.sqrt(np.mean((truth_train_analyze - truth_test_analyze)**2, axis=1))
+# b = a.argsort()
+# c = a[b]
+# 
+# plt.figure()
+# plt.plot(10**truth_train_analyze[b[0]], 'k-o')
+# for ii in range(1, num_show):
+#     plt.plot(10**truth_train_analyze[b[ii]], 'k-o')
+# plt.plot(10**out_test_analyze, 'r-o')
+# # plt.plot(10**truth_test_analyze, 'r-o')
+# # plt.plot(10**out_test_analyze, 'g-o')
+# plt.yscale('log')
+# plt.ylim(1e-17, 1e-14)
+# plt.grid(True)
+# plt.grid(True, which='minor')
+# # plt.legend(loc='lower left')
+# plt.tight_layout()
+# plt.show()
+# 
+# plt.figure()
+# plt.plot(seq_train_analyze[b[0], :, 0], 'k-o')
+# for ii in range(1, num_show):
+#     plt.plot(seq_train_analyze[b[ii], :, 0], 'k-o')
+# plt.plot(seq_test[:,0], 'r-o')
+# # plt.yscale('log')
+# # plt.ylim(1e-17, 1e-14)
+# plt.grid(True)
+# plt.grid(True, which='minor')
+# # plt.legend(loc='lower left')
+# plt.tight_layout()
+# plt.show()
+# 
+# plt.figure()
+# plt.plot(seq_train_analyze[b[0], :, 1], 'k-o')
+# for ii in range(1, num_show):
+#     plt.plot(seq_train_analyze[b[ii], :, 1], 'k-o')
+# plt.plot(seq_test[:,1], 'r-o')
+# plt.ylim(0, 100)
+# plt.grid(True)
+# plt.grid(True, which='minor')
+# # plt.legend(loc='lower left')
+# plt.tight_layout()
+# plt.show()
+# 
+# plt.figure()
+# plt.plot(seq_train_analyze[b[0], :, 2], 'k-o')
+# for ii in range(1, num_show):
+#     plt.plot(seq_train_analyze[b[ii], :, 2], 'k-o')
+# plt.plot(seq_test[:,2], 'r-o')
+# # plt.yscale('log')
+# plt.ylim(0, 1200)
+# plt.grid(True)
+# plt.grid(True, which='minor')
+# # plt.legend(loc='lower left')
+# plt.tight_layout()
+# plt.show()
+# 
+# plt.figure()
+# plt.plot(10**seq_train_analyze[b[0], :, 3], 'k-o')
+# for ii in range(1, num_show):
+#     plt.plot(10**seq_train_analyze[b[ii], :, 3], 'k-o')
+# plt.plot(10**seq_test[:,3], 'r-o')
+# plt.yscale('log')
+# plt.ylim(1e-17, 1e-14)
+# plt.grid(True)
+# plt.grid(True, which='minor')
+# # plt.legend(loc='lower left')
+# plt.tight_layout()
+# plt.show()
+# =============================================================================

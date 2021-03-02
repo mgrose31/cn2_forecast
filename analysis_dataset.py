@@ -8,6 +8,9 @@ Created on Sun Feb  7 12:57:44 2021
 import pickle
 import numpy as np
 import matplotlib.pyplot as plt
+# plt.style.use('ggplot')
+plt.style.use('default')
+
 from datetime import datetime
 
 # %% formatted dataset

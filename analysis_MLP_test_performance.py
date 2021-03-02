@@ -29,11 +29,11 @@ BATCH_SIZE = 32
 lr = 0.01
 wd = 1e-3
 
-sequence_length = 12
+sequence_length = 16
 num_layers = 2
-hidden_size = 40
+hidden_size = 30
 STEP_SIZE = 10
-vars_keep = [False, True, True, False, True, True]
+vars_keep = [True, True, True, False, True, False]
 
 dtype = torch.float
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -78,14 +78,14 @@ sequences_16hr_test_norm = (sequences_16hr_test - sequences_train_min) / (sequen
 forecasts_train_norm = (forecasts_train - forecasts_train_min) / (forecasts_train_max - forecasts_train_min)
 
 # convert to PyTorch tensors
-sequences_04hr_train_tensor = torch.tensor(sequences_04hr_train_norm[:,:,vars_keep], dtype=dtype)
-sequences_08hr_train_tensor = torch.tensor(sequences_08hr_train_norm[:,:,vars_keep], dtype=dtype)
-sequences_12hr_train_tensor = torch.tensor(sequences_12hr_train_norm[:,:,vars_keep], dtype=dtype)
-sequences_16hr_train_tensor = torch.tensor(sequences_16hr_train_norm[:,:,vars_keep], dtype=dtype)
-sequences_04hr_test_tensor = torch.tensor(sequences_04hr_test_norm[:,:,vars_keep], dtype=dtype)
-sequences_08hr_test_tensor = torch.tensor(sequences_08hr_test_norm[:,:,vars_keep], dtype=dtype)
-sequences_12hr_test_tensor = torch.tensor(sequences_12hr_test_norm[:,:,vars_keep], dtype=dtype)
-sequences_16hr_test_tensor = torch.tensor(sequences_16hr_test_norm[:,:,vars_keep], dtype=dtype)
+sequences_04hr_train_tensor = torch.flatten(torch.tensor(sequences_04hr_train_norm[:,:,vars_keep], dtype=dtype), 1, -1)
+sequences_08hr_train_tensor = torch.flatten(torch.tensor(sequences_08hr_train_norm[:,:,vars_keep], dtype=dtype), 1, -1)
+sequences_12hr_train_tensor = torch.flatten(torch.tensor(sequences_12hr_train_norm[:,:,vars_keep], dtype=dtype), 1, -1)
+sequences_16hr_train_tensor = torch.flatten(torch.tensor(sequences_16hr_train_norm[:,:,vars_keep], dtype=dtype), 1, -1)
+sequences_04hr_test_tensor = torch.flatten(torch.tensor(sequences_04hr_test_norm[:,:,vars_keep], dtype=dtype), 1, -1)
+sequences_08hr_test_tensor = torch.flatten(torch.tensor(sequences_08hr_test_norm[:,:,vars_keep], dtype=dtype), 1, -1)
+sequences_12hr_test_tensor = torch.flatten(torch.tensor(sequences_12hr_test_norm[:,:,vars_keep], dtype=dtype), 1, -1)
+sequences_16hr_test_tensor = torch.flatten(torch.tensor(sequences_16hr_test_norm[:,:,vars_keep], dtype=dtype), 1, -1)
 forecasts_train_tensor = torch.tensor(forecasts_train_norm, dtype=dtype)
 
 if sequence_length==4:
@@ -116,25 +116,46 @@ forecasts_test_first_dts = forecasts_test_dts[:,0]
 forecasts_test_first_ds = np.array([x.date() for x in forecasts_test_first_dts])
 ds_unique = np.unique(forecasts_test_first_ds)
 
-# %% define RNN architecture
-class RNN(nn.Module):
-    def __init__(self, input_size=4, RNN_layer_size=50,
-                 output_size=16, num_RNN_layers=1):
+# define MLP architecture
+class MLP(nn.Module):
+    def __init__(self, input_size, output_size, num_layers, layer_size):
         super().__init__()
         self.input_size = input_size
-        self.RNN_layer_size = RNN_layer_size
         self.output_size = output_size
-        self.num_RNN_layers = num_RNN_layers
-
-        self.RNN = nn.GRU(input_size=input_size, hidden_size=RNN_layer_size,
-                          num_layers=num_RNN_layers, batch_first=True)
-        self.fc1 = nn.Linear(RNN_layer_size, output_size)
+        self.num_layers = num_layers
+        self.layer_size = layer_size
+        
+        if self.num_layers==0:
+            self.fc1 = nn.Linear(self.input_size, self.output_size)
+        elif self.num_layers==1:
+            self.fc1 = nn.Linear(self.input_size, self.layer_size)
+            self.fc2 = nn.Linear(self.layer_size, self.output_size)
+        elif self.num_layers==2:
+            self.fc1 = nn.Linear(self.input_size, self.layer_size)
+            self.fc2 = nn.Linear(self.layer_size, self.layer_size)
+            self.fc3 = nn.Linear(self.layer_size, self.output_size)
+        elif self.num_layers==3:
+            self.fc1 = nn.Linear(self.input_size, self.layer_size)
+            self.fc2 = nn.Linear(self.layer_size, self.layer_size)
+            self.fc3 = nn.Linear(self.layer_size, self.layer_size)
+            self.fc4 = nn.Linear(self.layer_size, self.output_size)
 
     def forward(self, x):
-        x, hn = self.RNN(x)
-        x = self.fc1(x)
-
-        return x[:,-1,:] # just want last time step hidden states
+        if self.num_layers==0: # 0 hidden layers
+            x = self.fc1(x)
+        elif self.num_layers==1: # 1 hidden layer
+            x = torch.relu(self.fc1(x))
+            x = self.fc2(x)
+        elif self.num_layers==2: # 2 hidden layers
+            x = torch.relu(self.fc1(x))
+            x = torch.relu(self.fc2(x))
+            x = self.fc3(x)
+        elif self.num_layers==3: # 3 hidden layers
+            x = torch.relu(self.fc1(x))
+            x = torch.relu(self.fc2(x))
+            x = torch.relu(self.fc3(x))
+            x = self.fc4(x)
+        return x
         
 #%%
 input_size = sequences_train_tensor.shape[-1]
@@ -148,8 +169,8 @@ loss_array1_test = np.empty((NUM_NETS, len(forecasts_test)))
 rmse_array = np.empty((NUM_NETS, len(ds_unique)))
 for hh in range(NUM_NETS):
     print("Training model {} of {}.".format(hh+1, NUM_NETS))
-    net = RNN(input_size=input_size, output_size = output_size,
-              RNN_layer_size=hidden_size, num_RNN_layers=num_layers)
+    net = MLP(input_size=input_size, output_size=output_size,
+              num_layers=num_layers, layer_size=hidden_size)
     net.to(device, dtype)
     
     criterion = nn.MSELoss()
@@ -253,7 +274,7 @@ plt.plot(range(1, NUM_EPOCHS+1), loss_array0_train_mean, 'k-',
 plt.plot(range(1, NUM_EPOCHS+1), loss_array0_test_mean, 'k--',
          label='test mean (last = {:.4f})'.format(loss_array0_test_mean[-1]))
 plt.ylim(0.1, 0.4)
-plt.title("GRU Model Losses")
+plt.title("MLP Model Losses")
 plt.xlabel("Epoch")
 plt.ylabel("$log_{10}(C_{n}^{2})$ RMSE loss")
 plt.legend(loc='upper right')
@@ -272,8 +293,8 @@ rmse_array_max = np.max(rmse_array, axis=0)
 #              fmt='k-o', label='mean w/ SDOM')
 # plt.plot(ds_unique, rmse_array_min, 'b:', label='min/max')
 # plt.plot(ds_unique, rmse_array_max, 'b:')
-# plt.ylim(0.1, 0.26)
-# plt.title("GRU Convergence: Daily Performance")
+# plt.ylim(0.1, 0.3)
+# plt.title("MLP Daily Performance Summary")
 # plt.xlabel("test date")
 # plt.ylabel("$log_{10}(C_{n}^{2})$ RMSE loss")
 # ax.xaxis.set_major_formatter(DateFormatter('%m/%d'))
@@ -290,7 +311,7 @@ plt.plot(ds_unique, rmse_array_mean-rmse_array_std, 'r--')
 plt.plot(ds_unique, rmse_array_min, 'b:', label='min/max')
 plt.plot(ds_unique, rmse_array_max, 'b:')
 plt.ylim(0.1, 0.26)
-plt.title("GRU Convergence: Daily Performance")
+plt.title("MLP Convergence: Daily Performance")
 plt.xlabel("test date")
 plt.ylabel("$log_{10}(C_{n}^{2})$ RMSE loss")
 ax.xaxis.set_major_formatter(DateFormatter('%m/%d'))
@@ -317,7 +338,7 @@ for i in range(1, len(loss_array1_test)):
 plt.plot(t_test, loss_array1_test_mean, 'r.', label='mean')
 plt.ylim(0, 0.5)
 ax.xaxis.set_major_formatter(myFmt)
-plt.title("GRU Performance Summary")
+plt.title("MLP Performance Summary")
 plt.xlabel("forecast first hour")
 plt.ylabel("$log_{10}(C_{n}^{2})$ RMSE loss")
 plt.legend(loc='upper left')
@@ -334,8 +355,8 @@ plt.show()
 # idx = -1
 # 
 # # copy the appropriate train/test sequences to local variables for analysis
-# seq_train = sequences_12hr_train[:,:,vars_keep].copy()
-# seq_test = sequences_12hr_test[:,:,vars_keep].copy()
+# seq_train = sequences_16hr_train[:,:,vars_keep].copy()
+# seq_test = sequences_16hr_test[:,:,vars_keep].copy()
 # 
 # # sort the individual-forecast rmse scores
 # loss_test_sort_idx = np.argsort(loss_array1_test_mean)
@@ -380,7 +401,7 @@ plt.show()
 # for i in range(1, num_show):
 #     plt.plot(seq_train_sorted[i,:,0], 'k-o')
 # plt.plot(seq_test0[:,0], 'r-o', label='test')
-# plt.title("Pressure Sequences")
+# plt.title("Temperature Sequences")
 # plt.legend(loc="best")
 # plt.grid(True)
 # plt.grid(True, which="minor")
@@ -392,8 +413,7 @@ plt.show()
 # for i in range(1, num_show):
 #     plt.plot(seq_train_sorted[i,:,1], 'k-o')
 # plt.plot(seq_test0[:,1], 'r-o', label='test')
-# plt.ylim(0, 100)
-# plt.title("RH Sequences")
+# plt.title("Pressure Sequences")
 # plt.legend(loc="best")
 # plt.grid(True)
 # plt.grid(True, which="minor")
@@ -405,7 +425,8 @@ plt.show()
 # for i in range(1, num_show):
 #     plt.plot(seq_train_sorted[i,:,2], 'k-o')
 # plt.plot(seq_test0[:,2], 'r-o', label='test')
-# plt.title("Solar Irradiance Sequences")
+# plt.ylim(0, 100)
+# plt.title("Relative Humidity Sequences")
 # plt.legend(loc="best")
 # plt.grid(True)
 # plt.grid(True, which="minor")
@@ -417,12 +438,11 @@ plt.show()
 # for i in range(1, num_show):
 #     plt.plot(seq_train_sorted[i,:,3], 'k-o')
 # plt.plot(seq_test0[:,3], 'r-o', label='test')
-# plt.ylim(-17, -14)
-# plt.title("Turbulence Sequences")
+# # plt.ylim(-17, -14)
+# plt.title("Solar Irradiance")
 # plt.legend(loc="best")
 # plt.grid(True)
 # plt.grid(True, which="minor")
 # plt.tight_layout()
 # plt.show()
-# 
 # =============================================================================

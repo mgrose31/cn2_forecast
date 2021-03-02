@@ -29,7 +29,7 @@ BATCH_SIZE = 32
 lr = 0.01
 wd = 1e-3
 
-sequence_length = 12
+sequence_length = 16
 num_layers = 2
 hidden_size = 40
 STEP_SIZE = 10
@@ -126,8 +126,8 @@ class RNN(nn.Module):
         self.output_size = output_size
         self.num_RNN_layers = num_RNN_layers
 
-        self.RNN = nn.GRU(input_size=input_size, hidden_size=RNN_layer_size,
-                          num_layers=num_RNN_layers, batch_first=True)
+        self.RNN = nn.LSTM(input_size=input_size, hidden_size=RNN_layer_size,
+                           num_layers=num_RNN_layers, batch_first=True)
         self.fc1 = nn.Linear(RNN_layer_size, output_size)
 
     def forward(self, x):
@@ -204,45 +204,45 @@ for hh in range(NUM_NETS):
     cn2_forecast = out_test[d0_idx,:]
     rmses_plot = np.sqrt(np.mean((cn2_truth - cn2_forecast)**2, axis=1))
     
-    # # get unique times to plot so the truth curves do not overlap
-    # dts_truth_plot, i = np.unique(dts_plot, return_index=True)
-    # cn2_truth_plot = cn2_truth.flatten()[i]
+    # get unique times to plot so the truth curves do not overlap
+    dts_truth_plot, i = np.unique(dts_plot, return_index=True)
+    cn2_truth_plot = cn2_truth.flatten()[i]
     
-    # # plot
-    # hours_plot = [x[0].hour for x in dts_plot]
-    # cmap = plt.get_cmap('cool')
-    # norm = matplotlib.colors.Normalize(vmin=hours_plot[0], vmax=hours_plot[-1])
-    # clrs = cmap(norm(hours_plot))
+    # plot
+    hours_plot = [x[0].hour for x in dts_plot]
+    cmap = plt.get_cmap('cool')
+    norm = matplotlib.colors.Normalize(vmin=hours_plot[0], vmax=hours_plot[-1])
+    clrs = cmap(norm(hours_plot))
     
-    # fig, ax = plt.subplots()
-    # for ii in range(len(dts_plot)):
-    #     plt.plot(dts_plot[ii,:], 10**cn2_forecast[ii,:], '-o', color=clrs[ii,:])
-    # plt.plot(dts_truth_plot, 10**cn2_truth_plot, 'k-o', label='truth')
-    # ax.xaxis.set_major_formatter(myFmt)
-    # cbar = fig.colorbar(
-    #     matplotlib.cm.ScalarMappable(norm=norm, cmap=cmap), ticks=hours_plot)
-    # cbar_str = [
-    #     r'{:02d} ({:.3f})'.format(h, z) for (h, z) in zip(hours_plot, rmses_plot)]
-    # cbar.ax.set_yticklabels(cbar_str)
-    # cbar.ax.set_title('Forecast (RMSE)')
+    fig, ax = plt.subplots()
+    for ii in range(len(dts_plot)):
+        plt.plot(dts_plot[ii,:], 10**cn2_forecast[ii,:], '-o', color=clrs[ii,:])
+    plt.plot(dts_truth_plot, 10**cn2_truth_plot, 'k-o', label='truth')
+    ax.xaxis.set_major_formatter(myFmt)
+    cbar = fig.colorbar(
+        matplotlib.cm.ScalarMappable(norm=norm, cmap=cmap), ticks=hours_plot)
+    cbar_str = [
+        r'{:02d} ({:.3f})'.format(h, z) for (h, z) in zip(hours_plot, rmses_plot)]
+    cbar.ax.set_yticklabels(cbar_str)
+    cbar.ax.set_title('Forecast (RMSE)')
     
-    # plt.yscale('log')
-    # plt.xlim(datetime.combine(d0, time(0, 0, 0)),
-    #           datetime.combine(d0 + timedelta(days=1), time(0, 0, 0)))
-    # plt.ylim(1e-17, 1e-14)
-    # plt.title(d0.strftime('%m-%d-%Y'))
-    # plt.xlabel('local time')
-    # plt.ylabel('$C_{n}^{2} (m^{-2/3})$')
-    # plt.legend(loc='upper right')
-    # plt.xticks(rotation=30)
-    # plt.grid(True)
-    # plt.tight_layout()
-    # plt.show()
+    plt.yscale('log')
+    plt.xlim(datetime.combine(d0, time(0, 0, 0)),
+              datetime.combine(d0 + timedelta(days=1), time(0, 0, 0)))
+    plt.ylim(1e-17, 1e-14)
+    plt.title(d0.strftime('%m-%d-%Y'))
+    plt.xlabel('local time')
+    plt.ylabel('$C_{n}^{2} (m^{-2/3})$')
+    plt.legend(loc='upper right')
+    plt.xticks(rotation=30)
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
 
 # plot all train/test loss curves and the average
 loss_array0_train_mean = np.mean(loss_array0_train, axis=0)
 loss_array0_test_mean = np.mean(loss_array0_test, axis=0)
-plt.figure(figsize=(8, 5))
+plt.figure()
 plt.plot(range(1, NUM_EPOCHS+1), loss_array0_train[0,:], color='tab:blue', label='train')
 plt.plot(range(1, NUM_EPOCHS+1), loss_array0_test[0,:], color='tab:orange', label='test')
 for jj in range(1, NUM_NETS):
@@ -253,7 +253,7 @@ plt.plot(range(1, NUM_EPOCHS+1), loss_array0_train_mean, 'k-',
 plt.plot(range(1, NUM_EPOCHS+1), loss_array0_test_mean, 'k--',
          label='test mean (last = {:.4f})'.format(loss_array0_test_mean[-1]))
 plt.ylim(0.1, 0.4)
-plt.title("GRU Model Losses")
+plt.title("LSTM Model Losses")
 plt.xlabel("Epoch")
 plt.ylabel("$log_{10}(C_{n}^{2})$ RMSE loss")
 plt.legend(loc='upper right')
@@ -267,38 +267,35 @@ rmse_array_std = np.std(rmse_array, axis=0)
 rmse_array_sdom = rmse_array_std / np.sqrt(NUM_NETS)
 rmse_array_min = np.min(rmse_array, axis=0)
 rmse_array_max = np.max(rmse_array, axis=0)
-# fig, ax = plt.subplots()
-# plt.errorbar(x=ds_unique, y=rmse_array_mean, yerr=rmse_array_sdom,
-#              fmt='k-o', label='mean w/ SDOM')
+plt.figure()
+plt.errorbar(x=ds_unique, y=rmse_array_mean, yerr=rmse_array_sdom,
+             fmt='k-o', label='mean w/ SDOM')
+plt.plot(ds_unique, rmse_array_min, 'b:', label='min/max')
+plt.plot(ds_unique, rmse_array_max, 'b:')
+plt.ylim(0.1, 0.3)
+plt.title("LSTM Daily Performance Summary")
+plt.xlabel("test date")
+plt.ylabel("$log_{10}(C_{n}^{2})$ RMSE loss")
+plt.xticks(rotation=30)
+plt.legend()
+plt.grid(True)
+plt.grid(True, which='minor')
+plt.tight_layout()
+plt.show()
+
+# plt.figure()
+# plt.plot(ds_unique, rmse_array_mean, 'k-o', label='mean')
+# plt.plot(ds_unique, rmse_array_mean+rmse_array_std, 'r--', label='mean +/- std')
+# plt.plot(ds_unique, rmse_array_mean-rmse_array_std, 'r--')
 # plt.plot(ds_unique, rmse_array_min, 'b:', label='min/max')
 # plt.plot(ds_unique, rmse_array_max, 'b:')
-# plt.ylim(0.1, 0.26)
-# plt.title("GRU Convergence: Daily Performance")
-# plt.xlabel("test date")
-# plt.ylabel("$log_{10}(C_{n}^{2})$ RMSE loss")
-# ax.xaxis.set_major_formatter(DateFormatter('%m/%d'))
+# plt.ylim(0.1, 0.3)
+# plt.xticks(rotation=30)
 # plt.legend()
 # plt.grid(True)
 # plt.grid(True, which='minor')
 # plt.tight_layout()
 # plt.show()
-
-fig, ax = plt.subplots()
-plt.plot(ds_unique, rmse_array_mean, 'k-o', label='mean')
-plt.plot(ds_unique, rmse_array_mean+rmse_array_std, 'r--', label='mean +/- std')
-plt.plot(ds_unique, rmse_array_mean-rmse_array_std, 'r--')
-plt.plot(ds_unique, rmse_array_min, 'b:', label='min/max')
-plt.plot(ds_unique, rmse_array_max, 'b:')
-plt.ylim(0.1, 0.26)
-plt.title("GRU Convergence: Daily Performance")
-plt.xlabel("test date")
-plt.ylabel("$log_{10}(C_{n}^{2})$ RMSE loss")
-ax.xaxis.set_major_formatter(DateFormatter('%m/%d'))
-plt.legend(loc='upper left')
-plt.grid(True)
-plt.grid(True, which='minor')
-plt.tight_layout()
-plt.show()
 
 # calculate statistics for model performance on each test forecast
 loss_array1_test_mean = loss_array1_test.mean(axis=0)
@@ -317,7 +314,7 @@ for i in range(1, len(loss_array1_test)):
 plt.plot(t_test, loss_array1_test_mean, 'r.', label='mean')
 plt.ylim(0, 0.5)
 ax.xaxis.set_major_formatter(myFmt)
-plt.title("GRU Performance Summary")
+plt.title("LSTM Performance Summary")
 plt.xlabel("forecast first hour")
 plt.ylabel("$log_{10}(C_{n}^{2})$ RMSE loss")
 plt.legend(loc='upper left')
@@ -328,101 +325,153 @@ plt.show()
 
 # plt.close('all')
 
-# =============================================================================
-# #%% statistics on forecast performance
-# num_show = 5
-# idx = -1
-# 
-# # copy the appropriate train/test sequences to local variables for analysis
-# seq_train = sequences_12hr_train[:,:,vars_keep].copy()
-# seq_test = sequences_12hr_test[:,:,vars_keep].copy()
-# 
-# # sort the individual-forecast rmse scores
-# loss_test_sort_idx = np.argsort(loss_array1_test_mean)
-# loss_test_mean_sorted = loss_array1_test_mean[loss_test_sort_idx]
-# dts_test_sorted = forecasts_test_dts[loss_test_sort_idx,:]
-# seq_test_sorted = seq_test[loss_test_sort_idx]
-# fcst_test_sorted = forecasts_test[loss_test_sort_idx,:]
-# out_test_sorted = out_test[loss_test_sort_idx,:]
-# 
-# # calculate the rmse between a test forecast and all train forecasts
-# seq_test0 = seq_test_sorted[idx,:,:]
-# forecasts_test0 = fcst_test_sorted[idx,:]
-# dts_test0 = dts_test_sorted[idx,:]
-# out_test0 = out_test_sorted[idx,:]
-# train_error = np.sqrt(np.mean((forecasts_test0 - forecasts_train)**2, axis=1))
-# 
-# # sort the rmses between the test forecast and train forecasts
-# train_error_sort_idx = np.argsort(train_error)
-# 
-# # get the train sequences/tests based on the sorting
-# seq_train_sorted = seq_train[train_error_sort_idx,:,:]
-# fcst_train_sorted = forecasts_train[train_error_sort_idx,:]
-# 
+#%% statistics on forecast performance
+num_show = 5
+idx = -1
+
+# copy the appropriate train/test sequences to local variables for analysis
+seq_train = sequences_16hr_train[:,:,vars_keep].copy()
+seq_test = sequences_16hr_test[:,:,vars_keep].copy()
+
+# sort the individual-forecast rmse scores
+loss_test_sort_idx = np.argsort(loss_array1_test_mean)
+loss_test_mean_sorted = loss_array1_test_mean[loss_test_sort_idx]
+dts_test_sorted = forecasts_test_dts[loss_test_sort_idx,:]
+seq_test_sorted = seq_test[loss_test_sort_idx]
+fcst_test_sorted = forecasts_test[loss_test_sort_idx,:]
+out_test_sorted = out_test[loss_test_sort_idx,:]
+
+# calculate the rmse between a test forecast and all train forecasts
+seq_test0 = seq_test_sorted[idx,:,:]
+forecasts_test0 = fcst_test_sorted[idx,:]
+dts_test0 = dts_test_sorted[idx,:]
+out_test0 = out_test_sorted[idx,:]
+train_error = np.sqrt(np.mean((forecasts_test0 - forecasts_train)**2, axis=1))
+
+# sort the rmses between the test forecast and train forecasts
+train_error_sort_idx = np.argsort(train_error)
+
+# get the train sequences/tests based on the sorting
+seq_train_sorted = seq_train[train_error_sort_idx,:,:]
+fcst_train_sorted = forecasts_train[train_error_sort_idx,:]
+
+plt.figure()
+plt.plot(10**fcst_train_sorted[0,:], 'k-o', label='train')
+for i in range(1, num_show):
+    plt.plot(10**fcst_train_sorted[i,:], 'k-o')
+plt.plot(10**forecasts_test0, 'r-o', label='test')
+plt.yscale('log')
+plt.ylim(1e-17, 1e-14)
+plt.title("Forecast")
+# plt.xlabel("")
+plt.ylabel("$log_{10}(C_{n}^{2})$")
+plt.legend(loc="upper right")
+plt.grid(True)
+plt.grid(True, which="minor")
+plt.tight_layout()
+plt.show()
+
+plt.figure()
+plt.plot(seq_train_sorted[0,:,0], 'k-o', label='train')
+for i in range(1, num_show):
+    plt.plot(seq_train_sorted[i,:,0], 'k-o')
+plt.plot(seq_test0[:,0], 'r-o', label='test')
+plt.title("Pressure Sequences")
+plt.legend(loc="best")
+plt.grid(True)
+plt.grid(True, which="minor")
+plt.tight_layout()
+plt.show()
+
+plt.figure()
+plt.plot(seq_train_sorted[0,:,1], 'k-o', label='train')
+for i in range(1, num_show):
+    plt.plot(seq_train_sorted[i,:,1], 'k-o')
+plt.plot(seq_test0[:,1], 'r-o', label='test')
+plt.ylim(0, 100)
+plt.title("RH Sequences")
+plt.legend(loc="best")
+plt.grid(True)
+plt.grid(True, which="minor")
+plt.tight_layout()
+plt.show()
+
+plt.figure()
+plt.plot(seq_train_sorted[0,:,2], 'k-o', label='train')
+for i in range(1, num_show):
+    plt.plot(seq_train_sorted[i,:,2], 'k-o')
+plt.plot(seq_test0[:,2], 'r-o', label='test')
+plt.title("Solar Irradiance Sequences")
+plt.legend(loc="best")
+plt.grid(True)
+plt.grid(True, which="minor")
+plt.tight_layout()
+plt.show()
+
+plt.figure()
+plt.plot(seq_train_sorted[0,:,3], 'k-o', label='train')
+for i in range(1, num_show):
+    plt.plot(seq_train_sorted[i,:,3], 'k-o')
+plt.plot(seq_test0[:,3], 'r-o', label='test')
+plt.ylim(-17, -14)
+plt.title("Turbulence Sequences")
+plt.legend(loc="best")
+plt.grid(True)
+plt.grid(True, which="minor")
+plt.tight_layout()
+plt.show()
+
+#%%
+fcst_train_dts_sorted = forecasts_train_dts[train_error_sort_idx,:]
+idx_neutral_event = np.any(fcst_train_sorted<=-16, axis=1)
+out_train_sorted = out_train[train_error_sort_idx,:]
+out_neutral_event = out_train_sorted[idx_neutral_event,:]
+truth_neutral_event = fcst_train_sorted[idx_neutral_event,:]
+
+# dts_neutral_event = fcst_train_dts_sorted[idx_neutral_event,:]
 # plt.figure()
-# plt.plot(10**fcst_train_sorted[0,:], 'k-o', label='train')
-# for i in range(1, num_show):
-#     plt.plot(10**fcst_train_sorted[i,:], 'k-o')
-# plt.plot(10**forecasts_test0, 'r-o', label='test')
+# for i in range(len(out_neutral_event)):
+#     plt.plot(dts_neutral_event[i,:], 10**truth_neutral_event[i,:], 'k-o')
+#     plt.plot(dts_neutral_event[i,:], 10**out_neutral_event[i,:], 'g-o')
 # plt.yscale('log')
+# # plt.xlim(datetime(1900, 1, 1, 0, 0, 1), datetime(1900, 1, 1, 23, 59, 59))
 # plt.ylim(1e-17, 1e-14)
-# plt.title("Forecast")
-# # plt.xlabel("")
-# plt.ylabel("$log_{10}(C_{n}^{2})$")
-# plt.legend(loc="upper right")
 # plt.grid(True)
-# plt.grid(True, which="minor")
+# plt.grid(True, which='minor')
+# plt.legend(loc='best')
 # plt.tight_layout()
 # plt.show()
-# 
-# plt.figure()
-# plt.plot(seq_train_sorted[0,:,0], 'k-o', label='train')
-# for i in range(1, num_show):
-#     plt.plot(seq_train_sorted[i,:,0], 'k-o')
-# plt.plot(seq_test0[:,0], 'r-o', label='test')
-# plt.title("Pressure Sequences")
-# plt.legend(loc="best")
-# plt.grid(True)
-# plt.grid(True, which="minor")
-# plt.tight_layout()
-# plt.show()
-# 
-# plt.figure()
-# plt.plot(seq_train_sorted[0,:,1], 'k-o', label='train')
-# for i in range(1, num_show):
-#     plt.plot(seq_train_sorted[i,:,1], 'k-o')
-# plt.plot(seq_test0[:,1], 'r-o', label='test')
-# plt.ylim(0, 100)
-# plt.title("RH Sequences")
-# plt.legend(loc="best")
-# plt.grid(True)
-# plt.grid(True, which="minor")
-# plt.tight_layout()
-# plt.show()
-# 
-# plt.figure()
-# plt.plot(seq_train_sorted[0,:,2], 'k-o', label='train')
-# for i in range(1, num_show):
-#     plt.plot(seq_train_sorted[i,:,2], 'k-o')
-# plt.plot(seq_test0[:,2], 'r-o', label='test')
-# plt.title("Solar Irradiance Sequences")
-# plt.legend(loc="best")
-# plt.grid(True)
-# plt.grid(True, which="minor")
-# plt.tight_layout()
-# plt.show()
-# 
-# plt.figure()
-# plt.plot(seq_train_sorted[0,:,3], 'k-o', label='train')
-# for i in range(1, num_show):
-#     plt.plot(seq_train_sorted[i,:,3], 'k-o')
-# plt.plot(seq_test0[:,3], 'r-o', label='test')
-# plt.ylim(-17, -14)
-# plt.title("Turbulence Sequences")
-# plt.legend(loc="best")
-# plt.grid(True)
-# plt.grid(True, which="minor")
-# plt.tight_layout()
-# plt.show()
-# 
-# =============================================================================
+
+
+
+
+ff = fcst_train_dts_sorted.copy()
+for i, v1 in enumerate(ff):
+    for j, v2 in enumerate(v1):
+        ff[i,j] = ff[i,j].replace(year=1900, month=1, day=1)
+
+cc = ff[idx_neutral_event,:]
+
+a = np.array([t.replace(year=1900, month=1, day=1) for t in dts_test0])
+
+fig, ax = plt.subplots()
+plt.plot(cc[0,:], 10**truth_neutral_event[0,:], 'k-o', label='train truth')
+plt.plot(cc[0,:], 10**out_neutral_event[0,:], 'g-o', label='train forecast')
+for i in range(1, len(out_neutral_event)):
+    plt.plot(cc[i,:], 10**truth_neutral_event[i,:], 'k-o')
+    plt.plot(cc[i,:], 10**out_neutral_event[i,:], 'g-o')
+plt.plot(a, 10**forecasts_test0, 'k--o', label='test truth')
+plt.plot(a, 10**out_test0, 'r-o', label='test forecast')
+plt.yscale('log')
+# plt.xlim(datetime(1900, 1, 1, 0, 0, 1), datetime(1900, 1, 1, 23, 59, 59))
+plt.xlim(datetime(1900, 1, 1, 15, 0, 0), datetime(1900, 1, 1, 23, 59, 59))
+plt.ylim(1e-17, 1e-14)
+ax.xaxis.set_major_formatter(myFmt)
+plt.title('Neutral Events')
+plt.xlabel('local time (EST)')
+plt.ylabel('$C_{n}^{2}$ ($m^{-2/3}$)')
+plt.grid(True)
+plt.grid(True, which='minor')
+plt.legend(loc='best')
+plt.tight_layout()
+plt.show()
