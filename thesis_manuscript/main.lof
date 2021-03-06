@@ -1,0 +1,48 @@
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Sequence data as a function of time, parsed by train, validation, and test datasets drawn in black, blue, and red, respectively.\relax }}{4}{}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Temperature (K)}}}{4}{}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Pressure (Pa)}}}{4}{}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Relative Humidity (\%)}}}{4}{}%
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {Wind Speed (m/s)}}}{4}{}%
+\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {Solar Irradiance ($W/m^{2}$)}}}{4}{}%
+\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {Turbulence $C_{n}^{2}$ ($m^{-2/3}$)}}}{4}{}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Sequence data in normalized histograms, parsed by the train, validation, and test datasets drawn in black, blue, and red, respectively.\relax }}{5}{}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Temperature (K)}}}{5}{}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Pressure (Pa)}}}{5}{}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Relative Humidity (\%)}}}{5}{}%
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {Wind Speed (m/s)}}}{5}{}%
+\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {Solar Irradiance}}}{5}{}%
+\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {$C_{n}^{2}$ ($m^{-2/3}$)}}}{5}{}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Turbulence ($C_{n}^{2}$) forecasts as a function of time and as a normalized histogram. The train, validation, and test datasets are drawn in black, blue, and red, respectively.\relax }}{6}{}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{6}{}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{6}{}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Grid search results.\relax }}{7}{}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Full set of iterations}}}{7}{}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Top 10 iterations}}}{7}{}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Best 10\% and worst 10\% variable sets.\relax }}{8}{}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Best 10\%}}}{8}{}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Worst 10\%}}}{8}{}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces GRU train and test loss curves of 10 models.\relax }}{9}{}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces GRU daily summary performance: mean, standard deviation, and min/max.\relax }}{11}{}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces GRU hourly summary performance: individual and average.\relax }}{12}{}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces August 3 and 5 - 7 daily $C_{n}^{2}$ forecasts.\relax }}{14}{}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {August 03}}}{14}{}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {August 05}}}{14}{}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {August 06}}}{14}{}%
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {August 07}}}{14}{}%
+\contentsline {figure}{\numberline {5.5}{\ignorespaces August 8 - 10 daily $C_{n}^{2}$ forecasts.\relax }}{18}{}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {August 08}}}{18}{}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {August 09}}}{18}{}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {August 10}}}{18}{}%
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Scatter plots.\relax }}{21}{}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{21}{}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{21}{}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{21}{}%
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{21}{}%
+\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {}}}{21}{}%
+\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {}}}{21}{}%
+\contentsline {subfigure}{\numberline {(g)}{\ignorespaces {}}}{21}{}%
+\contentsline {subfigure}{\numberline {(h)}{\ignorespaces {}}}{21}{}%
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Average performance as a function of forecast length.\relax }}{22}{}%
+\contentsline {figure}{\numberline {5.8}{\ignorespaces GRU performance analysis of the 08/09 18:00 forecast. \textbf {REMAKE WITH DIFFERENT XLIM?}\relax }}{22}{}%
+\contentsline {figure}{\numberline {5.9}{\ignorespaces GRU performance analysis of the 08/06 14:00 forecast. \textbf {REMAKE WITH DIFFERENT XLIM?}\relax }}{23}{}%
+\contentsline {figure}{\numberline {5.10}{\ignorespaces GRU performance analysis of the 08/05 16:00 forecast. \textbf {REMAKE WITH DIFFERENT XLIM?}\relax }}{23}{}%
