@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.11) (preloaded format=pdflatex 2020.11.10)  7 MAR 2021 21:41
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.11) (preloaded format=pdflatex 2020.11.10)  8 MAR 2021 22:14
 entering extended mode
 **./main.tex
 (main.tex
@@ -166,20 +166,20 @@ File: l3backend-pdftex.def 2020-09-24 L3 backend support: PDF output (pdfTeX)
 ) (main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -241,11 +241,11 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 44.
+(Font)              <10.95> on input line 46.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 44.
+(Font)              <8> on input line 46.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 44.
+(Font)              <6> on input line 46.
 Package epstopdf Info: Source file: <UDlogo_new.eps>
 (epstopdf)                    date: 2019-06-18 17:04:42
 (epstopdf)                    size: 42762 bytes
@@ -254,7 +254,7 @@ Package epstopdf Info: Source file: <UDlogo_new.eps>
 (epstopdf)                    size: 22218 bytes
 (epstopdf)             Command: <epstopdf --outfile=UDlogo_new-eps-converted-to
 .pdf UDlogo_new.eps>
-(epstopdf)             \includegraphics on input line 44.
+(epstopdf)             \includegraphics on input line 46.
 Package epstopdf Info: Output file is already uptodate.
 
 
@@ -263,7 +263,7 @@ usion: found PDF version <1.7>, but at most version <1.5> allowed
 <UDlogo_new-eps-converted-to.pdf, id=1, 221.82875pt x 243.91125pt>
 File: UDlogo_new-eps-converted-to.pdf Graphic file (type pdf)
 <use UDlogo_new-eps-converted-to.pdf>
-Package pdftex.def Info: UDlogo_new-eps-converted-to.pdf  used on input line 44
+Package pdftex.def Info: UDlogo_new-eps-converted-to.pdf  used on input line 46
 .
 (pdftex.def)             Requested size: 69.86626pt x 76.82234pt.
 [1
@@ -277,54 +277,143 @@ s-converted-to.pdf>] [2] [2
 
 ] (ack.tex) [5
 
-] (main.toc)
-\tf@toc=\write3
-\openout3 = `main.toc'.
-
+] (main.toc
+Overfull \hbox (16.60701pt too wide) in paragraph at lines 10--10
+ [][] []\OT1/cmr/m/n/10.95 This ef-fort per-forms an en-sem-ble study of ML ar-
+chi-tec-tures/parameters 
+ []
 
 [6
 
-] (main.lof)
+])
+\tf@toc=\write3
+\openout3 = `main.toc'.
+
+ [7] (main.lof [8
+
+])
 \tf@lof=\write4
 \openout4 = `main.lof'.
 
- [7
-
-] (main.lot)
+ [9] (main.lot)
 \tf@lot=\write5
 \openout5 = `main.lot'.
 
- (chapter1.tex [8
+ (chapter1.tex [10
 
 ]
 CHAPTER I.
-) (chapter2.tex [1
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 7.
+<./figures/experimental_setup//FirstFrame_LowTurb.jpg, id=47, 1027.84pt x 1027.
+84pt>
+File: ./figures/experimental_setup//FirstFrame_LowTurb.jpg Graphic file (type j
+pg)
+<use ./figures/experimental_setup//FirstFrame_LowTurb.jpg>
+Package pdftex.def Info: ./figures/experimental_setup//FirstFrame_LowTurb.jpg  
+used on input line 13.
+(pdftex.def)             Requested size: 212.47618pt x 212.46512pt.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <9> on input line 13.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 13.
+<./figures/experimental_setup//FirstFrame_HighTurb.jpg, id=48, 1027.84pt x 1027
+.84pt>
+File: ./figures/experimental_setup//FirstFrame_HighTurb.jpg Graphic file (type 
+jpg)
+<use ./figures/experimental_setup//FirstFrame_HighTurb.jpg>
+Package pdftex.def Info: ./figures/experimental_setup//FirstFrame_HighTurb.jpg 
+ used on input line 17.
+(pdftex.def)             Requested size: 212.47618pt x 212.46512pt.
 
-]
+Overfull \hbox (5.93233pt too wide) in paragraph at lines 13--19
+ [][][] 
+ []
+
+<./figures/introduction//training_process.png, id=49, 776.30025pt x 218.0145pt>
+
+File: ./figures/introduction//training_process.png Graphic file (type png)
+<use ./figures/introduction//training_process.png>
+Package pdftex.def Info: ./figures/introduction//training_process.png  used on 
+input line 30.
+(pdftex.def)             Requested size: 429.28618pt x 120.56035pt.
+<./figures/introduction//testing_process.png, id=51, 545.6385pt x 146.949pt>
+File: ./figures/introduction//testing_process.png Graphic file (type png)
+<use ./figures/introduction//testing_process.png>
+Package pdftex.def Info: ./figures/introduction//testing_process.png  used on i
+nput line 35.
+(pdftex.def)             Requested size: 429.28618pt x 115.61531pt.
+
+Overfull \hbox (2.96616pt too wide) in paragraph at lines 30--37
+ [][] 
+ []
+
+
+Overfull \hbox (13.91617pt too wide) in paragraph at lines 30--37
+ [] 
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[1
+
+ <./figures/experimental_setup//FirstFrame_LowTurb.jpg> <./figures/experimental
+_setup//FirstFrame_HighTurb.jpg>]) (chapter2.tex [2 <./figures/introduction//tr
+aining_process.png> <./figures/introduction//testing_process.png>]
 CHAPTER II.
-) (chapter3.tex [2
+<./figures/experimental_setup//DELTA_Path.png, id=67, 999.13275pt x 520.344pt>
+File: ./figures/experimental_setup//DELTA_Path.png Graphic file (type png)
+<use ./figures/experimental_setup//DELTA_Path.png>
+Package pdftex.def Info: ./figures/experimental_setup//DELTA_Path.png  used on 
+input line 11.
+(pdftex.def)             Requested size: 429.28618pt x 223.56888pt.
+<./figures/experimental_setup//DELTA_setup1.jpg, id=68, 4047.12pt x 3035.34pt>
+File: ./figures/experimental_setup//DELTA_setup1.jpg Graphic file (type jpg)
+<use ./figures/experimental_setup//DELTA_setup1.jpg>
+Package pdftex.def Info: ./figures/experimental_setup//DELTA_setup1.jpg  used o
+n input line 22.
+(pdftex.def)             Requested size: 212.47618pt x 159.32532pt.
+<./figures/experimental_setup//DELTA_setup3.jpg, id=69, 4047.12pt x 3035.34pt>
+File: ./figures/experimental_setup//DELTA_setup3.jpg Graphic file (type jpg)
+<use ./figures/experimental_setup//DELTA_setup3.jpg>
+Package pdftex.def Info: ./figures/experimental_setup//DELTA_setup3.jpg  used o
+n input line 26.
+(pdftex.def)             Requested size: 212.47618pt x 159.32532pt.
+<./figures/experimental_setup//Y_Tower.jpg, id=70, 246.1998pt x 246.1998pt>
+File: ./figures/experimental_setup//Y_Tower.jpg Graphic file (type jpg)
+<use ./figures/experimental_setup//Y_Tower.jpg>
+Package pdftex.def Info: ./figures/experimental_setup//Y_Tower.jpg  used on inp
+ut line 31.
+(pdftex.def)             Requested size: 212.47618pt x 212.48279pt.
 
-]
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[3
+
+ <./figures/experimental_setup//DELTA_Path.png>]) (chapter3.tex [4 <./figures/e
+xperimental_setup//DELTA_setup1.jpg> <./figures/experimental_setup//DELTA_setup
+3.jpg> <./figures/experimental_setup//Y_Tower.jpg>] [5]
 CHAPTER III.
-<./figures/dataset//temporal_sequence_temp.png, id=46, 578.16pt x 361.35pt>
+<./figures/dataset//temporal_sequence_temp.png, id=81, 578.16pt x 361.35pt>
 File: ./figures/dataset//temporal_sequence_temp.png Graphic file (type png)
 <use ./figures/dataset//temporal_sequence_temp.png>
 Package pdftex.def Info: ./figures/dataset//temporal_sequence_temp.png  used on
  input line 11.
 (pdftex.def)             Requested size: 212.47618pt x 132.79315pt.
-<./figures/dataset//temporal_sequence_press.png, id=48, 578.16pt x 361.35pt>
+<./figures/dataset//temporal_sequence_press.png, id=82, 578.16pt x 361.35pt>
 File: ./figures/dataset//temporal_sequence_press.png Graphic file (type png)
 <use ./figures/dataset//temporal_sequence_press.png>
 Package pdftex.def Info: ./figures/dataset//temporal_sequence_press.png  used o
 n input line 14.
 (pdftex.def)             Requested size: 212.47618pt x 132.79315pt.
-<./figures/dataset//temporal_sequence_rh.png, id=49, 578.16pt x 361.35pt>
+<./figures/dataset//temporal_sequence_rh.png, id=83, 578.16pt x 361.35pt>
 File: ./figures/dataset//temporal_sequence_rh.png Graphic file (type png)
 <use ./figures/dataset//temporal_sequence_rh.png>
 Package pdftex.def Info: ./figures/dataset//temporal_sequence_rh.png  used on i
 nput line 18.
 (pdftex.def)             Requested size: 212.47618pt x 132.79315pt.
-<./figures/dataset//temporal_sequence_wind_spd.png, id=50, 578.16pt x 361.35pt>
+<./figures/dataset//temporal_sequence_wind_spd.png, id=84, 578.16pt x 361.35pt>
 
 File: ./figures/dataset//temporal_sequence_wind_spd.png Graphic file (type png)
 
@@ -332,7 +421,7 @@ File: ./figures/dataset//temporal_sequence_wind_spd.png Graphic file (type png)
 Package pdftex.def Info: ./figures/dataset//temporal_sequence_wind_spd.png  use
 d on input line 21.
 (pdftex.def)             Requested size: 212.47618pt x 132.79315pt.
-<./figures/dataset//temporal_sequence_solar_irr.png, id=51, 578.16pt x 361.35pt
+<./figures/dataset//temporal_sequence_solar_irr.png, id=85, 578.16pt x 361.35pt
 >
 File: ./figures/dataset//temporal_sequence_solar_irr.png Graphic file (type png
 )
@@ -340,11 +429,7 @@ File: ./figures/dataset//temporal_sequence_solar_irr.png Graphic file (type png
 Package pdftex.def Info: ./figures/dataset//temporal_sequence_solar_irr.png  us
 ed on input line 25.
 (pdftex.def)             Requested size: 212.47618pt x 132.79315pt.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <9> on input line 25.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 25.
-<./figures/dataset//temporal_sequence_cn2.png, id=52, 578.16pt x 361.35pt>
+<./figures/dataset//temporal_sequence_cn2.png, id=86, 578.16pt x 361.35pt>
 File: ./figures/dataset//temporal_sequence_cn2.png Graphic file (type png)
 <use ./figures/dataset//temporal_sequence_cn2.png>
 Package pdftex.def Info: ./figures/dataset//temporal_sequence_cn2.png  used on 
@@ -365,100 +450,110 @@ Overfull \hbox (5.93233pt too wide) in paragraph at lines 11--30
  [][] 
  []
 
-<./figures/dataset//hist_sequence_temp.png, id=53, 462.528pt x 346.896pt>
+<./figures/dataset//hist_sequence_temp.png, id=87, 462.528pt x 346.896pt>
 File: ./figures/dataset//hist_sequence_temp.png Graphic file (type png)
 <use ./figures/dataset//hist_sequence_temp.png>
 Package pdftex.def Info: ./figures/dataset//hist_sequence_temp.png  used on inp
-ut line 39.
+ut line 38.
 (pdftex.def)             Requested size: 212.47618pt x 159.35707pt.
-<./figures/dataset//hist_sequence_press.png, id=54, 462.528pt x 346.896pt>
+<./figures/dataset//hist_sequence_press.png, id=88, 462.528pt x 346.896pt>
 File: ./figures/dataset//hist_sequence_press.png Graphic file (type png)
 <use ./figures/dataset//hist_sequence_press.png>
 Package pdftex.def Info: ./figures/dataset//hist_sequence_press.png  used on in
-put line 42.
+put line 41.
 (pdftex.def)             Requested size: 212.47618pt x 159.35707pt.
-<./figures/dataset//hist_sequence_rh.png, id=55, 462.528pt x 346.896pt>
+<./figures/dataset//hist_sequence_rh.png, id=89, 462.528pt x 346.896pt>
 File: ./figures/dataset//hist_sequence_rh.png Graphic file (type png)
 <use ./figures/dataset//hist_sequence_rh.png>
 Package pdftex.def Info: ./figures/dataset//hist_sequence_rh.png  used on input
- line 46.
+ line 45.
 (pdftex.def)             Requested size: 212.47618pt x 159.35707pt.
-<./figures/dataset//hist_sequence_wind_spd.png, id=56, 462.528pt x 346.896pt>
+<./figures/dataset//hist_sequence_wind_spd.png, id=90, 462.528pt x 346.896pt>
 File: ./figures/dataset//hist_sequence_wind_spd.png Graphic file (type png)
 <use ./figures/dataset//hist_sequence_wind_spd.png>
 Package pdftex.def Info: ./figures/dataset//hist_sequence_wind_spd.png  used on
- input line 49.
+ input line 48.
 (pdftex.def)             Requested size: 212.47618pt x 159.35707pt.
-<./figures/dataset//hist_sequence_solar_irr.png, id=57, 462.528pt x 346.896pt>
+<./figures/dataset//hist_sequence_solar_irr.png, id=91, 462.528pt x 346.896pt>
 File: ./figures/dataset//hist_sequence_solar_irr.png Graphic file (type png)
 <use ./figures/dataset//hist_sequence_solar_irr.png>
 Package pdftex.def Info: ./figures/dataset//hist_sequence_solar_irr.png  used o
-n input line 53.
+n input line 52.
 (pdftex.def)             Requested size: 212.47618pt x 159.35707pt.
-<./figures/dataset//hist_sequence_cn2.png, id=58, 462.528pt x 346.896pt>
+<./figures/dataset//hist_sequence_cn2.png, id=92, 462.528pt x 346.896pt>
 File: ./figures/dataset//hist_sequence_cn2.png Graphic file (type png)
 <use ./figures/dataset//hist_sequence_cn2.png>
 Package pdftex.def Info: ./figures/dataset//hist_sequence_cn2.png  used on inpu
-t line 56.
+t line 55.
 (pdftex.def)             Requested size: 212.47618pt x 159.35707pt.
 
-Overfull \hbox (5.93233pt too wide) in paragraph at lines 39--58
+Overfull \hbox (5.93233pt too wide) in paragraph at lines 38--57
  [][][] 
  []
 
 
-Overfull \hbox (5.93233pt too wide) in paragraph at lines 39--58
+Overfull \hbox (5.93233pt too wide) in paragraph at lines 38--57
  [][] 
  []
 
 
-Overfull \hbox (5.93233pt too wide) in paragraph at lines 39--58
+Overfull \hbox (5.93233pt too wide) in paragraph at lines 38--57
  [][] 
  []
 
-<./figures/dataset//temporal_forecast_cn2.png, id=59, 578.16pt x 361.35pt>
+<./figures/dataset//temporal_forecast_cn2.png, id=93, 578.16pt x 361.35pt>
 File: ./figures/dataset//temporal_forecast_cn2.png Graphic file (type png)
 <use ./figures/dataset//temporal_forecast_cn2.png>
 Package pdftex.def Info: ./figures/dataset//temporal_forecast_cn2.png  used on 
-input line 67.
+input line 66.
 (pdftex.def)             Requested size: 235.45534pt x 147.15646pt.
-<./figures/dataset//hist_forecast_cn2.png, id=60, 462.528pt x 346.896pt>
+<./figures/dataset//hist_forecast_cn2.png, id=94, 462.528pt x 346.896pt>
 File: ./figures/dataset//hist_forecast_cn2.png Graphic file (type png)
 <use ./figures/dataset//hist_forecast_cn2.png>
 Package pdftex.def Info: ./figures/dataset//hist_forecast_cn2.png  used on inpu
-t line 70.
+t line 69.
 (pdftex.def)             Requested size: 193.83084pt x 145.37244pt.
 
-Overfull \hbox (10.26614pt too wide) in paragraph at lines 67--72
+Overfull \hbox (10.26614pt too wide) in paragraph at lines 66--71
  [][][] 
  []
 
-) (chapter4.tex
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[3
+<./figures/dataset//example_sequence_forecast.png, id=95, 939.51pt x 469.755pt>
 
-] [4 <./figures/dataset//temporal_sequence_temp.png> <./figures/dataset//tempor
+File: ./figures/dataset//example_sequence_forecast.png Graphic file (type png)
+<use ./figures/dataset//example_sequence_forecast.png>
+Package pdftex.def Info: ./figures/dataset//example_sequence_forecast.png  used
+ on input line 79.
+(pdftex.def)             Requested size: 429.28618pt x 214.64201pt.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+) (chapter4.tex [6
+
+] [7 <./figures/dataset//temporal_sequence_temp.png> <./figures/dataset//tempor
 al_sequence_press.png> <./figures/dataset//temporal_sequence_rh.png> <./figures
 /dataset//temporal_sequence_wind_spd.png> <./figures/dataset//temporal_sequence
-_solar_irr.png> <./figures/dataset//temporal_sequence_cn2.png>] [5 <./figures/d
+_solar_irr.png> <./figures/dataset//temporal_sequence_cn2.png>] [8 <./figures/d
 ataset//hist_sequence_temp.png> <./figures/dataset//hist_sequence_press.png> <.
 /figures/dataset//hist_sequence_rh.png> <./figures/dataset//hist_sequence_wind_
 spd.png> <./figures/dataset//hist_sequence_solar_irr.png> <./figures/dataset//h
-ist_sequence_cn2.png>] [6 <./figures/dataset//temporal_forecast_cn2.png> <./fig
-ures/dataset//hist_forecast_cn2.png>]
+ist_sequence_cn2.png>] [9 <./figures/dataset//temporal_forecast_cn2.png> <./fig
+ures/dataset//hist_forecast_cn2.png> <./figures/dataset//example_sequence_forec
+ast.png>]
 CHAPTER IV.
-<./figures/grid_search_results//average_model_performance_wide.png, id=93, 462.
-528pt x 346.896pt>
+<./figures/grid_search_results//average_model_performance_wide.png, id=125, 462
+.528pt x 346.896pt>
 File: ./figures/grid_search_results//average_model_performance_wide.png Graphic
  file (type png)
 <use ./figures/grid_search_results//average_model_performance_wide.png>
 Package pdftex.def Info: ./figures/grid_search_results//average_model_performan
 ce_wide.png  used on input line 11.
 (pdftex.def)             Requested size: 212.47618pt x 159.35707pt.
-<./figures/grid_search_results//average_model_performance_narrow.png, id=94, 46
-2.528pt x 346.896pt>
+<./figures/grid_search_results//average_model_performance_narrow.png, id=126, 4
+62.528pt x 346.896pt>
 File: ./figures/grid_search_results//average_model_performance_narrow.png Graph
 ic file (type png)
 <use ./figures/grid_search_results//average_model_performance_narrow.png>
@@ -470,27 +565,27 @@ Overfull \hbox (5.93233pt too wide) in paragraph at lines 11--16
  [][][] 
  []
 
-<./figures/grid_search_results//students_t-test.png, id=95, 462.528pt x 346.896
-pt>
+<./figures/grid_search_results//students_t-test.png, id=127, 462.528pt x 346.89
+6pt>
 File: ./figures/grid_search_results//students_t-test.png Graphic file (type png
 )
 <use ./figures/grid_search_results//students_t-test.png>
 Package pdftex.def Info: ./figures/grid_search_results//students_t-test.png  us
 ed on input line 23.
-(pdftex.def)             Requested size: 281.85036pt x 211.39981pt.
+(pdftex.def)             Requested size: 303.53267pt x 227.66052pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<./figures/grid_search_results//bar_variable_sets_best.png, id=96, 462.528pt x 
-346.896pt>
+<./figures/grid_search_results//bar_variable_sets_best.png, id=128, 462.528pt x
+ 346.896pt>
 File: ./figures/grid_search_results//bar_variable_sets_best.png Graphic file (t
 ype png)
 <use ./figures/grid_search_results//bar_variable_sets_best.png>
 Package pdftex.def Info: ./figures/grid_search_results//bar_variable_sets_best.
 png  used on input line 33.
 (pdftex.def)             Requested size: 212.47618pt x 159.35707pt.
-<./figures/grid_search_results//bar_variable_sets_worst.png, id=97, 462.528pt x
- 346.896pt>
+<./figures/grid_search_results//bar_variable_sets_worst.png, id=129, 462.528pt 
+x 346.896pt>
 File: ./figures/grid_search_results//bar_variable_sets_worst.png Graphic file (
 type png)
 <use ./figures/grid_search_results//bar_variable_sets_worst.png>
@@ -505,70 +600,68 @@ Overfull \hbox (5.93233pt too wide) in paragraph at lines 33--38
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-) (chapter5.tex [7
+) (chapter5.tex [10
 
  <./figures/grid_search_results//average_model_performance_wide.png> <./figures
-/grid_search_results//average_model_performance_narrow.png>]
-[8 <./figures/grid_search_results//students_t-test.png> <./figures/grid_search_
-results//bar_variable_sets_best.png> <./figures/grid_search_results//bar_variab
-le_sets_worst.png>]
+/grid_search_results//average_model_performance_narrow.png>] [11 <./figures/gri
+d_search_results//students_t-test.png> <./figures/grid_search_results//bar_vari
+able_sets_best.png> <./figures/grid_search_results//bar_variable_sets_worst.png
+>]
 CHAPTER V.
-<./figures/test_results//GRU_loss_curves.png, id=109, 578.16pt x 361.35pt>
+<./figures/test_results//GRU_loss_curves.png, id=141, 578.16pt x 361.35pt>
 File: ./figures/test_results//GRU_loss_curves.png Graphic file (type png)
 <use ./figures/test_results//GRU_loss_curves.png>
 Package pdftex.def Info: ./figures/test_results//GRU_loss_curves.png  used on i
 nput line 8.
-(pdftex.def)             Requested size: 325.215pt x 203.25888pt.
-[9
+(pdftex.def)             Requested size: 429.28618pt x 268.30458pt.
+[12
 
  <./figures/test_results//GRU_loss_curves.png>]
-<./figures/test_results//GRU_daily_performance.png, id=114, 462.528pt x 346.896
+<./figures/test_results//GRU_daily_performance.png, id=146, 462.528pt x 346.896
 pt>
 File: ./figures/test_results//GRU_daily_performance.png Graphic file (type png)
 
 <use ./figures/test_results//GRU_daily_performance.png>
 Package pdftex.def Info: ./figures/test_results//GRU_daily_performance.png  use
 d on input line 17.
-(pdftex.def)             Requested size: 281.85036pt x 211.39981pt.
+(pdftex.def)             Requested size: 303.53267pt x 227.66052pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[10]
-<./figures/test_results//GRU_hourly_performance.png, id=120, 578.16pt x 361.35p
+[13]
+<./figures/test_results//GRU_hourly_performance.png, id=151, 578.16pt x 361.35p
 t>
 File: ./figures/test_results//GRU_hourly_performance.png Graphic file (type png
 )
 <use ./figures/test_results//GRU_hourly_performance.png>
 Package pdftex.def Info: ./figures/test_results//GRU_hourly_performance.png  us
 ed on input line 26.
-(pdftex.def)             Requested size: 281.85036pt x 176.15327pt.
- [11 <./figures/test_results//GRU_daily_performance.png>] [12 <./figures/test_r
+(pdftex.def)             Requested size: 429.28618pt x 268.30458pt.
+ [14 <./figures/test_results//GRU_daily_performance.png>] [15 <./figures/test_r
 esults//GRU_hourly_performance.png>]
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 34.
-<./figures/test_results//forecasts_20200803.png, id=129, 462.528pt x 346.896pt>
+<./figures/test_results//forecasts_20200803.png, id=161, 462.528pt x 346.896pt>
 
 File: ./figures/test_results//forecasts_20200803.png Graphic file (type png)
 <use ./figures/test_results//forecasts_20200803.png>
 Package pdftex.def Info: ./figures/test_results//forecasts_20200803.png  used o
 n input line 41.
 (pdftex.def)             Requested size: 212.47618pt x 159.35707pt.
-<./figures/test_results//forecasts_20200805.png, id=130, 462.528pt x 346.896pt>
+<./figures/test_results//forecasts_20200805.png, id=162, 462.528pt x 346.896pt>
 
 File: ./figures/test_results//forecasts_20200805.png Graphic file (type png)
 <use ./figures/test_results//forecasts_20200805.png>
 Package pdftex.def Info: ./figures/test_results//forecasts_20200805.png  used o
 n input line 44.
 (pdftex.def)             Requested size: 212.47618pt x 159.35707pt.
-<./figures/test_results//forecasts_20200806.png, id=131, 462.528pt x 346.896pt>
+<./figures/test_results//forecasts_20200806.png, id=163, 462.528pt x 346.896pt>
 
 File: ./figures/test_results//forecasts_20200806.png Graphic file (type png)
 <use ./figures/test_results//forecasts_20200806.png>
 Package pdftex.def Info: ./figures/test_results//forecasts_20200806.png  used o
 n input line 48.
 (pdftex.def)             Requested size: 212.47618pt x 159.35707pt.
-<./figures/test_results//forecasts_20200807.png, id=132, 462.528pt x 346.896pt>
+<./figures/test_results//forecasts_20200807.png, id=164, 462.528pt x 346.896pt>
 
 File: ./figures/test_results//forecasts_20200807.png Graphic file (type png)
 <use ./figures/test_results//forecasts_20200807.png>
@@ -585,24 +678,28 @@ Overfull \hbox (5.93233pt too wide) in paragraph at lines 41--53
  [][] 
  []
 
-[13] [14 <./figures/test_results//forecasts_20200803.png> <./figures/test_resul
+[16]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[17] [18 <./figures/test_results//forecasts_20200803.png> <./figures/test_resul
 ts//forecasts_20200805.png> <./figures/test_results//forecasts_20200806.png> <.
-/figures/test_results//forecasts_20200807.png>] [15] [16]
-<./figures/test_results//forecasts_20200808.png, id=152, 462.528pt x 346.896pt>
+/figures/test_results//forecasts_20200807.png>] [19]
+<./figures/test_results//forecasts_20200808.png, id=182, 462.528pt x 346.896pt>
 
 File: ./figures/test_results//forecasts_20200808.png Graphic file (type png)
 <use ./figures/test_results//forecasts_20200808.png>
 Package pdftex.def Info: ./figures/test_results//forecasts_20200808.png  used o
 n input line 71.
 (pdftex.def)             Requested size: 212.47618pt x 159.35707pt.
-<./figures/test_results//forecasts_20200809.png, id=153, 462.528pt x 346.896pt>
+<./figures/test_results//forecasts_20200809.png, id=183, 462.528pt x 346.896pt>
 
 File: ./figures/test_results//forecasts_20200809.png Graphic file (type png)
 <use ./figures/test_results//forecasts_20200809.png>
 Package pdftex.def Info: ./figures/test_results//forecasts_20200809.png  used o
 n input line 74.
 (pdftex.def)             Requested size: 212.47618pt x 159.35707pt.
-<./figures/test_results//forecasts_20200810.png, id=154, 462.528pt x 346.896pt>
+<./figures/test_results//forecasts_20200810.png, id=184, 462.528pt x 346.896pt>
 
 File: ./figures/test_results//forecasts_20200810.png Graphic file (type png)
 <use ./figures/test_results//forecasts_20200810.png>
@@ -614,52 +711,55 @@ Overfull \hbox (5.93233pt too wide) in paragraph at lines 71--80
  [][][] 
  []
 
-[17] [18 <./figures/test_results//forecasts_20200808.png> <./figures/test_resul
+[20]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[21] [22 <./figures/test_results//forecasts_20200808.png> <./figures/test_resul
 ts//forecasts_20200809.png> <./figures/test_results//forecasts_20200810.png>]
-[19]
-<./figures/test_results//scatter_0p5hr.png, id=167, 462.528pt x 346.896pt>
+<./figures/test_results//scatter_0p5hr.png, id=198, 462.528pt x 346.896pt>
 File: ./figures/test_results//scatter_0p5hr.png Graphic file (type png)
 <use ./figures/test_results//scatter_0p5hr.png>
 Package pdftex.def Info: ./figures/test_results//scatter_0p5hr.png  used on inp
 ut line 94.
 (pdftex.def)             Requested size: 173.44534pt x 130.08568pt.
-<./figures/test_results//scatter_1p0hr.png, id=168, 462.528pt x 346.896pt>
+<./figures/test_results//scatter_1p0hr.png, id=199, 462.528pt x 346.896pt>
 File: ./figures/test_results//scatter_1p0hr.png Graphic file (type png)
 <use ./figures/test_results//scatter_1p0hr.png>
 Package pdftex.def Info: ./figures/test_results//scatter_1p0hr.png  used on inp
 ut line 97.
 (pdftex.def)             Requested size: 173.44534pt x 130.08568pt.
-<./figures/test_results//scatter_1p5hr.png, id=169, 462.528pt x 346.896pt>
+<./figures/test_results//scatter_1p5hr.png, id=200, 462.528pt x 346.896pt>
 File: ./figures/test_results//scatter_1p5hr.png Graphic file (type png)
 <use ./figures/test_results//scatter_1p5hr.png>
 Package pdftex.def Info: ./figures/test_results//scatter_1p5hr.png  used on inp
 ut line 101.
 (pdftex.def)             Requested size: 173.44534pt x 130.08568pt.
-<./figures/test_results//scatter_2p0hr.png, id=170, 462.528pt x 346.896pt>
+<./figures/test_results//scatter_2p0hr.png, id=201, 462.528pt x 346.896pt>
 File: ./figures/test_results//scatter_2p0hr.png Graphic file (type png)
 <use ./figures/test_results//scatter_2p0hr.png>
 Package pdftex.def Info: ./figures/test_results//scatter_2p0hr.png  used on inp
 ut line 104.
 (pdftex.def)             Requested size: 173.44534pt x 130.08568pt.
-<./figures/test_results//scatter_2p5hr.png, id=171, 462.528pt x 346.896pt>
+<./figures/test_results//scatter_2p5hr.png, id=202, 462.528pt x 346.896pt>
 File: ./figures/test_results//scatter_2p5hr.png Graphic file (type png)
 <use ./figures/test_results//scatter_2p5hr.png>
 Package pdftex.def Info: ./figures/test_results//scatter_2p5hr.png  used on inp
 ut line 108.
 (pdftex.def)             Requested size: 173.44534pt x 130.08568pt.
-<./figures/test_results//scatter_3p0hr.png, id=172, 462.528pt x 346.896pt>
+<./figures/test_results//scatter_3p0hr.png, id=203, 462.528pt x 346.896pt>
 File: ./figures/test_results//scatter_3p0hr.png Graphic file (type png)
 <use ./figures/test_results//scatter_3p0hr.png>
 Package pdftex.def Info: ./figures/test_results//scatter_3p0hr.png  used on inp
 ut line 111.
 (pdftex.def)             Requested size: 173.44534pt x 130.08568pt.
-<./figures/test_results//scatter_3p5hr.png, id=173, 462.528pt x 346.896pt>
+<./figures/test_results//scatter_3p5hr.png, id=204, 462.528pt x 346.896pt>
 File: ./figures/test_results//scatter_3p5hr.png Graphic file (type png)
 <use ./figures/test_results//scatter_3p5hr.png>
 Package pdftex.def Info: ./figures/test_results//scatter_3p5hr.png  used on inp
 ut line 115.
 (pdftex.def)             Requested size: 173.44534pt x 130.08568pt.
-<./figures/test_results//scatter_4p0hr.png, id=174, 462.528pt x 346.896pt>
+<./figures/test_results//scatter_4p0hr.png, id=205, 462.528pt x 346.896pt>
 File: ./figures/test_results//scatter_4p0hr.png Graphic file (type png)
 <use ./figures/test_results//scatter_4p0hr.png>
 Package pdftex.def Info: ./figures/test_results//scatter_4p0hr.png  used on inp
@@ -669,100 +769,94 @@ ut line 118.
 
 LaTeX Warning: Float too large for page by 23.07506pt on input line 122.
 
-[20] [21 <./figures/test_results//scatter_0p5hr.png> <./figures/test_results//s
-catter_1p0hr.png> <./figures/test_results//scatter_1p5hr.png> <./figures/test_r
-esults//scatter_2p0hr.png> <./figures/test_results//scatter_2p5hr.png> <./figur
-es/test_results//scatter_3p0hr.png> <./figures/test_results//scatter_3p5hr.png>
- <./figures/test_results//scatter_4p0hr.png>] [22]
-<./figures/test_results//performance_forecast_length.png, id=193, 462.528pt x 3
+[23] [24] [25 <./figures/test_results//scatter_0p5hr.png> <./figures/test_resul
+ts//scatter_1p0hr.png> <./figures/test_results//scatter_1p5hr.png> <./figures/t
+est_results//scatter_2p0hr.png> <./figures/test_results//scatter_2p5hr.png> <./
+figures/test_results//scatter_3p0hr.png> <./figures/test_results//scatter_3p5hr
+.png> <./figures/test_results//scatter_4p0hr.png>] [26]
+<./figures/test_results//performance_forecast_length.png, id=227, 462.528pt x 3
 46.896pt>
 File: ./figures/test_results//performance_forecast_length.png Graphic file (typ
 e png)
 <use ./figures/test_results//performance_forecast_length.png>
 Package pdftex.def Info: ./figures/test_results//performance_forecast_length.pn
 g  used on input line 138.
-(pdftex.def)             Requested size: 281.85036pt x 211.39981pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[23] [24 <./figures/test_results//performance_forecast_length.png>]
-<./figures/test_results//analysis_202008091800.png, id=201, 578.16pt x 361.35pt
+(pdftex.def)             Requested size: 303.53267pt x 227.66052pt.
+ [27 <./figures/test_results//performance_forecast_length.png>]
+<./figures/test_results//analysis_202008091800.png, id=232, 578.16pt x 361.35pt
 >
 File: ./figures/test_results//analysis_202008091800.png Graphic file (type png)
 
 <use ./figures/test_results//analysis_202008091800.png>
 Package pdftex.def Info: ./figures/test_results//analysis_202008091800.png  use
 d on input line 154.
-(pdftex.def)             Requested size: 368.57965pt x 230.35895pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[25] [26 <./figures/test_results//analysis_202008091800.png>]
-<./figures/test_results//analysis_202008061400.png, id=209, 578.16pt x 361.35pt
+(pdftex.def)             Requested size: 429.28618pt x 268.30458pt.
+ [28] [29 <./figures/test_results//analysis_202008091800.png>]
+<./figures/test_results//analysis_202008061400.png, id=240, 578.16pt x 361.35pt
 >
 File: ./figures/test_results//analysis_202008061400.png Graphic file (type png)
 
 <use ./figures/test_results//analysis_202008061400.png>
 Package pdftex.def Info: ./figures/test_results//analysis_202008061400.png  use
 d on input line 165.
-(pdftex.def)             Requested size: 368.57965pt x 230.35895pt.
- [27 <./figures/test_results//analysis_202008061400.png>]
-<./figures/test_results//analysis_202008051600.png, id=214, 578.16pt x 361.35pt
+(pdftex.def)             Requested size: 429.28618pt x 268.30458pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[30] [31 <./figures/test_results//analysis_202008061400.png>]
+<./figures/test_results//analysis_202008051600.png, id=248, 578.16pt x 361.35pt
 >
 File: ./figures/test_results//analysis_202008051600.png Graphic file (type png)
 
 <use ./figures/test_results//analysis_202008051600.png>
 Package pdftex.def Info: ./figures/test_results//analysis_202008051600.png  use
 d on input line 175.
-(pdftex.def)             Requested size: 368.57965pt x 230.35895pt.
-)
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-(main.bbl [28] [29 <./figures/test_results//analysis_202008051600.png>]
+(pdftex.def)             Requested size: 429.28618pt x 268.30458pt.
+ [32 <./figures/test_results//analysis_202008051600.png>]) (main.bbl [33]
 
 LaTeX Warning: Empty `thebibliography' environment on input line 24.
 
-) [30
+) [34
 
 ]
 APPENDIX A.
-[31
+[35
 
 ]
 APPENDIX B.
-[32
+[36
 
 ] (main.aux) ) 
 Here is how much of TeX's memory you used:
- 4627 strings out of 479799
- 82376 string characters out of 2869722
- 358910 words of memory out of 3000000
- 21525 multiletter control sequences out of 15000+200000
- 540300 words of font info for 46 fonts, out of 3000000 for 9000
+ 4707 strings out of 479799
+ 85341 string characters out of 2869722
+ 363175 words of memory out of 3000000
+ 21591 multiletter control sequences out of 15000+200000
+ 540954 words of font info for 48 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 94i,12n,98p,1887b,431s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 94i,12n,98p,1877b,426s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\17405\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec
 /dpi600\tcrm1095.pk><C:/Users/17405/AppData/Local/Programs/MiKTeX/fonts/type1/p
-ublic/amsfonts/cm/cmmi10.pfb><C:/Users/17405/AppData/Local/Programs/MiKTeX/font
-s/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/17405/AppData/Local/Programs/Mi
-KTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/17405/AppData/Local/Pro
-grams/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/17405/AppData/L
-ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/17405/A
-ppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users
-/17405/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><
-C:/Users/17405/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr
-6.pfb><C:/Users/17405/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts
-/cm/cmr8.pfb><C:/Users/17405/AppData/Local/Programs/MiKTeX/fonts/type1/public/a
-msfonts/cm/cmr9.pfb><C:/Users/17405/AppData/Local/Programs/MiKTeX/fonts/type1/p
-ublic/amsfonts/cm/cmsy10.pfb><C:/Users/17405/AppData/Local/Programs/MiKTeX/font
-s/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/17405/AppData/Local/Programs/MiK
-TeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on main.pdf (41 pages, 1540562 bytes).
+ublic/amsfonts/cm/cmbx10.pfb><C:/Users/17405/AppData/Local/Programs/MiKTeX/font
+s/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/17405/AppData/Local/Programs/Mi
+KTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/17405/AppData/Local/Pr
+ograms/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/17405/AppData/
+Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/17405/
+AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/User
+s/17405/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb>
+<C:/Users/17405/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cm
+r12.pfb><C:/Users/17405/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
+ts/cm/cmr6.pfb><C:/Users/17405/AppData/Local/Programs/MiKTeX/fonts/type1/public
+/amsfonts/cm/cmr8.pfb><C:/Users/17405/AppData/Local/Programs/MiKTeX/fonts/type1
+/public/amsfonts/cm/cmr9.pfb><C:/Users/17405/AppData/Local/Programs/MiKTeX/font
+s/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/17405/AppData/Local/Programs/Mi
+KTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/17405/AppData/Local/Pro
+grams/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/17405/AppData/L
+ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on main.pdf (47 pages, 9403263 bytes).
 PDF statistics:
- 279 PDF objects out of 1000 (max. 8388607)
+ 319 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 211 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 256 words of extra memory for PDF output out of 10000 (max. 10000000)
 

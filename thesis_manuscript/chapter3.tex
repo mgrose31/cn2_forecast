@@ -2,7 +2,7 @@
 \label{ch3}
 
 
-\section{Weather Sequences}
+\section{Weather Sequences and Histograms}
 Temporal sequence plots presented in Figure \ref{fig:sequence_temporal}.
 \begin{figure}[p!]
 	\centering
@@ -31,7 +31,6 @@ Temporal sequence plots presented in Figure \ref{fig:sequence_temporal}.
 	\label{fig:sequence_temporal}
 \end{figure}
 
-Histogram sequence plots presented in Figure \ref{fig:sequence_histograms}
 \begin{figure}[p!]
 	\centering
 	\subfloat[Temperature (K)\label{fig:sequence_histograms_a}]{
@@ -59,7 +58,7 @@ Histogram sequence plots presented in Figure \ref{fig:sequence_histograms}
 	\label{fig:sequence_histograms}
 \end{figure}
 
-Forecast plots in Figure \ref{fig:forecast_sequence_histogram}
+\section{Forecast Sequence and Histogram}
 \begin{figure}[h!]
 	\centering
 	\subfloat[\label{fig:forecast_sequence_histogram_a}]{
@@ -71,4 +70,14 @@ Forecast plots in Figure \ref{fig:forecast_sequence_histogram}
 	\hfill
 	\caption{Turbulence ($C_{n}^{2}$) forecasts as a function of time and as a normalized histogram. The train, validation, and test datasets are drawn in black, blue, and red, respectively.}
 	\label{fig:forecast_sequence_histogram}
+\end{figure}
+
+\section{Window-Averaging; Sub-Sampling; Parsing Data into Sequences/Forecasts}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.99\textwidth]
+	{example_sequence_forecast.png}
+	\hfill
+	\caption{Example sequence and corresponding turbulence forecast. \textbf{NEED TO ADD WIND SPEED AND PRIOR TURBULENCE MEASUREMENTS}}
+	\label{fig:example_sequence_forecast}
 \end{figure}
