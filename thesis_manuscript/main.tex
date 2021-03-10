@@ -1,0 +1,96 @@
+\newif\ifuseudlogo
+% uncomment the following line if you want the UD logo in the title page
+\useudlogotrue
+
+%\documentclass[11pt,phd]{uddissert2019}
+%\documentclass[11pt,phdfv]{uddissert2019} % use if you have 5 committee members
+\documentclass[11pt,ms]{uddissert2019}
+\usepackage{uddissert2019-mods}
+\usepackage{graphicx}
+\usepackage{appendix}
+\usepackage{xcolor} % for coloring text
+
+\usepackage{subfig}
+\usepackage{epsfig}
+
+\graphicspath{
+	{./figures/introduction/}
+	{./figures/experimental_setup/}
+	{./figures/dataset/}
+	{./figures/grid_search_results/}
+	{./figures/test_results/}}
+
+\begin{document}
+
+\pagestyle{intropage}
+
+\authorLastFirstMiddle{Grose}{Mitchell Gene}
+\firsttitle{FORECASTING ATMOSPHERIC TURBULENCE CONDITIONS FROM PRIOR ENVIRONMENTAL PARAMETERS WITH ARTIFICIAL NEURAL NETWORKS: AN ENSEMBLE STUDY}
+\title{FORECASTING ATMOSPHERIC TURBULENCE CONDITIONS FROM PRIOR ENVIRONMENTAL PARAMETERS WITH ARTIFICIAL NEURAL NETWORKS: AN ENSEMBLE STUDY}
+% remember to put title in all capital letters
+\graduationyear{2021}%
+\graduationmonth{May}%
+\school{The School of Engineering}%
+\dept{Engineering}
+
+\advisorFirstLast{Eric J. Balster}{, Ph.D.}{Advisory Committee
+Chairman}{Associate Professor and Chair}{Electrical and Computer Engineering} %
+\Membera{Member A.}{, Ph.D.}{Committee Member}{Faculty A. Title}{Faculty A department}%
+\Memberb{Member B.}{, Ph.D.}{Committee Member}{Faculty B. Title}{Faculty B department}%
+\Memberc{Member C.}{, Ph.D.}{Committee Member}{Faculty C. Title}{Faculty C department}%
+%\Memberd{Member D.}{, Ph.D.}{Committee Member}{Faculty D. Title}{Faculty D department}%
+
+\AssocDean{Robert J. Wilkens, Ph.D., P.E.}{Associate Dean for Research and Innovation Professor}{School of Engineering}%
+\Dean{Eddy M. Rojas, Ph.D., M.A., P.E.}{Dean, School of Engineering}%
+
+\makethesistitle
+
+\disscopyright
+% use above to include a copyright page
+
+\abstract
+\input{abstract.tex}
+
+\dedication{For name of person(s) to whom you are dedicating your thesis}
+
+\acknowledgments
+\input{ack.tex}
+
+\tableofcontents
+
+
+\listoffigures
+%%
+\listoftables
+
+\pagestyle{plain}
+%Remember to put all chapter titles in CAPS
+\addtocontents{toc}{\protect\setChapterprefix{CHAPTER }} % CDM Establish CHAPTER label in table of contents
+
+\input{chapter1.tex}
+\input{chapter2.tex}
+\input{chapter3.tex}
+\input{chapter4.tex}
+\input{chapter5.tex}
+\input{chapter6.tex}
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\appendix
+
+\begin{appendices}
+	\appendix
+	\addtocontents{toc}{\protect\setChapterprefix{}} % CDM Remove labels in table of contents for Appendix sections
+	
+    \chapter{More Stuff at the End}
+
+    This is Appendix A.  Appendix A should span multiple lines so I can see if the margins are correct.  We need to ensure that we have 1.5 inches on the LHS margin.
+
+    \chapter{Even More Stuff after the End}
+
+    This is Appendix B.  Appendix B should span multiple lines so I can see if the margins are correct.  We need to ensure that we have 1.5 inches on the LHS margin.
+
+\end{appendices}
+
+\end{document}
