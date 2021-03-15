@@ -1,43 +1,39 @@
-\chapter{Problem Setup}
+\chapter{Machine Learning Model Review}
 \label{ch2}
 
-\section{Physical Experimental Setup}
-\subsection{Spatial Proximity}
-Show Google Maps screenshot of MZA office (location of weather station), Fitz Hall (location of DELTA), and Y-Tower (location of target). Overlay arrow from Fitz Hall pointing to the Y-Tower. Overlay text boxes with relevant location (LLA) information.
+\section{Fundamentals of Training and Testing}
+\begin{figure}[h!]
+	\centering
+		\includegraphics[width=0.99\textwidth]
+		{training_process.png}
+		\hfill
+		\caption{Simple example of machine learning model training .}
+		\label{fig:simple_model_training}
+\end{figure}
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.99\textwidth]
-	{DELTA_Path.png}
+	{testing_process.png}
 	\hfill
-	\caption{Fitz Hall to Y-Tower geometry. \textbf{NEED TO EXPAND MAP TO INCLUDE WEATHER STATION}}
-	\label{fig:test3}
+	\caption{Simple example of machine learning model testing.}
+	\label{fig:simple_model_testing}
 \end{figure}
 
-\begin{figure}[h!]
-	\centering
-	\subfloat[Telescope setup\label{fig:test_a}]{
-		\includegraphics[width=0.49\textwidth, angle=-90]
-		{DELTA_setup1.jpg}
-	}
-	\subfloat[Wide view of target\label{fig:test_b}]{
-		\includegraphics[width=0.49\textwidth, angle=-90]
-		{DELTA_setup3.jpg}
-	}
-	\hfill
-	\subfloat[View of target through the DELTA telescope\label{fig:test_c}]{
-		\includegraphics[width=0.49\textwidth]
-		{Y_Tower.jpg}
-	}
-	\hfill
-	\caption{DELTA setup for collection of minute-by-minute $C_{n}^{2}$ measurements.}
-	\label{fig:test}
-\end{figure}
+%\begin{figure}[h!]
+%	\centering
+%	\subfloat[Training\label{fig:simple_model_training_testing_a}]{
+%		\includegraphics[width=0.99\textwidth]
+%		{training_process.png}
+%	}
+%	\hfill
+%	\subfloat[Testing\label{fig:simple_model_training_testing_b}]{
+%		\includegraphics[width=0.99\textwidth]
+%		{testing_process.png}
+%	}
+%	\hfill
+%	\caption{Simple example of machine learning model training and testing.}
+%	\label{fig:simple_model_training_testing}
+%\end{figure}
 
-\section{Modeling Experimental Setup}
-Finding best model to forecast 4 hours of turbulence conditions from prior environmental measurements.
-\subsection{Data Processing (Ch. 3)}
-\subsection{Grid Search (Ch. 4)}
-Architectures, sequence length, number of layers, number of nodes per layer.
-\subsubsection{Statistical Analysis of Grid Search}
-\subsection{Application of ``Best" Model to Test Dataset (Ch. 5)}
+\section{MLP and RNN Architectures}
