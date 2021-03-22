@@ -44,17 +44,95 @@ on Circuits and Systems}}
 % BELOW ARE A FEW JUST TO GET YOU STARTED.
 
 %*************************************************************
+% Turbulence
+%*************************************************************
+@Book{tyson2011principles,
+ author = {Tyson, Robert},
+ title = {Principles of Adaptive Pptics},
+ publisher = {CRC Press},
+ year = {2011},
+ address = {Boca Raton, FL},
+ isbn = {1439808589}
+ }
+
+@article{Valley:80,
+author = {George C. Valley},
+journal = {Appl. Opt.},
+keywords = {Adaptive optics; Atmospheric turbulence; Imaging systems; Modulation transfer function; Optical systems; Spatial frequency},
+number = {4},
+pages = {574--577},
+publisher = {OSA},
+title = {Isoplanatic degradation of tilt correction and short-term imaging systems},
+volume = {19},
+month = {Feb},
+year = {1980},
+url = {http://ao.osa.org/abstract.cfm?URI=ao-19-4-574},
+doi = {10.1364/AO.19.000574},
+}
+
+@article{Jellen:20,
+author = {Christopher Jellen and John Burkhardt and Cody Brownell and Charles Nelson},
+journal = {Appl. Opt.},
+keywords = {Atmospheric turbulence; Electromagnetic beams; Laser beam propagation; Laser weapons; Optical turbulence; Wavefronts},
+number = {21},
+pages = {6379--6389},
+publisher = {OSA},
+title = {Machine learning informed predictor importance measures of environmental parameters in maritime optical turbulence},
+volume = {59},
+month = {Jul},
+year = {2020},
+url = {http://ao.osa.org/abstract.cfm?URI=ao-59-21-6379},
+doi = {10.1364/AO.397325},
+}
+
+@article{Su:20,
+author = {Changdong Su and Xiaoqing Wu and Tao Luo and Su Wu and Chun Qing},
+journal = {Appl. Opt.},
+keywords = {Atmospheric turbulence; Laser communications; Neural networks; Optical turbulence; Refractive index; Turbulence effects},
+number = {12},
+pages = {3699--3705},
+publisher = {OSA},
+title = {Adaptive niche-genetic algorithm based on backpropagation neural network for atmospheric turbulence forecasting},
+volume = {59},
+month = {Apr},
+year = {2020},
+url = {http://ao.osa.org/abstract.cfm?URI=ao-59-12-3699},
+doi = {10.1364/AO.388959},
+}
+
+@inproceedings{Wang:2014,
+author = {Yao Wang and Sukanta Basu},
+title = {{Estimation of optical turbulence in the atmospheric surface layer from routine meteorological observations:
+an artificial neural network approach}},
+volume = {9224},
+booktitle = {Laser Communication and Propagation through the Atmosphere and Oceans III},
+editor = {Alexander M. J. van Eijk and Christopher C. Davis and Stephen M. Hammel},
+organization = {International Society for Optics and Photonics},
+publisher = {SPIE},
+pages = {300 -- 307},
+keywords = {optical turbulence , artificial neural network, mesoscale models, similarity theory, atmospheric surface layer, regression models, similarity theories},
+year = {2014},
+doi = {10.1117/12.2063168},
+URL = {https://doi.org/10.1117/12.2063168}
+}
+
+
+%*************************************************************
 % Dataset
 %*************************************************************
 @misc{davis,
   title = {{Vantage Pro2 Plus Technical Specs}},
-  howpublished = {\url{https://www.davisinstruments.com/vantage-pro2/tech-specs/}},
-  note = {Accessed: 2021-03-14}
+  url = {\url{https://www.davisinstruments.com/vantage-pro2/tech-specs/}},
 }
 
-@Article{         harris2020array,
- title         = {Array programming with {NumPy}},
- author        = {Charles R. Harris and K. Jarrod Millman and St{'{e}}fan J.
+ @misc{mzaassociatescorporation,
+  title = {{Atmospheric Characterization Devices}},
+  url = {\url{https://www.mza.com/products.php?page=productsAtmosChar}},
+ } 
+
+@Article{ harris2020array,
+ title = {Array programming with {NumPy}},
+ author  = {Charles R. Harris and K. Jarrod Millman and St{'{e}}fan J.
                  van der Walt and Ralf Gommers and Pauli Virtanen and David
                  Cournapeau and Eric Wieser and Julian Taylor and Sebastian
                  Berg and Nathaniel J. Smith and Robert Kern and Matti Picus
@@ -64,21 +142,32 @@ on Circuits and Systems}}
                  G{'{e}}rard-Marchant and Kevin Sheppard and Tyler Reddy and
                  Warren Weckesser and Hameer Abbasi and Christoph Gohlke and
                  Travis E. Oliphant},
- year          = {2020},
- month         = sep,
- journal       = {Nature},
- volume        = {585},
- number        = {7825},
- pages         = {357--362},
- doi           = {10.1038/s41586-020-2649-2},
- publisher     = {Springer Science and Business Media {LLC}},
- url           = {https://doi.org/10.1038/s41586-020-2649-2}
+ year = {2020},
+ month = sep,
+ journal = {Nature},
+ volume = {585},
+ number = {7825},
+ pages  = {357--362},
+ doi = {10.1038/s41586-020-2649-2},
+ publisher = {Springer Science and Business Media {LLC}},
+ url = {https://doi.org/10.1038/s41586-020-2649-2}
 }
 	
 
 %*************************************************************
 % Model Training
 %*************************************************************
+@incollection{NEURIPS2019_9015,
+	title = {PyTorch: An Imperative Style, High-Performance Deep Learning Library},
+	author = {Paszke, Adam and Gross, Sam and Massa, Francisco and Lerer, Adam and Bradbury, James and Chanan, Gregory and Killeen, Trevor and Lin, Zeming and Gimelshein, Natalia and Antiga, Luca and Desmaison, Alban and Kopf, Andreas and Yang, Edward and DeVito, Zachary and Raison, Martin and Tejani, Alykhan and Chilamkurthy, Sasank and Steiner, Benoit and Fang, Lu and Bai, Junjie and Chintala, Soumith},
+	booktitle = {Advances in Neural Information Processing Systems 32},
+	editor = {H. Wallach and H. Larochelle and A. Beygelzimer and F. d\textquotesingle Alch\'{e}-Buc and E. Fox and R. Garnett},
+	pages = {8024--8035},
+	year = {2019},
+	publisher = {Curran Associates, Inc.},
+	url = {http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf}
+}
+
 @misc{kingma2017adam,
       title={Adam: A Method for Stochastic Optimization}, 
       author={Diederik P. Kingma and Jimmy Ba},

@@ -8,7 +8,7 @@ Data preprocessing is an essential step in producing an effective machine learni
 The entire dataset uses time correlated weather and $C_{n}^{2}$ measurements. The weather measurements are from a Davis Instruments Vantage Pro2 Plus weather station \cite{davis} deployed in front of an office building from 12 April 2020 through 10 August 2020. The weather variables recorded by the station and considered in this work are temperature, pressure, relative humidity, wind speed, and solar irradiance. Table \ref{tab:weather_station} lists the technical specs of the weather station including the measurement resolution, accuracy, and archive interval.
 \begin{table}[h!]
 	\begin{center}
-		\caption{Davis Instruments Vantage Pro2 Plus Weather Station Measurements \cite{davis}}
+		\caption{Davis Instruments Vantage Pro2 Plus Weather Station Measurements}
 		\label{tab:weather_station}
 		\begin{tabular}{||l|c|c|c||}
 			\hline
@@ -42,7 +42,7 @@ The location of the weather station is on a storm drain surrounded by grass, abo
 
 \subsection{Turbulence ($C_{n}^{2}$) Measurements}
 \label{sec:summary_tub_meas}
-The other component of the dataset is minute-by-minute measurements of $C_{n}^{2}$ as measured by an MZA DELTA (\underline{Del}ayed \underline{T}ilt \underline{A}nisoplanatism) turbulence profiler. The DELTA is a passive imaging sensor that uses a monochrome camera attached to a 6-inch telescope with 1.5 m focal length. The DELTA calculates differential jitter as a function of angular separation to measure $C_{n}^{2}$ by collecting 300 frames (images) of a target of opportunity at 100 Hz. It's desirable for the target to have  high contrast features like edges and corners throughout the image to make measurements of differential jitter at variety of separations. Separations of 0.5 to 20 aperture diameters are recommended, so for a 6" telescope aperture the smallest feature separation would be 3" and largest 10' apart in the target plane.
+The other component of the dataset is minute-by-minute measurements of $C_{n}^{2}$ as measured by an MZA DELTA (\underline{Del}ayed \underline{T}ilt \underline{A}nisoplanatism) turbulence profiler \cite{mzaassociatescorporation}. The DELTA is a passive imaging sensor that uses a monochrome camera attached to a 6-inch telescope with 1.5 m focal length. The DELTA calculates differential jitter as a function of angular separation to measure $C_{n}^{2}$ by collecting 300 frames (images) of a target of opportunity at 100 Hz. It's desirable for the target to have  high contrast features like edges and corners throughout the image to make measurements of differential jitter at variety of separations. Separations of 0.5 to 20 aperture diameters are recommended, so for a 6" telescope aperture the smallest feature separation would be 3" and largest 10' apart in the target plane.
 
 The $C_{n}^{2}$ measurements in this work span from 12 April 2020 through 10 August 2020. During this time the DELTA was deployed on the 5th floor of Fitz Hall at University of Dayton in Dayton, Ohio. Figure \ref{fig:setup_DELTA_a} is a picture of the DELTA's deployment in Fitz Hall.
 \begin{figure}[p!]
@@ -136,24 +136,25 @@ After window averaging both sets of measurements, each is linearly interpolated 
 \subsubsection{Nighttime $C_{n}^{2}$ as Input Sequences}
 A limitation of the experimental setup described in Section \ref{sec:summary_tub_meas} is the passive imager DELTA lacking an illuminated target. As a result, $C_{n}^{2}$ measurements before 06:00 and after 22:00 are entirely absent. Without a method to fill the nighttime $C_{n}^{2}$ this modeling technique is unable to incorporate prior $C_{n}^{2}$ measurements as an input variable to the model. It's hypothesized that including prior $C_{n}^{2}$ as an input will improve modeling performance as it will provide the model information about the trend of $C_{n}^{2}$ leading up to the forecast. The model is expected to learn that it's first forecast timestamp should follow the leading trend. If results indicate the inclusion of prior $C_{n}^{2}$ improves forecasting, then a technique for filling missing nighttime data is necessary for real-world applications where a target may not be illuminated during nighttime but morning forecasts are still required.
 
-The data after filtering, window averaging, and interpolating as described in Section \ref{sec:filt_winavg_interp} is the basis of the nighttime $C_{n}^{2}$ filling. The array of $C_{n}^{2}$ measurements is copied to another array. Nighttime measurements are classified as an index where the measurement is before 08:00 \emph{or} after 20:00, \emph{and} whose $C_{n}^{2}$ measurement already labeled as NaN. This technique generously includes times from late evening into early morning, but only those which are already missing measurements. There are 2065 of 5809 (35.5\%) $C_{n}^{2}$ measurements which satisfy these conditions. Without this filling, over a third of the dataset would be removed from consideration for further processing. Of the 2065 filled measurements, 124 fall into early morning and late evening at 07:00 and 21:00, illustrating the need to be generous with the classification of ``nighttime." The effect of missing data is further amplified when complete sequences of data must be formatted in next steps.
+The data after filtering, window averaging, and interpolating as described in Section \ref{sec:filt_winavg_interp} is the basis of the nighttime $C_{n}^{2}$ filling. Nighttime measurements are classified as an index where the measurement is before 08:00 or after 20:00, and whose $C_{n}^{2}$ measurement already labeled as NaN. This technique generously includes times from late evening into early morning, but only those which are already missing measurements. Of the 5809 data points, 2065 (35.5\%) satisfy these conditions. Without this filling, over a third of the dataset would be removed from consideration for further processing. Of the 2065 filled measurements, 124 fall into early morning and late evening at 07:00 and 21:00, illustrating the need to be generous with the classification of ``nighttime." The effect of missing data is further amplified when complete sequences of data must be formatted in next steps.
 
 The average of the $C_{n}^{2}$ dataset is approximately $9 \times 10^{-16} (m^{-2/3})$ so rounding sets the $C_{n}^{2}$ fill-value for the qualifying indices to a constant $1 \times 10^{-15} (m^{-2/3})$. Every input sequence used for training will have a constant $C_{n}^{2}$ and solar irradiance measurement of $0 W/m^{2}$ during nighttime, thus it's expected the model will learn the difference between a constant sequence $C_{n}^{2}$ and a sequence of varying $C_{n}^{2}$ leading up to the forecast.
 
 \subsubsection{Formatting into Sequences and Forecasts}
-%A method for filling daytime $C_{n}^{2}$ data (similar to the filling of nighttime data) is not part of this work but should be developed in future work.
-\textbf{STILL TO WRITE:}
-\begin{enumerate}
-	\item Perform sequence/forecast formatting for 4 hour (8 timesteps), 8 hour (16 timesteps), 12 hour (24 timesteps), and 16 hour (32 timesteps)
-	\begin{enumerate}
-		\item Loop through the entire dataset one timestamp at a time
-		\item The sequence is everything (temp, press, rh, wind speed, solar irradiance, cn2 (with night)) up to the desired sequence length
-		\item The forecast is the measured cn2 for 4 hours (8 timesteps) immediately after last sequence timestamp
-	\end{enumerate}
-	\item Only keep the sequence/forecast sets that have common forecasts across all input sequence lengths
-\end{enumerate}
+The next step in the data processing is to format into input sequences and output forecasts. As part of the grid search described in Section \ref{sec:grid_search_methodology}, multiple input sequence lengths are formatted to investigate the amount of prior weather and $C_{n}^{2}$ measurements to most effectively forecast future $C_{n}^{2}$ conditions. The forecast length of 4 hours (eight 30-minute time steps) is held constant for every input sequence length. Sets of sequences and forecasts are formatted for input sequence lengths of 4 hours (8 time steps), 8 hours (16 time steps), 12 hours (24 time steps) and 16 hours (32 time steps). The logic of the formatting follows.
 
-\textbf{TALK ABOUT WEATHER TEMPORAL PLOTS AND HISTOGRAMS}
+Loop through the entire formatted dataset one timestamp at a time. The sequence is every input variable (temperature, pressure, relative humidity, wind speed, solar irradiance, and nighttime filled $C_{n}^{2}$) up to the desired sequence length. For example with a 4 hour sequence length, the sequence is the first 8 timestamps. Then, the forecast is the measured $C_{n}^{2}$ for the next 4 hours (8 timestamps) immediately following the last timestamp in the input sequence. If any part of the input sequence or output forecast contains a NaN then the sequence/forecast set is not kept. As a result of this filtering, a single NaN can cause many sequence/forecast sets to be removed because they're filtered regardless of how many NaNs are in the sequence/forecast and their location. This process loops through the entire dataset until the last timestamp of the forecast is beyond the last timestamp of the dataset. This process is repeated for each of the desired sequence lengths: 4 hours, 8 hours, 12 hours, and 16 hours. Once each is formatted, only the sequence/forecasts pairs common to all sequence lengths are kept to maintain consistency in training, validating, and testing. A total of 1255 sequence/forecast pairs are created for each of the sequence lengths.
+
+\subsection{Final Data Preparations for Modeling}
+
+\subsubsection{Parse Data into Train, Validation, and Test Sets}
+Proper parameter search to find the best model requires an unbiased evaluation of the models trained during the search. Once a model and parameters are selected, the model must be evaluated again without bias to form conclusions about the model's capability. To achieve this, the formatted dataset must be broken into three parts: train, validation, and test datasets. The ensemble of models for the parameter search are trained exclusively with the train dataset. The evaluation of the parameter search models is based on validation dataset performance. The best model as evaluated on the validation dataset is trained on the train and validation datasets concatenated together, then applied to the test dataset for a final evaluation.
+
+Modeling future $C_{n}^{2}$ conditions from prior environmental measurements is dependent on the time of day and year due to daily and seasonal weather fluctuations. This feature is amplified to a significant challenge in the context of a real-world application of this problem: forecasting $C_{n}^{2}$ conditions days or weeks beyond the last day of training examples. In this scenario the model is tasked with extrapolating forecasts given input weather conditions that are not representative of the train dataset. The input conditions could be unique in their temporal evolution or the measurements are beyond the dynamic range of the training data. An example of significant model extrapolation that could lead to poor performance is training a model on data from summertime then performing inference on data from wintertime.
+
+As stated above, both the weather and $C_{n}^{2}$ measurements for this work range from 12 April 2020 through 10 August 2020, springtime through summertime. Following the timeline of model training and deployment, the train, validation, and test datasets are parsed from the entire dataset in the order listed. The ensemble of models for the parameter search is trained on the train dataset which temporally spans from the beginning of the data to a selected endpoint. The models are evaluated on the validation dataset which temporally spans from immediately after the train dataset endpoint to another selected endpoint. The train and validation datasets are concatenated and applied to a test dataset which starts immediately after the validation dataset endpoint.
+
+The train, validation, and test datasets are selected on two criteria in this work. The first is the real-world scenario of deploying sensors for 1-2 months before an experiment where forecast $C_{n}^{2}$ conditions are relevant. Experiments of this nature are often scheduled a many months in advance at minimum so sensor deployment 1-2 months before is realistic. This deployment time increases the range of unique weather and $C_{n}^{2}$ conditions for model training examples before inference on experiment days. The second criteria is bounding the dataset to summertime to avoid model extrapolation. This scenario idealizes the model development and evaluation since evolution of weather conditions is an inherent problem, but analysis of significant model extrapolation is not within the scope of this work. Obeying this criteria, the full dataset for training through testing spans 01 June 2020 through 10 August 2020. Figure \ref{fig:sequence_temporal} illustrates the input sequence variables as a function of local time for the selected dataset.
 \label{sec:wx_seq_hist}
 \begin{figure}[p!]
 	\centering
@@ -181,7 +182,17 @@ The average of the $C_{n}^{2}$ dataset is approximately $9 \times 10^{-16} (m^{-
 	\caption{Sequence data as a function of time, parsed by train, validation, and test datasets drawn in black, blue, and red, respectively.}
 	\label{fig:sequence_temporal}
 \end{figure}
+Temperature, pressure, relative humidity, wind speed, solar irradiance, and nighttime-filled $C_{n}^{2}$ are in Figures \ref{fig:sequence_temporal_a} - \ref{fig:sequence_temporal_f}, respectively. The plotted measurements are after the data processing described above, so they're at 30-minute intervals after filtering, window averaging and interpolating. Furthermore in each plot, the train, validation, and test datasets are plotted with black, blue, and red markers, respectively. The train dataset spans from 01 June through 17 July. The validation dataset spans from 18 July through 01 August. Finally, the test dataset spans from 02 - 10 August. Of the 1255 sequence/forecast pairs, 933 (74.3\%) are in the train dataset, 174 (13.9\%) in the validation dataset, and 148 (11.8\%) in the test dataset.
 
+The measurements in Figure \ref{fig:sequence_temporal} illustrate many interesting features. First for temperature in Figure \ref{fig:sequence_temporal_a}, the positive result of only using data from June through August is shown. Across the entire dataset, except for the very first day, the temperature measurements are within about 20 Kelvin. Further, the validation dataset (blue) is a great representation of the train dataset (black). The test dataset (red) has a few cold days in the beginning, but then warms up again. This cold snap is not ideal, but is well within the dynamic range of the train and validation datasets. Pressure in Figure \ref{fig:sequence_temporal_b} shows that long, large scale measurements are made in June but in July and August the measurements are on a shorter scale. The validation and test pressure datasets are well within the dynamic range of the train dataset, but do not illustrate clearly similar trends.
+
+Relative humidity in Figure \ref{fig:sequence_temporal_c} is a very stable weather measurement across the train, validation, and test datasets. The measurements never drop below 30\%, and the validation and test datasets are within the dynamic range of the train dataset. The oscillatory nature of relative humidity is shown in Figure \ref{fig:sequence_temporal_c} and appears consistent between the three datasets. Wind speed in Figure \ref{fig:sequence_temporal_d} is not a stable measurement. An oscillatory nature is not apparent, and wind speed is a significant driver of weather events as shown by the spikes in measurements, especially in the train dataset. Commonality between the three datasets in Figure \ref{fig:sequence_temporal_d} are not clearly extracted.
+
+Solar irradiance in Figure \ref{fig:sequence_temporal_e} is another stable weather measurement across the three datasets. The model is expected to learn the temporal aspect of solar irradiance, i.e., a measurement of 0 (zero) indicates nighttime, and also the variation from a standard diurnal trend is due to cloud conditions which is typically associated with $C_{n}^{2}$ conditions which also deviate from a standard diurnal trend. Solar irradiance is directly impacted by the seasonal weather change (Earth's axial tilt). The highest solar irradiance measurements for a day are in summertime, specifically around the summer solstice. The highest measurement of the day gradually decreases from the summer solstice to a minimum around the winter solstice. This effect is not clearly shown in Figure \ref{fig:sequence_temporal_e} since only summertime is considered.
+
+Sequence $C_{n}^{2}$ in Figure \ref{fig:sequence_temporal_f} illustrates stability and the impact of nighttime filling with $1 \times 10^{-15} (m^{-2/3})$. First, the test and validation datasets are strongly representative of the train dataset. Besides a few instances in the whole dataset, the maximum $C_{n}^{2}$ does not increase above $3 \times 10^{-15} (m^{-2/3})$. Daily oscillation of $C_{n}^{2}$ is apparent in Figure \ref{fig:sequence_temporal_f} and is the standard diurnal trend. The low-strength $C_{n}^{2}$ conditions are much more variable than high-strength conditions. There are several examples of $C_{n}^{2}$ weather than $1 \times 10^{-16} (m^{-2/3})$ but they are spread through the entire dataset. These events are associated with particularly strong evening neutral events. The line of markers at $1 \times 10^{-15} (m^{-2/3})$ in Figure \ref{fig:sequence_temporal_f} is the nighttime padding. These padded measurements are strongly correlated with the $0 W/m^{2}$ solar irradiance measurements in Figure \ref{fig:sequence_temporal_e}.
+
+The relationship of the train, validation, and test datasets is further shown in Figure \ref{fig:sequence_histograms} which plots probability densities of each input sequence variable. Temperature, pressure, relative humidity, wind speed, solar irradiance, and nighttime filled $C_{n}^{2}$ are plotted in Figures \ref{fig:sequence_histograms_a} through \ref{fig:sequence_histograms_f}, respectively. Similarly to the temporal plots, the black bars in Figure \ref{fig:sequence_histograms} represent the train dataset, blue bars the validation dataset, and red bars the test dataset.
 \begin{figure}[p!]
 	\centering
 	\subfloat[Temperature (K)\label{fig:sequence_histograms_a}]{
@@ -201,14 +212,28 @@ The average of the $C_{n}^{2}$ dataset is approximately $9 \times 10^{-16} (m^{-
 	\subfloat[Solar Irradiance\label{fig:sequence_histograms_e}]{
 		\includegraphics[width=0.49\textwidth]{hist_sequence_solar_irr.png}
 	}
-	\subfloat[$C_{n}^{2}$ ($m^{-2/3}$)\label{fig:sequence_histograms_f}]{
+	\subfloat[Nighttime-filled $log_{10}(C_{n}^{2}$)\label{fig:sequence_histograms_f}]{
 		\includegraphics[width=0.49\textwidth]{hist_sequence_cn2.png}
 	}
 	\hfill
 	\caption{Sequence data in normalized histograms, parsed by the train, validation, and test datasets drawn in black, blue, and red, respectively.}
 	\label{fig:sequence_histograms}
 \end{figure}
+The bars in each plot of Figure \ref{fig:sequence_histograms} represent how the \emph{distribution} of the three datasets relate to each other. They also explicitly show how the dynamic range of the validation and test datasets relate to the dynamic range of the train dataset.
 
+Temperature in Figure \ref{fig:sequence_histograms_a} shows that the distribution of the validation dataset is near the high-temperature portion of the train dataset since the blue bars are to the right of the plot. There are even blue bars at the very high temperatures where there are no black bars which is indicative that there are measurements in the validation dataset which are hotter than anything in the train dataset. This is an example where the model is forced to extrapolate given input measurements its never encountered in training. The test dataset (red bars) is at the lower end (left side) of the temperature distributions indicative that colder temperatures are part of the test measurements. These low temperature measurements are still within the bounds of the train dataset dynamic range since there are black bars to the far left of Figure \ref{fig:sequence_histograms_a}. The features of these distributions are consistent with the features noted in the temporal plot in Figure \ref{fig:sequence_temporal_a}.
+
+Pressure in Figure \ref{fig:sequence_histograms_b} shows that the temperature distribution is most populated around 98,500 Pa and looks similar to a Gaussian distribution. The validation dataset is mostly distributed around the center of the train distribution, an encouraging feature. The test dataset is similarly distributed but a scale factor higher around 99,000 Pa. There is also a significant amount of validation dataset pressure measurements around this value.
+
+Relative humidity in Figure \ref{fig:sequence_histograms_c} illustrates the stability between the three datasets first described above. The distribution of the three bar sets are very similar in shape and magnitude. The spike in probability just below 100\% and the slight rise around 50\% is characteristic of all three datasets. The distribution between is likewise very similar. Figure \ref{fig:sequence_histograms_c} illustrates an ideal case for the datasets to be highly representative of each other.
+
+Wind speed in Figure \ref{fig:sequence_histograms_d} is the first histogram to show comparison that is more encouraging than the temporal plots in Figure \ref{fig:sequence_temporal}. The shape of the three distributions in Figure \ref{fig:sequence_histograms_d} are very similar from wind speeds of 0 m/s to about 2 m/s. The spike in measurements at 0 m/s is highly consistent among the three distributions. The sharp drop off back to another increase around 1 m/s, and the gradual decline in probability from 1 m/s to 2 m/s is also consistent. The validation distribution continues to follow the train distribution beyond 2 m/s, but the test measurements become far more sparse. Figure \ref{fig:sequence_histograms_d} indicates that below 2 m/s the validation and test distributions are highly representative of each other. However, the temporal trends of wind speed are most relevant to this problem and that is not illustrated in the histogram. As stated earlier, the temporal trends in wind speed  are not clear in Figure \ref{fig:sequence_temporal_d}. The validation distribution is within the train distribution, and the test distribution even more so.
+
+The solar irradiance distributions in Figure \ref{fig:sequence_histograms_e} are highly representative of each other. The spike in probability density at $0 W/m^{2}$ is nearly identical across the three distributions. Furthermore, the shape of the distributions up to $1000 W/m^{2}$ are also very similar. Some gaps exist in the test dataset, but the general distribution is representative. Most importantly, the validation and test distributions are within the dynamic range of the train distribution.
+
+Finally, nighttime-filled $log_{10}(C_{n}^{2})$ in Figure \ref{fig:sequence_histograms_f} again illustrates very similar distributions between the three datasets. For the majority of the measurements from about -15.75 through -14.5 the distributions are nearly identical. The spike in probability at -15 is due to the nighttime filling. The dynamic range of the validation and test datasets are mostly well within the bounds of the train dataset. Generally, the relationship of the distributions in Figure \ref{fig:sequence_histograms_f} is an ideal scenario.
+
+The other part of the sequence/forecast pair is the forecasts. Figure \ref{fig:forecast_sequence_histogram} illustrates the temporal and histogram plots in Figures \ref{fig:forecast_sequence_histogram_a} and \ref{fig:forecast_sequence_histogram_b}. These plots are nearly identical to input sequence $C_{n}^{2}$ Figures \ref{fig:sequence_temporal_f} and \ref{fig:sequence_histograms_f} with the primary difference being the lack of nighttime measurement filling at $1 \times 10^{-15} (m^{-2/3})$.
 \begin{figure}[h!]
 	\centering
 	\subfloat[\label{fig:forecast_sequence_histogram_a}]{
@@ -221,15 +246,30 @@ The average of the $C_{n}^{2}$ dataset is approximately $9 \times 10^{-16} (m^{-
 	\caption{Turbulence ($C_{n}^{2}$) forecasts as a function of time and as a normalized histogram. The train, validation, and test datasets are drawn in black, blue, and red, respectively.}
 	\label{fig:forecast_sequence_histogram}
 \end{figure}
+This is shown as the missing line of markers in Figure \ref{fig:forecast_sequence_histogram_a} and the missing spike in Figure \ref{fig:forecast_sequence_histogram_b}. The three datasets are very similar both temporally and in their distributions, again a highly desirable quality.  An interesting feature about the three datasets in Figure \ref{fig:forecast_sequence_histogram_a} is that the validation dataset has a measurement above $3 \times 10^{-15} (m^{-2/3})$ but the test dataset does not. Furthermore the validation dataset does not have any measurements weaker than $1 \times 10^{-16} (m^{-2/3})$ but the test dataset has two. The histogram in Figure \ref{fig:forecast_sequence_histogram_b} reflects this. These features are the most significant difference between the three datasets and potentially could impact the parameter selection process and final model evaluation. The parameter selection process is evaluated on a dataset which does not have any extremely deep $C_{n}^{2}$ events. Therefore the best model could be a model which does not learn to handle these deep neutral events at all which will result in poor performance on the deep neutral event in the test dataset. Furthermore, the validation dataset has an event of abnormally strong $C_{n}^{2}$. This could also lead the best model to handle these events well but will not be reflected in the final model evaluation since an event of this sort is not in the test dataset.
 
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.99\textwidth]
-	{example_sequence_forecast.png}
-	\hfill
-	\caption{Example sequence and corresponding turbulence forecast. \textbf{NEED TO ADD WIND SPEED AND PRIOR TURBULENCE MEASUREMENTS}}
-	\label{fig:example_sequence_forecast}
-\end{figure}
+Overall, the sequences and forecasts presented in Figures \ref{fig:sequence_temporal}, \ref{fig:sequence_histograms}, and \ref{fig:forecast_sequence_histogram} show that the train, validation, and test datasets are strong representations of each other, and there are no significant changes in weather patterns on a day-to-day and seasonal basis. Also, a few measurements of temperature is the only instance of a validation or test measurement being beyond the dynamic range of the train dataset. This small outlier does not propagate to the test dataset because the final model is trained on the combination of train and validation datasets. These are highly desirable characteristics for a machine learning study.
 
-\subsection{Final Data Preparations for Modeling}
-Normalize data to range between 0 and 1
+%\begin{figure}[h!]
+%	\centering
+%	\includegraphics[width=0.99\textwidth]
+%	{example_sequence_forecast.png}
+%	\hfill
+%	\caption{Example sequence and corresponding turbulence forecast. \textbf{NEED TO ADD WIND SPEED AND PRIOR TURBULENCE MEASUREMENTS}}
+%	\label{fig:example_sequence_forecast}
+%\end{figure}
+
+\subsubsection{Data Normalization}
+With the sequence/forecast pairs for training, validation, and testing, the final step in data processing is to normalize the data for training and inference. The normalization parameters are derived from the train dataset, but are applied to the train, validation, and test datasets. In this work each input variable and output $C_{n}^{2}$ from the train dataset are min-max ranged between 0 and 1 using
+\begin{equation} \label{eq:normalize_data}
+	\hat{x} = \frac{x - x_{min}}{x_{max} - x_{min}},
+\end{equation}
+where $x$ is the variable considered, $x_{min}$ is the minimum of $x$, $x_{max}$ is the maximum of $x$, and $\hat{x}$ is the normalized variable. To ensure stability, data normalization for $C_{n}^{2}$ is applied to the $log_{10}(C_{n}^{2})$ since values associated with turbulence are most often smaller than $1 \times 10^{-12} (m^{-2/3})$. The normalization parameters $x_{max}$ and $x_{min}$ are saved then Equation \ref{eq:normalize_data} is applied to the validation and test datasets. Any measurements outside of $x_{max}$ or $x_{min}$ will normalize to beyond 0 and 1.
+
+Throughout this work evaluation of model performance is done in $log_{10}(C_{n}^{2})$ space so model outputs must be unnormalized by
+\begin{equation} \label{eq:unnormalize_data}
+	x = \hat{x} \cdot \left(x_{max} - x_{min}\right) + x_{min}
+\end{equation}
+and compared with the unnormalized measurement $C_{n}^{2}$ forecasts.
+
+\section{Chapter Summary?}
