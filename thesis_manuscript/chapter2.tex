@@ -57,10 +57,10 @@ For each element in the input sequence, each layer computes the following functi
 \begin{align}
 	r_{t} &= \sigma\left(W_{ir}x_{t} + b_{ir} + W_{hr}h_{\left(t-1\right)} + b_{hr}\right) \label{eq:GRU1} \\
 	z_{t} &= \sigma\left(W_{iz}x_{t} + b_{iz} + W_{hz}h_{\left(t-1\right)} + b_{hz}\right) \label{eq:GRU2} \\
-	n_{t} &= \tanh\left(W_{in}x_{t} + b_{in} + r_{t} \cdot \left(W_{hn}h_{\left(t-1\right)} b_{hn}\right)\right) \label{eq:GRU3} \\
-	h_{t} &= \left(1 - z_{t}\right) \cdot n_{t} + z_{t} \cdot h_{\left(t-1\right)} \label{eq:GRU4}
+	n_{t} &= \tanh\left(W_{in}x_{t} + b_{in} + r_{t} \odot \left(W_{hn}h_{\left(t-1\right)} b_{hn}\right)\right) \label{eq:GRU3} \\
+	h_{t} &= \left(1 - z_{t}\right) \odot n_{t} + z_{t} \odot h_{\left(t-1\right)} \label{eq:GRU4}
 \end{align}
-where $h_{t}$ is the hidden state at time $t$, $x_{t}$ is the input at time $t$, $h_{\left(t-1\right)}$ is the hidden state of the layer at time $t-1$ or the initial hidden state at time 0 (zero), and $r_{t}$, $z_{t}$, and $n_{t}$ are the reset, update, and new gates, respectively. $\sigma$ is the sigmoid function, and $\cdot$ is the Hadamard (element-wise) product. Equations \ref{eq:GRU1}, \ref{eq:GRU2}, \ref{eq:GRU3}, \ref{eq:GRU4}.
+where $h_{t}$ is the hidden state at time $t$, $x_{t}$ is the input at time $t$, $h_{\left(t-1\right)}$ is the hidden state of the layer at time $t-1$ or the initial hidden state at time 0 (zero), and $r_{t}$, $z_{t}$, and $n_{t}$ are the reset, update, and new gates, respectively. $\sigma$ is the sigmoid function, and $\odot$ is the Hadamard (element-wise) product. Equations \ref{eq:GRU1}, \ref{eq:GRU2}, \ref{eq:GRU3}, \ref{eq:GRU4}.
 
 \subsection{LSTM}
 For each element in the input sequence, each layer computes the following function:
@@ -69,10 +69,10 @@ For each element in the input sequence, each layer computes the following functi
 	f_{t} &= \sigma\left(W_{if}x_{t} + b_{if} + W_{hf}h_{\left(t-1\right)} + b_{hf}\right) \label{eq:LSTM2} \\
 	g_{t} &= \tanh\left(W_{ig}x_{t} + b_{ig} + W_{hg}h_{\left(t-1\right)} + b_{hg}\right) \label{eq:LSTM3} \\
 	o_{t} &= \sigma\left(W_{io}x_{t} + b_{io} + W_{ho}h_{\left(t-1\right)} + b_{ho}\right) \label{eq:LSTM4} \\
-	c_{t} &= f_{t} \cdot c_{\left(t-1\right)} + i_{t} \cdot g_{t} \label{eq:LSTM5} \\
-	h_{t} &= o_{t} \cdot \tanh\left(c_{t}\right) \label{eq:LSTM6}
+	c_{t} &= f_{t} \odot c_{\left(t-1\right)} + i_{t} \odot g_{t} \label{eq:LSTM5} \\
+	h_{t} &= o_{t} \odot \tanh\left(c_{t}\right) \label{eq:LSTM6}
 \end{align}
-where $h_{t}$ is the hidden state at time $t$, $c_{t}$ is the cell state at time $t$, $x_{t}$ is the input at time $t$, $h_{\left(t-1\right)}$ is the hidden state of the layer at time $t-1$ or the initial state at time 0 (zero), and $i_{t}$, $f_{t}$, $g_{t}$, and $o_{t}$ are the input, forget, cell, and output gates, respectively. $\sigma$ is the sigmoid function, and $\cdot$ is the Hadamard (element-wise) product. Equations \ref{eq:LSTM1}, \ref{eq:LSTM2}, \ref{eq:LSTM3}, \ref{eq:LSTM4}, \ref{eq:LSTM5}, \ref{eq:LSTM6}.
+where $h_{t}$ is the hidden state at time $t$, $c_{t}$ is the cell state at time $t$, $x_{t}$ is the input at time $t$, $h_{\left(t-1\right)}$ is the hidden state of the layer at time $t-1$ or the initial state at time 0 (zero), and $i_{t}$, $f_{t}$, $g_{t}$, and $o_{t}$ are the input, forget, cell, and output gates, respectively. $\sigma$ is the sigmoid function, and $\odot$ is the Hadamard (element-wise) product. Equations \ref{eq:LSTM1}, \ref{eq:LSTM2}, \ref{eq:LSTM3}, \ref{eq:LSTM4}, \ref{eq:LSTM5}, \ref{eq:LSTM6}.
 
 \section{Optimization and Loss Function}
 
