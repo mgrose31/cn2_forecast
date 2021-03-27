@@ -1,6 +1,7 @@
 \chapter{Machine Learning Modeling Review}
 \label{ch2}
 PyTorch reference \cite{NEURIPS2019_9015}.
+Colah's blog reference \cite{olah}.
 \section{Fundamentals of Training and Testing}
 \begin{figure}[h!]
 	\centering
@@ -20,35 +21,85 @@ PyTorch reference \cite{NEURIPS2019_9015}.
 	\label{fig:simple_model_testing}
 \end{figure}
 
-%\begin{figure}[h!]
-%	\centering
-%	\subfloat[Training\label{fig:simple_model_training_testing_a}]{
-%		\includegraphics[width=0.99\textwidth]
-%		{training_process.png}
-%	}
-%	\hfill
-%	\subfloat[Testing\label{fig:simple_model_training_testing_b}]{
-%		\includegraphics[width=0.99\textwidth]
-%		{testing_process.png}
-%	}
-%	\hfill
-%	\caption{Simple example of machine learning model training and testing.}
-%	\label{fig:simple_model_training_testing}
-%\end{figure}
-
 \section{MLP and RNN Architectures}
 \subsection{MLP}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.99\textwidth]
+	{architecture_MLP_simple.png}
+	\hfill
+	\caption{Simple MLP (multi-layer perceptron) to predict $log_{10}(C_{n}^{2})$ from weather inputs.}
+	\label{fig:architecture_MLP_simple}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.99\textwidth]
+	{achitecture_MLP_forecast.png}
+	\hfill
+	\caption{MLP to forecast eight time steps of $log_{10}(C_{n}^{2})$ from multiple time steps of weather inputs.}
+	\label{fig:achitecture_MLP_forecast}
+\end{figure}
+
 \begin{equation} \label{eq:MLP}
 	y = \sigma \left(xW + b\right)
 \end{equation}
 where $x$ is the input, $W$ is the learnable weights and $b$ is the learnable bias.
 
+\clearpage
+
 \subsection{RNN}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.99\textwidth]
+	{architecture_RNN_single_layer.png}
+	\hfill
+	\caption{Single-layer RNN architecture to forecast eight time steps of $log_{10}(C_{n}^{2})$ from multiple time steps of weather inputs processed by the recurrent layer.}
+	\label{fig:architecture_RNN_single_layer}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.99\textwidth]
+	{architecture_RNN_single_layer_unrolled.png}
+	\hfill
+	\caption{Unrolled single-layer RNN}
+	\label{fig:architecture_RNN_single_layer_unrolled}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.99\textwidth]
+	{architecture_RNN_multi_layer.png}
+	\hfill
+	\caption{Multi-layer RNN architecture to forecast eight time steps of $log_{10}(C_{n}^{2})$ from multiple time steps of weather inputs processed by the recurrent layers.}
+	\label{fig:architecture_RNN_multi_layer}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.99\textwidth]
+	{architecture_RNN_multi_layer_unrolled.png}
+	\hfill
+	\caption{Unrolled multi-layer RNN}
+	\label{fig:architecture_RNN_multi_layer_unrolled}
+\end{figure}
 A recurrent neural network (RNN) is a neural network that operates on a variable-length sequence. The RNN processes the sequence input with a hidden state $h$ whose activation (value) at each time $t$ is dependent on the activation of the previous time. At each time step $t$ the hidden state $h_{t}$ of the RNN is updated by
 \begin{equation} \label{eq:RNN}
 	h_{t} = \tanh\left(W_{ih}x_{t} + b_{ih} + W_{hh}h_{\left(t-1\right)} + b_{hh}\right)
 \end{equation}
 where $x_{t}$ is the input at time $t$, $h_{\left(t-1\right)}$ is the hidden state of the previous layer at time $t-1$ or the initial state at time 0 (zero), $W_{ih}$ is the learnable input-hidden weights, $b_{ih}$ is the learnable input-hidden bias, $W_{hh}$ is the learnable hidden-hidden weights, and $b_{hh}$ is the learnable hidden-hidden bias \cite{NEURIPS2019_9015}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.7\textwidth]
+	{cell_RNN.png}
+	\hfill
+	\caption{Simple RNN cell}
+	\label{fig:cell_RNN}
+\end{figure}
+
+\clearpage
 
 \subsection{LSTM}
 For each element in the input sequence, each layer computes the following function:
@@ -62,6 +113,15 @@ For each element in the input sequence, each layer computes the following functi
 \end{align}
 where $h_{t}$ is the hidden state at time $t$, $c_{t}$ is the cell state at time $t$, $x_{t}$ is the input at time $t$, $h_{\left(t-1\right)}$ is the hidden state of the layer at time $t-1$ or the initial state at time 0 (zero), and $i_{t}$, $f_{t}$, $g_{t}$, and $o_{t}$ are the input, forget, cell, and output gates, respectively. $W_{ii}$, $W_{if}$, $W_{ig}$, and $W_{io}$ are the learnable input-hidden weights for the input, forget, cell, and output gates. $\sigma$ is the sigmoid function, and $\odot$ is the Hadamard (element-wise) product \cite{NEURIPS2019_9015}.
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.7\textwidth]
+	{cell_LSTM.png}
+	\hfill
+	\caption{LSTM-RNN cell}
+	\label{fig:cell_LSTM}
+\end{figure}
+
 \subsection{GRU}
 For each element in the input sequence, each layer computes the following function:
 \begin{align}
@@ -71,6 +131,15 @@ For each element in the input sequence, each layer computes the following functi
 	h_{t} &= \left(1 - z_{t}\right) \odot n_{t} + z_{t} \odot h_{\left(t-1\right)} \label{eq:GRU4}
 \end{align}
 where $h_{t}$ is the hidden state at time $t$, $x_{t}$ is the input at time $t$, $h_{\left(t-1\right)}$ is the hidden state of the layer at time $t-1$ or the initial hidden state at time 0 (zero), and $r_{t}$, $z_{t}$, and $n_{t}$ are the reset, update, and new gates, respectively. $W_{ir}$, $W_{iz}$ and $W_{in}$ are the learnable input-hidden weights for the reset, update, and new gates, respectively, and are of shape $numlayers \times 3hiddensize \times inputsize$. $W_{hr}$, $W_{hz}$ and $W_{hn}$ are the learnable hidden-hidden weights for the reset, update, and new gates, respectively, and are of shape $numlayers \times 3hiddensize \times inputsize$. $b_{ir}$, $b_{iz}$, and $b_{in}$ are the learnable input-hidden biases of the reset, update, and new gates, respectively. $b_{hr}$, $b_{hz}$, and $b_{hn}$ are the learnable hidden-hidden biases of the reset, update, and new gates, respectively. $\sigma$ is the sigmoid function, and $\odot$ is the Hadamard (element-wise) product \cite{NEURIPS2019_9015}. 
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.7\textwidth]
+	{cell_GRU.png}
+	\hfill
+	\caption{GRU-RNN cell}
+	\label{fig:cell_GRU}
+\end{figure}
 
 \section{Optimization and Loss Function}
 Neural networks are a collection of nested functions that are executed on some input data. These functions are defined by \emph{parameters} (weights and biases). The training of a neural network is the process of updating the parameters to reduce the loss between network outputs and truth values. Training happens in two steps. The first step is forward propagation in which the network makes a prediction by passing input values through its functions (applying the weights and biases). The second step is backward propagation where the network adjusts its parameters proportionate to the error in its prediction. The network does this by moving backwards through the network from the output, collecting the derivatives of the error with respect to the parameters of the functions and optimizing the parameters using gradient descent. The derivatives of the error with respect to the parameters are called gradients. PyTorch's automatic differentiation engine \textit{autograd} handles this entire process \cite{NEURIPS2019_9015}.
