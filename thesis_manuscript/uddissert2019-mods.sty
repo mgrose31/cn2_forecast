@@ -1,0 +1,730 @@
+% 2018 Style file for MS Theses and PhD Dissertations
+% maintained by Eric J. Balster
+
+\typeout{Version \rcsStrip$Revision: 2.0 $  of \rcsStripFile
+$RCSfile: uddissert2018-mods.sty,v $ (\rcsStripDate$Date: 2018/09/28
+14:18:41 $)}
+
+\newlength\singlespacelength
+\newlength\doublespacelength
+\newlength\triplespacelength
+
+\setlength\singlespacelength{15\p@}
+\setlength\doublespacelength{26\p@}
+\setlength\triplespacelength{40\p@}
+
+\newcommand\startsinglespace{\setlength\baselineskip{\singlespacelength}}
+\newcommand\startdoublespace{\setlength\baselineskip{\doublespacelength}}
+
+
+\usepackage[top=1.01in, bottom=1.15in, left=1.5in, right=1in]{geometry}
+
+\usepackage{chngpage}
+\usepackage{xstring}
+
+% Incentivize Tex to avoid orphan lines (CDM 03/22/2018) per L. Wallace
+\widowpenalty10000
+\clubpenalty10000
+
+\def\ps@plain{% pages after chapter page (to reset settings from chapter page)
+    \if@uddraft
+        \def\@oddhead{\reset@font\sffamily\drafttext\hfil\reset@font%
+        \rmfamily\thepage\hfil\reset@font\sffamily\today}
+    \else
+        \def\@oddhead{}
+        \def\@oddfoot{\hfil\thepage\hfil}
+        \let\@evenfoot\@oddfoot
+        \def\@evenhead{}
+    \fi
+    \let\@mkboth\markboth
+    \def\chaptermark##1{%
+        \markright {\uppercase{\ifnum \c@secnumdepth >\m@ne
+        \@chapapp\ \thechapter. \ \fi
+        ##1}}
+    }
+}
+
+% the first page for chapters
+\def\ps@chappage{
+    \def\@oddhead{}
+    \def\@oddfoot{\hfil \rm \thepage \hfil}
+    \def\@evenhead{}
+    \let\@evenfoot\@oddfoot
+}
+
+% the introduction pages
+\def\ps@intropage{
+    \def\@oddhead{}
+    \def\@oddfoot{\hfil \rm \thepage \hfil}
+    \def\@evenhead{}
+    \let\@evenfoot\@oddfoot
+}
+
+\def\ps@return{
+}
+
+\if@compatibility
+    \let\my@document\document
+    \def\document{
+        \my@document
+        \startdoublespace
+    }
+\else
+    \AtBeginDocument{
+        \startdoublespace
+        % change paragraph skip EJB 3/27/2018
+        %\setlength{\parskip}{15\p@}
+        \setlength{\parskip}{12\p@}
+    }
+\fi
+
+%    ****************************************
+%    *        CHAPTERS AND SECTIONS         *
+%    ****************************************
+
+\def\boldcmd{\bfseries}
+% Remove Bold from Abstract and Title (EJB 1/25/2018) per L. Wallace
+%\def\typesetHeading#1{{\normalfont\large\boldcmd{#1}}}
+\def\typesetHeading#1{{\normalfont\large{#1}}}
+
+\def\typesetColumnHeading#1{{\boldcmd #1}}
+\def\typesetChapterTitle#1{{#1}}
+
+\newcommand\dedicationname{DEDICATION}
+
+\newcommand\vitaname{VITA}
+\newcommand\vitanameLC{Vita}
+
+\newcommand\publicationsname{PUBLICATIONS}
+
+\newcommand\awardsname{AWARDS}
+% added for awards section on "Vita"
+
+\newcommand\fieldsname{FIELDS OF STUDY}
+
+\renewcommand\abstractname{ABSTRACT}
+\newcommand\abstractnameLC{Abstract}
+
+\renewcommand\listfigurename{LIST OF FIGURES}
+\newcommand\listfigurenameLC{List of Figures}
+
+\renewcommand\listtablename{LIST OF TABLES}
+\newcommand\listtablenameLC{List of Tables}
+
+\newcommand\listsymbolname{LIST OF SYMBOLS}
+\newcommand\listsymbolnameLC{List of Symbols}
+
+\renewcommand\partname{VOLUME}
+
+\renewcommand\contentsname{TABLE OF CONTENTS}
+\newcommand\contentsnameLC{Table of Contents}
+
+\renewcommand\chaptername{CHAPTER}
+\newcommand\chapternameLC{Chapter}
+
+%\newcommand\chaptersname{CHAPTERS}
+
+\renewcommand\appendixname{APPENDIX}
+\newcommand\appendixnameLC{Appendix}
+
+\renewcommand\bibname{BIBLIOGRAPHY}
+\newcommand\bibnameLC{Bibliography}
+
+\newcommand\appendicesname{APPENDICES} % Change "Appendices:" to "APPENDICES" (CDM 03/22/2018) per L. Wallace
+
+%\newcommand\pagename{Page}
+
+\newcommand\acknowledgmentname{ACKNOWLEDGMENTS}
+\newcommand\acknowledgmentnameLC{Acknowledgments}
+
+\newif\ifapp
+\appfalse
+
+\def\thechapter {\Roman{chapter}}
+\def\thesection {\@arabic\c@chapter.\@arabic\c@section}
+\def\thefigure {\@arabic\c@chapter.\@arabic\c@figure}
+\def\thetable {\@arabic\c@chapter.\@arabic\c@table}
+\def\theequation {\@arabic\c@chapter.\@arabic\c@equation}
+
+\def\intro{\clearpage \thispagestyle{intropage}
+  \global\@topnum\z@ \@afterindenttrue \secdef\@chapter\@schapter }%\pagestyle{return}
+
+\def\chapter{\clearpage  \thispagestyle{chappage}
+  \global\@topnum\z@ \@afterindenttrue \secdef\@chapter\@schapter }%\pagestyle{plain}
+
+\def\@chapter[#1]#2{
+%% Chapters are necessary, so checking secnumdepth is immaterial.
+  \refstepcounter{chapter}%
+  \ifapp
+    \ifnum\value{chapter}=1
+      \addtocontents{toc}{\vskip 1.0em %plus 1pt
+         \hskip -\parindent \appendicesname\hfill%
+      \vskip 0.25em
+     \rm}
+    \else
+      {}
+    \fi
+  \else
+    \ifnum\value{chapter}=1
+      \pagenumbering{arabic}
+      \pagestyle{plain}
+ 			\addtocontents{toc}{\vskip 0.25em
+        \rm}
+    \fi
+  \fi
+
+  \ifnum \c@secnumdepth >\m@ne
+    \typeout{\@chapapp\space\thechapter.}
+    \addcontentsline{toc}{chapter}{\protect\numberline{\thechapter.}#1}%
+  \else
+    \addcontentsline{toc}{chapter}{#1}
+  \fi
+  \chaptermark{#1}%
+  \@makechapterhead{#2}%
+%  \pagestyle{reset}
+}
+
+% Chapter # is 2in from top, followed by 2 lines, followed by
+% the title, 4 lines, and then the text.
+\def\@makechapterhead#1{
+    {
+
+        % Change Chapter headings from 2in. to 1in. EJB 1-8-2019
+        %\vspace*{0.25in}
+        \vspace*{-0.75in}
+        \parindent \z@ \raggedright \reset@font
+        \ifnum \c@secnumdepth >\m@ne%
+            \center\typesetHeading{\@chapapp{} \thechapter}%
+            %\par
+            %\vskip 30pt
+        \fi
+        \begin{center}
+            % Remove Bold from Chapter Headings (EJB 1/25/2018) per L. Wallace
+            %\large\boldcmd\typesetChapterTitle{#1}
+            \vskip -20pt
+            \typesetChapterTitle{#1}
+            %\par
+        \end{center}
+    \nobreak
+    %\vskip 15\p@ % Too much space between chapter title and body (CDM 3/23/2018) per L. Wallace
+    }
+}
+
+\def\@schapter#1{%
+     \@makeschapterhead{#1}%
+}
+% Placement of the Chapter headings
+\def\@makeschapterhead#1{
+    % Change heading in TOC, LOF, LOT, and Aknowledgements from 2in. to 1in. EJB 1-8-2019
+    %\vspace*{0.5in}
+    \vspace*{-0.5in}
+    {
+        \parindent \z@ \raggedright
+        \reset@font
+        \begin{center}
+            \large\boldcmd\typesetChapterTitle{#1}
+            \par
+        \end{center}
+        \nobreak
+		% Reduce the spacing between the chapter heading and title (CDM 03/22/2018) per L. Wallace
+        \vskip 15\p@
+    }
+}
+
+% Remove Bold from Section Headings (EJB 1/25/2018) per L. Wallace
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+                                   {3.5ex \@plus 1ex \@minus .2ex}%
+                                   {0.75ex \@plus.1ex}% % Reduce the spacing after section headers (CDM 3/22/2018) per L. Wallace
+                                   %{\reset@font\large\bfseries}}
+                                   {\reset@font\large}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+                                     {3.25ex\@plus 1ex \@minus .2ex}%
+                                     {0.75ex \@plus.1ex}%% Reduce the spacing after section headers (CDM 3/22/2018) per L. Wallace
+                                    %{\normalfont\large\bfseries}}
+                                    {\normalfont\large}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+                                     {3.25ex\@plus 1ex \@minus .2ex}%
+                                     {0.75ex \@plus.1ex}%% Reduce the spacing after section headers (CDM 3/22/2018) per L. Wallace
+                                    %{\normalfont\normalsize\bfseries}}
+                                    {\normalfont\normalsize}}
+
+\renewcommand\appendix{
+  \par
+  \setcounter{chapter}{0}%
+  \setcounter{section}{0}%
+  \renewcommand\@chapapp{\appendixname}%
+  \renewcommand\thechapter{\Alph{chapter}}%
+  \renewcommand\thesection{\Alph{chapter}.\arabic{section}}% Enforce alpha-numeric references in the appendices (CDM 03/22/2018) per L. Wallace
+  \renewcommand\thefigure{\Alph{chapter}.\arabic{figure}}% Enforce alpha-numeric references in the appendices (CDM 03/22/2018) per L. Wallace
+  \renewcommand\thetable{\Alph{chapter}.\arabic{table}}% Enforce alpha-numeric references in the appendices (CDM 03/22/2018) per L. Wallace
+  \renewcommand\theequation{\Alph{chapter}.\arabic{equation}}% Enforce alpha-numeric references in the appendices (CDM 03/22/2018) per L. Wallace
+  \apptrue
+}
+
+%    ****************************************
+%    *         FIGURES AND TABLES           *
+%    ****************************************
+
+\renewcommand\thefigure{\@arabic\c@chapter.\@arabic\c@figure}
+\renewenvironment{figure}{\@float{figure}}{\end@float}
+\renewenvironment{figure*}{\@dblfloat{figure}}{\end@dblfloat}
+\renewcommand\thetable {\@arabic\c@chapter.\@arabic\c@table}
+
+\renewenvironment{table}{\@float{table}}{\end@float}
+\renewenvironment{table*}{\@dblfloat{table}}{\end@dblfloat}
+
+\setlength\abovecaptionskip{15\p@}
+\setlength\belowcaptionskip{10\p@}
+
+\setlength\floatsep    {40\p@ \@plus 2\p@ \@minus 4\p@}
+\setlength\textfloatsep{40\p@ \@plus 2\p@ \@minus 1\p@}
+\setlength\intextsep   {30\p@ \@plus 4\p@ \@minus 1\p@}
+\setlength\dblfloatsep    {20\p@ \@plus 2\p@ \@minus 4\p@}
+\setlength\dbltextfloatsep{20\p@ \@plus 2\p@ \@minus 4\p@}
+
+%    ****************************************
+%    *            TOC, LOF, LOT             *
+%    ****************************************
+
+\renewcommand\tableofcontents{%
+   \intro*{\typesetHeading\contentsname
+   \@mkboth{\uppercase{\contentsname}}{\uppercase{\contentsname}}}%
+     \startsinglespace
+     \@starttoc{toc}
+     \startdoublespace
+}
+
+% Include abstract, dedication, acknowledgements, LoF, LoT in ToC
+\def\l@front#1#2{
+    \vskip -5pt
+    \@dottedtocline{0}{0pt}{2.3em}{#1}{#2}
+}
+
+\def\setChapterprefix#1{\gdef\@Prefix{#1}} % CDM Establish chapter prefixes for table of contents
+\setChapterprefix{} % CDM Define chapter prefixes for table of contents
+% Include the chapters in the TOC
+\renewcommand\l@chapter[2]{
+    \ifnum \c@tocdepth >\m@ne
+				%\vskip 1.0em \@plus\p@
+        \begingroup
+            \parindent \z@ \rightskip \@pnumwidth
+            {\@dottedtocline{0}{0em}{2.3em}{\@Prefix \space #1}{#2}}\par % CDM Insert chapter prefixes for table of contents
+						\penalty\@highpenalty
+            \vskip 10pt
+        \endgroup
+    \fi
+}
+% How sections are printed in ToC
+\renewcommand\l@section      {
+    \vskip -15pt
+    \@dottedtocline{1}{2.5em}{2.3em}
+}
+% How subsections are printed in ToC
+\renewcommand\l@subsection   {
+    \vskip -15pt
+    \@dottedtocline{2}{4.8em}{3.2em}
+}
+
+\renewcommand\listoffigures{
+    \intro*{\typesetHeading{\listfigurename}}
+    \addcontentsline{toc}{front}{\listfigurename}
+        \startsinglespace
+        \@starttoc{lof}
+        \startdoublespace
+}
+% set the left margin of LOF to 1.5in. EJB 4-16-19
+%\renewcommand\l@figure{\@dottedtocline{1}{1.5em}{2.3em}}
+\renewcommand\l@figure{\@dottedtocline{1}{0.0em}{2.3em}}
+
+\renewcommand\listoftables{
+    \intro*{\typesetHeading{\listtablename}}
+    \addcontentsline{toc}{front}{\listtablename}%
+%        % set the left margin of LOT to 1.5in. EJB 4-16-19
+%        \setlength{\oddsidemargin}{0.25in}
+        \startsinglespace
+        \@starttoc{lot}
+        \startdoublespace
+}
+% set the left margin of LOF to 1.5in. EJB 4-16-19
+\renewcommand\l@table{\@dottedtocline{1}{0.0em}{2.3em}}
+
+%    ****************************************
+%    *       BIBLIOGRAPHY AND INDEX         *
+%    ****************************************
+
+\renewenvironment{thebibliography}[1]{
+    \intro*{\typesetHeading{\bibname}
+    \@mkboth{\uppercase{\bibname}}{\uppercase{\bibname}}}
+    \addcontentsline{toc}{front}{{\bibname}}
+    \startsinglespace
+    \vspace*{-0.25in}
+    \list{\@biblabel{\arabic{enumiv}}}
+    {\settowidth\labelwidth{\@biblabel{#1}}
+    \leftmargin\labelwidth
+    \advance\leftmargin\labelsep
+    \usecounter{enumiv}%
+    \let\p@enumiv\@empty
+    \renewcommand\theenumiv{\arabic{enumiv}}}%
+    \renewcommand\newblock{\hskip .11em \@plus.33em \@minus.07em}%
+    \sloppy\clubpenalty10000\widowpenalty10000%
+    \sfcode`\.=\@m}
+    {\def\@noitemerr
+    {\@latex@warning{Empty `thebibliography' environment}}%
+    \endlist
+}
+
+%    ****************************************
+%    *         TITLE AND ABSTRACT           *
+%    ****************************************
+
+\def\@author{}
+\def\@title{}
+\gdef\@author{}\gdef\@title{}
+\def\authordegrees#1{\def\@authordegrees{#1}}
+\def\@authordegrees{}
+
+\newcommand\authorLastFirstMiddle[2]{\def\@authorLast{#1}\def\@authorFirstMiddle{#2}\author{#2 #1}}
+\newcommand\advisorFirstLast[5]{\def\@advisorFirstLast{#1}\advisorname{#1#2}\def\@advisorTitle{#3}\def\@advisorPosition{#4}\def\@advisorDept{#5}}
+\newcommand\Membera[5]{\def\@MemberaName{#1}\membera{#1#2}\def\@MemberaTitle{#3}\def\@MemberaPosition{#4}\def\@MemberaDept{#5}}
+\newcommand\Memberb[5]{\def\@MemberbName{#1}\memberb{#1#2}\def\@MemberbTitle{#3}\def\@MemberbPosition{#4}\def\@MemberbDept{#5}}
+\newcommand\Memberc[5]{\def\@MembercName{#1}\memberc{#1#2}\def\@MembercTitle{#3}\def\@MembercPosition{#4}\def\@MembercDept{#5}}
+\newcommand\Memberd[5]{\def\@MemberdName{#1}\memberd{#1#2}\def\@MemberdTitle{#3}\def\@MemberdPosition{#4}\def\@MemberdDept{#5}}
+\newcommand\Dean[3]{\dean{#1}\def\@deanTitle{#2}\def\@deanSchool{#3}}
+\newcommand\AssocDean[3]{\assocdean{#1}\def\@assocDeanTitle{#2}\def\@assocDeanSchool{#3}}
+
+\def\firsttitle#1{\def\@firsttitle{#1}}
+\def\degree#1{\def\@degree{#1}}
+\def\@degree{Doctor of Philosophy}
+\def\degreeabbrev#1{\def\@degreeabbrev{#1}}
+\def\@degreeabbrev{Ph.D.}
+\def\committee#1{\def\@committee{#1}}
+\def\@committee{Dissertation}
+\def\@thesis{Dissertation}
+
+\def\graduationyear#1{\def\@graduationyear{#1}}
+\def\@graduationyear{\year}
+\def\graduationmonth#1{\def\@graduationmonth{#1}}
+\def\@graduationmonth{\month}
+
+\def\linea{\makebox[2.5in][l]{\leaders\hrule\hskip 2.5in}}
+
+\def\advisorname#1{\def\@advisorname{\vskip 15 pt \linea\\ \vskip .25em #1\\}}
+\def\membera#1{\def\@membera{\vskip 15 pt \linea\\ \vskip .25em #1\\}}
+\def\memberb#1{\def\@memberb{\vskip 15 pt \linea\\ \vskip .25em #1\\}}
+\def\memberc#1{\def\@memberc{\vskip 15 pt \linea\\ \vskip .25em #1\\}}
+\def\memberd#1{\def\@memberd{\vskip 15 pt \linea\\ \vskip .25em #1\\}}
+\def\assocdean#1{\def\@assocdean{\vskip 15 pt \linea \\ \vskip .25em #1\\}}
+\def\dean#1{\def\@dean{\vskip 15 pt \linea \\ \vskip .25em #1 \\}}
+
+%% Temporary page counter while processing abstract.
+\newcounter{disspage}
+
+\newcommand\school[1]{\def\@school{#1}}
+\newcommand\dept[1]{\def\@dept{#1}}
+
+% Eric is changing the title page (12/15/17)
+\newcommand\makethesistitle{
+    \newcommand\@maketitle{
+\ifuseudlogo
+        \begin{titlepage}
+            \startdoublespace
+            \pagenumbering{roman} \thispagestyle{empty}
+            \begin{center}
+                % remove vertical space EJB 3/27/2018
+                % change top margin from 2in. to 1in. EJB 1/8/2019
+                % increase top margin to 2in. from 1in. EJB 2/18/2019
+                %\vspace*{0.5in}
+                %\vspace*{0.45in}
+                %\vspace*{-0.65in}
+                \vspace*{0.45in}
+                % remove large title EJB 3/27/2018
+                %\Large\startdoublespace{\@firsttitle}
+                \startdoublespace{\@firsttitle}
+                % increase vertical space after title EJB 3/27/2018
+                %\vskip 30pt
+                \vskip 45pt
+                \normalsize {\@thesis} \par
+                Submitted to \par
+                \@school \ of the \par
+                UNIVERSITY OF DAYTON
+                \vskip 20pt
+                In Partial Fulfillment of the Requirements for \par
+                The Degree of \par
+                \@degree{} in \@dept
+                % increase vertical skip after Degree name EJB 3/27/2018
+                %\vskip 30pt
+                \vskip 45pt
+                By \par
+                \begin{tabular}[t]{c}\@author  \@authordegrees
+                \end{tabular}
+                % remove vertical skip EJB 3/27/2018
+                %\vskip 15pt
+                \par
+                % remove UNIVERSITY OF DAYTON after student name EJB 3/27/2018
+                % UNIVERSITY OF DAYTON \par
+                Dayton, Ohio \par
+                \@graduationmonth, \  \number\@graduationyear \par
+                % add university logo at bottom of title page EJB 3/27/2018
+                \begin{figure}[ht]
+                    %\centerline{\epsfysize 2.7cm  \epsffile{UDlogo.eps}}
+                    \centerline{\epsfysize 2.7cm  \epsffile{UDlogo_new.eps}}
+                \end{figure}
+            \end{center}
+        \end{titlepage}
+\else
+        \begin{titlepage}
+            \startdoublespace
+            \pagenumbering{roman} \thispagestyle{empty}
+            \begin{center}
+                % remove vertical space EJB 3/27/2018
+                % change top margin from 2in. to 1in. EJB 1/8/2019
+                % increase top margin to 2in. from 1in. EJB 2/18/2019
+                %\vspace*{0.5in}
+                %\vspace*{0.45in}
+                %\vspace*{-0.65in}
+                \vspace*{0.45in}
+                % remove large title EJB 3/27/2018
+                %\Large\startdoublespace{\@firsttitle}
+                \startdoublespace{\@firsttitle}
+                % increase vertical space after title EJB 3/27/2018
+                % increase vertical space after title EJB 2/18/2019
+                %\vskip 30pt
+                %\vskip 45pt
+                \vskip 70pt
+                \normalsize {\@thesis} \par
+                Submitted to \par
+                \@school \ of the \par
+                UNIVERSITY OF DAYTON
+                \vskip 45pt
+                In Partial Fulfillment of the Requirements for \par
+                The Degree of \par
+                \@degree{} in \@dept
+                % increase vertical skip after Degree name EJB 3/27/2018
+                % increase vertical skip after Degree name EBJ 2/18/2019
+                %\vskip 30pt
+                %\vskip 45pt
+                \vskip 55pt
+                By \par
+                \begin{tabular}[t]{c}\@author  \@authordegrees
+                \end{tabular}
+                % remove vertical skip EJB 3/27/2018
+                % put vertical skip back in EJB 2/18/2019
+                \vskip 35pt
+                \par
+                % remove UNIVERSITY OF DAYTON after student name EJB 3/27/2018
+                % put UNIVERSITY OF DAYTON back in EJB 2/18/2019
+                UNIVERSITY OF DAYTON \par
+                Dayton, Ohio \par
+                \@graduationmonth, \  \number\@graduationyear \par
+            \end{center}
+        \end{titlepage}
+\fi
+
+%APPROVAL PAGE
+\newpage
+% change top margin EJB 3/27/2018
+% change top margin from 2in. to 1in. EJB 1/8/2019
+%\vspace*{0.25in}
+%\vspace*{0.35in}
+\vspace*{-0.65in}
+\begin{center}
+    % remove large font EJB 3/27/2018
+    %{\noindent \large \@title }
+    \startdoublespace{\@title}
+\end{center}
+\startsinglespace
+\begin{flushleft}
+    Name: \ \@authorLast, \@authorFirstMiddle
+    %\vskip 15pt
+    \par
+    {\large APPROVED BY:}
+\end{flushleft}
+\startsinglespace
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vskip 10pt
+\noindent
+\begin{minipage}[t]{2.5in}
+    \begin{flushleft}
+        {\@advisorname \@advisorTitle \\\@advisorPosition, \@advisorDept}
+    \end{flushleft}
+\end{minipage}
+\hskip 0.5in
+\begin{minipage}[t]{2.5in}
+    \begin{flushleft}
+        {\@membera \@MemberaTitle \\  \@MemberaPosition, \@MemberaDept}
+    \end{flushleft}
+\end{minipage}
+\if@ms
+    \vskip 45pt
+    \noindent\hskip 1.75in
+    \begin{minipage}[t]{2.5in}
+        \begin{flushleft}
+            {\@memberb \@MemberbTitle \\  \@MemberbPosition, \@MemberbDept}
+        \end{flushleft}
+    \end{minipage}
+    \vskip 45pt
+\fi
+\if@phd
+    \vskip 45pt
+    \noindent\begin{minipage}[t]{2.5in}
+        \begin{flushleft}
+            {\@memberb \@MemberbTitle \\  \@MemberbPosition, \@MemberbDept}
+        \end{flushleft}
+    \end{minipage}
+    \hskip 0.5in
+    \begin{minipage}[t]{2.5in}
+        \begin{flushleft}
+            {\@memberc \@MembercTitle \\  \@MembercPosition, \@MembercDept}
+         \end{flushleft}
+     \end{minipage}
+    \vskip 45pt
+\fi
+\if@phdfv
+    \vskip 15pt
+    \noindent\begin{minipage}[t]{2.5in}
+        \begin{flushleft}
+            {\@memberb \@MemberbTitle \\  \@MemberbPosition, \@MemberbDept}
+        \end{flushleft}
+    \end{minipage}
+    \hskip 0.5in
+    \begin{minipage}[t]{2.5in}
+        \begin{flushleft}
+            {\@memberc \@MembercTitle \\  \@MembercPosition, \@MembercDept}
+         \end{flushleft}
+    \end{minipage}
+    \vskip 15pt
+    \noindent\hskip 1.75in
+    \begin{minipage}[t]{2.5in}
+        \begin{flushleft}
+            {\@memberd \@MemberdTitle \\  \@MemberdPosition, \@MemberdDept}
+        \end{flushleft}
+    \end{minipage}
+    \vskip 15pt
+\fi
+% move horizontal spacing to fit Bob's big name EJB 3/27/2018
+%\noindent\begin{minipage}[t]{2.5in}
+\noindent\begin{minipage}[t]{3.0in}
+    \begin{flushleft}
+        {\@assocdean \@assocDeanTitle \\ \@assocDeanSchool}
+    \end{flushleft}
+\end{minipage}
+% remove horizontal skip to fit Eddy's name EJB 3/27/2018
+%\hskip 0.5in
+\begin{minipage}[t]{2.5in}
+    \begin{flushleft}
+        {\@dean \@deanTitle \\ \@deanSchool}
+    \end{flushleft}
+\end{minipage}
+\setcounter{page}{2}
+\setcounter{footnote}{0} \let\thanks\relax
+}
+
+    \@maketitle
+    \gdef\@thanks{}
+    \startdoublespace
+    \let\maketitle\relax
+}
+
+\renewenvironment{abstract}{
+    \intro*{\typesetHeading{\abstractname}}
+    \addcontentsline{toc}{front}{\abstractname}
+    \begin{center}
+        \vskip -30pt
+				% decrease spacing after abstract heading (CDM 3/22/2018) per L. Wallace
+        \noindent \@title
+    \end{center}
+    \begin{flushleft}
+        \startsinglespace
+        % increase spacing after abstract title (EJB 1/25/2018) per L. Wallace
+        %\vskip -10pt
+        \vskip 10pt
+        \noindent Name: \@authorLast, \@authorFirstMiddle \\
+        \noindent University of Dayton \\
+        \vskip 10pt
+        \noindent Advisor: Dr. \@advisorFirstLast \\
+    \end{flushleft}
+    \vskip -20pt
+    \par
+}
+
+\newcommand\disscopyright{
+    \if@openright
+        \cleardoublepage
+        \addtocounter{page}{-2}
+    \else
+        \clearpage
+        \addtocounter{page}{-1}
+    \fi
+    \thispagestyle{empty}
+    % change vertical space for copyright page EJB 3/27/2018
+    %\vspace*{5.3in}
+    \vspace*{4.1in}
+    \begin{center}
+        \copyright \ Copyright by\\
+        \@author \\
+        All rights reserved\\
+        {\number\@graduationyear}
+    \end{center}
+    \vspace*{\fill}
+}
+
+\newcommand\dedication[1]{
+  \if@openright\cleardoublepage\else\clearpage\fi
+  \addcontentsline{toc}{front}{\dedicationname}
+  \vspace*{\fill}
+  \begin{center} #1 \end{center}
+  \vspace*{\fill}
+}
+
+\newenvironment{acknowledgments}{
+    \intro*{\typesetHeading{\acknowledgmentname}}
+    \addcontentsline{toc}{front}{\acknowledgmentname}
+    \startdoublespace
+    \vskip -30pt
+}
+
+\newenvironment{vita}{
+    \intro*{\vspace*{1in}\typesetHeading\vitaname
+        \@mkboth{\uppercase{\vitaname}}{\uppercase{\vitaname}}
+    }
+    \addcontentsline{toc}{front}{{\vitaname}}
+    \vskip 10pt
+    \startsinglespace
+}
+{\par\startdoublespace}
+
+\def\dateitem#1#2{\noindent #1 \dotfill \parbox[t]{4in}{#2}\par~\par}
+
+
+\newenvironment{publist}%
+  {\vspace*{15pt}\begin{center}{\typesetHeading{\publicationsname}}%
+   \end{center}\vspace*{10pt}}
+  {\vspace{\singlespacelength}}
+
+\def\researchpubs{\noindent {\bf Research Publications}\par~~\par}
+\def\instructpubs{\noindent {\bf Instructional Publications}\par~~\par}
+
+\def\refjourn{\noindent{\bf Referred Journal Articles}\par~~\par}
+\def\confproc{\noindent{\bf Conference Proceedings}\par~~\par}
+\def\confpres{\noindent{\bf Conference Presentations}\par~~\par}
+
+\def\pubitem#1{\noindent #1 \par~~\par}
+
+\newenvironment{fieldsstudy}%
+  {\begin{center}{\typesetHeading\fieldsname}\end{center}%
+   \vspace*{15pt}}
+  {}
+
+\def\majorfield#1{\noindent Major Field:  #1\par~\par}
+
+\newcommand\thesis{
+    \def\@thesis{Thesis}
+    \def\@committee{Master's Examination}
+    \typeout{ }
+    \typeout{Setting up for Thesis (\@degreeabbrev) rather than Dissertation.}
+    \typeout{ }
+}
+
+\endinput
+%%
+%% End of file `dissert-mod.sty'.

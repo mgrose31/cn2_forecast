@@ -11,16 +11,19 @@
 \usepackage{subfig}
 \usepackage{epsfig}
 \usepackage{amsmath}
+\usepackage{acronym}
 
 \graphicspath{
-	{./figures/introduction/}
+	{./figures/machine_learning/}
 	{./figures/experimental_setup/}
 	{./figures/dataset/}
 	{./figures/grid_search_results/}
 	{./figures/test_results/}}
 
-\begin{document}
+%\input{glossary.tex}
 
+
+\begin{document}
 \pagestyle{intropage}
 
 \authorLastFirstMiddle{Grose}{Mitchell Gene}
@@ -87,7 +90,12 @@
     \chapter{Even More Stuff after the End}
 
     This is Appendix B.  Appendix B should span multiple lines so I can see if the margins are correct.  We need to ensure that we have 1.5 inches on the LHS margin.
-
 \end{appendices}
+
+\clearpage
+\begin{center}
+	\Large{\textbf{List of Acronyms}}
+\end{center}
+\input{acronyms.tex}
 
 \end{document}
