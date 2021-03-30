@@ -7,7 +7,7 @@
 \begin{enumerate}
 	\item Improve data preprocessing techniques to fill small gaps in weather or $C_{n}^{2}$ measurements.
 	\item Model $C_{n}^{2}$ at specific DELTA bins (screens), like the first or second, to isolate the forecasting to a particular part of the propagation path.
-	\item How are these RNN models impacted by input weather sequences that are out of range of the train dataset? This is relevant to deploying a model to test during a time of significant seasonal weather change.
+	\item How are these \ac{RNN} models impacted by input weather sequences that are out of range of the train dataset? This is relevant to deploying a model to test during a time of significant seasonal weather change.
 	\item Investigate whether the model performance declines if some data is missing in a sequence and instead padded by interpolation or some other technique.
 	\item Further investigation into the sensitivity input feature counts (sensitivity analysis)
 	\item Extend the grid search to include different number of epochs, learning rates (and decays), and fewer input variables
