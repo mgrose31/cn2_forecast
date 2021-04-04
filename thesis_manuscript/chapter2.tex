@@ -1,6 +1,6 @@
 \chapter{Machine Learning Modeling Review}
 \label{ch2}
-This section first introduces the fundamentals of machine learning model training and testing, then details the fundamental architectures relevant to this work, and finally reviews the core components in model improvement from examples.
+This section first introduces the fundamentals of machine learning model training and testing, then details the fundamental architectures relevant to this work, and finally reviews the core components in model training: improvement from examples.
 
 \section{Fundamentals of Model Training and Testing}
 Figure \ref{fig:simple_model_training} is a simple diagram of how a machine learning model iteratively improves from examples, a process called ``training" or ``learning." Inputs and weights are sent into the model which applies the weights to the inputs to produce a result. The result is analyzed for performance, and based on the performance an update is applied to the weights which will improve model performance.
@@ -23,15 +23,16 @@ The trained model is then ready for testing, or inference, on another set of inp
 	\caption{Simple example of machine learning model testing.}
 	\label{fig:simple_model_testing}
 \end{figure}
-The learned parameters from the training process are static in the model and are applied to the inputs to produce a result. The test inputs must be in the same format of the inputs used during training. While not required, it's highly desirable for the test inputs to be of similar values as the train inputs.
+The learned parameters from the training process are static in the model and are applied to the inputs to produce a result. The test inputs must be in the same format of the inputs used during training. While not required, it's highly desirable for the test inputs to be of similar magnitudes as the train inputs.
 
 \section{Machine Learning Model Architectures}
 \label{sec:architectures}
+The section reviews the fundamental architectures explored in this work: the Multilayer Perceptron and the Recurrent Neural Network. Additionally presented is a brief overview of how a model processes from input to output.
 
 \subsection{Multilayer Perceptron}
 The \ac{MLP} is a feedforward \ac{ANN} consisting of at least three layers of nodes: an input layer, a hidden layer, and an output layer. The number of hidden layers in an \ac{MLP} is adjustable to be greater than one. Each node in the \ac{MLP} is a value, also called the node's activation. Each node in the input layer represents an input variable. Each node in the hidden and output layers represent the weighted sum of the activations from the previous layer. The \ac{MLP} is described as ``fully-connected" because each node in one layer connects with a specific weight $w_{ij}$ to every node in the following layer.
 
-Figure \ref{fig:architecture_MLP_simple} is a simple 2-layer \ac{MLP} associated with the problem addressed in this work. The input layer, which is not counted towards the depth (number of layers) of the \ac{NN}, is five nodes wide. Each input node represents a weather variable measurement: temperature, pressure, relative humidity, wind speed, and solar irradiance.
+Figure \ref{fig:architecture_MLP_simple} is a simple 2-layer \ac{MLP} for turbulence ($C_{n}^{2}$) modeling. The input layer, which is not counted towards the depth (number of layers) of the \ac{NN}, is five nodes wide. Each input node represents a weather variable measurement: temperature, pressure, relative humidity, wind speed, and solar irradiance.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.99\textwidth]
@@ -72,7 +73,7 @@ The matrix-vector product $\textbf{W}\vec{x}$ is the weighted sum of the learnab
 \[
 y = ax + b
 \]
-that allows the model to best fit for the given data.
+that allows the model to best fit for the given data. The size of the learnable weight matrix ($\textbf{W}$) is $\left[\text{output size} \times \text{input size}\right]$, and the size of the learnable bias vector ($\vec{b}$) is $\left[\text{output size}\right]$. ``Input size" is the number of nodes in the first layer, and ``output size" is the number of nodes in the second layer.
 
 The matrix-vector product of the weights and inputs and the addition of the bias vector are purely linear which constrains the model to learn only linear relationships. The $\sigma$ in Equations \ref{eq:MLP} and \ref{eq:MLP_matrix} is a non-linear activation function applied element-wise to the values calculated from 
 \[
@@ -102,7 +103,7 @@ and the \ac{ReLU} defined as
 \begin{equation} \label{eq:relu}
 	\text{ReLU} \left(x\right) = \max \left(0, x\right).
 \end{equation}
-The $\tanh$ is similar to the sigmoid but is a smoother zero-centered activation function whose range lies between -1 and +1 as illustrated in Figure \ref{fig:activation_functions_b}. The \ac{ReLU} is a piecewise linear function that returns a positive input as itself but returns 0 (zero) if the input is negative as shown in Figure \ref{fig:activation_functions_c}. The nearly linear function preserves the properties of linear models that make them easy to optimize with gradient descent methods. The \ac{RNN} architectures explored in this work use the sigmoid and $\tanh$ activation functions, and the \ac{MLP} architectures use the ReLU which is the most commonly used activation function in deep learning models. Details on the advantages and disadvantages of these activation functions are explored by Nwankpa \cite{activationfunctions}.
+The $\tanh$ is similar to the sigmoid but is a smoother zero-centered activation function whose range lies between -1 and +1 as illustrated in Figure \ref{fig:activation_functions_b}. The \ac{ReLU} is a piecewise linear function that returns a positive input as itself but returns 0 (zero) if the input is negative as shown in Figure \ref{fig:activation_functions_c}. The nearly linear \ac{ReLU} preserves the properties of linear models that make them easy to optimize with gradient descent methods. The \ac{RNN} architectures explored in this work use the sigmoid and $\tanh$ activation functions, and the \ac{MLP} architectures use the ReLU which is the most commonly used activation function in deep learning models. Details on the advantages and disadvantages of these activation functions are explored by Nwankpa \cite{activationfunctions}.
 \begin{figure}[p!]
  	\centering
  	\subfloat[Telescope setup\label{fig:activation_functions_a}]{
@@ -133,9 +134,9 @@ A \ac{RNN} is an extension of a conventional feedforward neural network which is
 	\caption{Unrolled single-layer RNN}
 	\label{fig:architecture_RNN_single_layer_unrolled}
 \end{figure}
-At time $t=0$ the inputs are fed into the \ac{RNN} cell which calculates hidden state $h_{0}$. This hidden state is then fed into the \ac{RNN} cell in combination with the inputs at time $t=1$ to calculate the hidden state $h_{1}$. This process continues until the final input of the time series $x_{t}$ is sent into the \ac{RNN} cell with hidden state $h_{t-1}$ to calculate the final hidden state $h_{t}$ which can be the model output or further manipulated in a more complex architecture. The internal processing of the \ac{RNN} cell is discussed later.
+At time $t=0$ the inputs are fed into the \ac{RNN} cell which calculates hidden state $h_{0}$. This hidden state is then fed into the \ac{RNN} cell in combination with the inputs at time $t=1$ to calculate the hidden state $h_{1}$. This process continues until the final input of the time series $x_{t}$ is sent into the \ac{RNN} cell with hidden state $h_{\left(t-1\right)}$ to calculate the final hidden state $h_{t}$ which can be the model output or further manipulated in a more complex architecture. The internal processing of the \ac{RNN} cell is discussed later.
 
-The architecture in Figure \ref{fig:architecture_RNN_single_layer_unrolled} is a single-layer \ac{RNN} that behaves similarly to the \ac{MLP} in Figure \ref{fig:architecture_MLP_simple} which has only a single hidden layer. More hidden layers are needed to add complexity (depth) to the \ac{NN}. Additional hidden layers in a \ac{RNN} look like Figure \ref{fig:architecture_RNN_multi_layer_unrolled}. Like the single-layer \ac{RNN}, the first layer of the multi-layer \ac{RNN} processes prior hidden state $h_{t-1}$ and and current input $x_{t}$ to hidden state $h_{t}$.
+The architecture in Figure \ref{fig:architecture_RNN_single_layer_unrolled} is a single-layer \ac{RNN} that behaves similarly to the \ac{MLP} in Figure \ref{fig:architecture_MLP_simple} which has only a single hidden layer. More hidden layers are needed to add complexity (depth) to the \ac{NN}. Additional hidden layers in a \ac{RNN} look like Figure \ref{fig:architecture_RNN_multi_layer_unrolled}. Like the single-layer \ac{RNN}, the first layer of the multi-layer \ac{RNN} processes prior hidden state $h_{\left(t-1\right)}$ and and current input $x_{t}$ to hidden state $h_{t}$.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.99\textwidth]
@@ -147,66 +148,73 @@ The architecture in Figure \ref{fig:architecture_RNN_single_layer_unrolled} is a
 After the inputs from each step are processed the result is sent to the next layer. In this layer the processing is done in the exact same fashion but the inputs are now the hidden state at each time $h_{t}$ from the prior layer instead of the input variables $x_{t}$. In the left of Figure \ref{fig:architecture_RNN_multi_layer_unrolled} is the rolled version of the multi-layer \ac{RNN} which shows $x_{t}$ being repeatedly processed by the \ac{RNN} cell to $h_{t}^{(1)}$ which is the first-layer hidden state. $h_{t}^{(1)}$ is then the input to the second layer \ac{RNN} which processes the data to second-layer hidden state $h_{t}^{(2)}$. The right of Figure \ref{fig:architecture_RNN_multi_layer_unrolled} is the unrolled version which further illustrates the multi-layer \ac{RNN} processing.
 
 \section{Recurrent Neural Network Cells}
-There are many variants of the \ac{RNN} cells in Figures \ref{fig:architecture_RNN_single_layer_unrolled} and \ref{fig:architecture_RNN_multi_layer_unrolled} that process each time of the input sequence. This work explores three of the cell variants: the simple (original) \ac{RNN}, the \ac{LSTM-RNN}, and the \ac{GRU-RNN}. The \ac{LSTM-RNN} and \ac{GRU-RNN} are two of the most widely used \ac{RNN} cell variants.
+There are many variants of the \ac{RNN} cells in Figures \ref{fig:architecture_RNN_single_layer_unrolled} and \ref{fig:architecture_RNN_multi_layer_unrolled} that process each time step of the input sequence. This thesis explores three of the cell variants: the simple (original) \ac{RNN}, the \ac{LSTM-RNN}, and the \ac{GRU-RNN}. The \ac{LSTM-RNN} and \ac{GRU-RNN} are two of the most widely used \ac{RNN} cell variants.
 
 \subsection{Simple RNN}
-At each time step $t$ the hidden state $h_{t}$ of the simple \ac{RNN} is updated by
+At each time step $t$ the hidden state $\vec{h}_{t}$ of the simple \ac{RNN} is updated by
 \begin{equation} \label{eq:RNN}
-	h_{t} = \tanh\left(W_{ih}x_{t} + b_{ih} + W_{hh}h_{\left(t-1\right)} + b_{hh}\right)
+	\vec{h}_{t} = \tanh\left(\textbf{W}_{ih} \vec{x}_{t} + \vec{b}_{ih} + \textbf{W}_{hh} \vec{h}_{\left(t-1\right)} + \vec{b}_{hh}\right)
 \end{equation}
-where $\tanh$ is the activation function that bounds the outputs from -1 to +1, $x_{t}$ is the input at time $t$, $h_{\left(t-1\right)}$ is the hidden state of the previous layer at time $t-1$ or the initial state at time 0 (zero), $W_{ih}$ is the learnable input-hidden weights, $b_{ih}$ is the learnable input-hidden bias, $W_{hh}$ is the learnable hidden-hidden weights, and $b_{hh}$ is the learnable hidden-hidden bias \cite{PyTorch}.
+where $\tanh$ is the activation function that bounds the outputs from -1 to +1, $\vec{x}_{t}$ is the input at time $t$, $\vec{h}_{\left(t-1\right)}$ is the hidden state of the previous layer at time $t-1$ or the initial state at time 0 (zero), $\textbf{W}_{ih}$ is the learnable input-hidden weights, $\vec{b}_{ih}$ is the learnable input-hidden bias, $\textbf{W}_{hh}$ is the learnable hidden-hidden weights, and $\vec{b}_{hh}$ is the learnable hidden-hidden bias. These learnable parameters are described as ``shared through time" because the same parameters are applied to the inputs regardless of the time step of the input time series. Equation \ref{eq:RNN} and upcoming \ac{LSTM-RNN} and \ac{GRU-RNN} equations are PyTorch implementations \cite{PyTorch}.
 
-One significant issue with the simple \ac{RNN} is their struggle to capture long-term dependencies because the gradients tend to either vanish or explode. Training an \ac{RNN} with gradient-based optimization methods are a challenge because of the variations in gradient magnitudes and because the long-term dependencies are hidden by the effect of short-term dependencies \cite{GRU}. The other variants explored in this work are designed to handle this vanishing/exploding gradient problem.
+According to PyTorch, the size of the learnable parameters goes as follows. The learnable input-hidden weights ($\textbf{W}_{ih}$) are size $\left[\text{hidden size} \times \text{input size}\right]$ for the single-layer \ac{RNN} or first layer of the stacked \ac{RNN}. The input-hidden weights are of size $\left[\text{hidden size} \times \text{hidden size}\right]$ for the subsequent layers of the stacked \ac{RNN}. The learnable hidden-hidden weights ($\textbf{W}_{hh}$) are size $\left[\text{hidden size} \times \text{hidden size}\right]$ for each layer of the \ac{RNN}. The learnable input-hidden bias ($\vec{b}_{ih}$) of each layer is size $\left[\text{hidden size}\right]$, and the learnable hidden-hidden bias ($\vec{b}_{hh}$) of each layer is size $\left[\text{hidden size}\right]$. Note that ``input size" is the number of features (variables) in the input vector, and ``hidden size" is the number of hidden nodes per \ac{RNN} layer.
+
+One significant issue with the simple \ac{RNN} is its struggle to capture long-term dependencies because the gradients tend to either vanish or explode. Training an \ac{RNN} with gradient-based optimization methods is a challenge because of the variations in gradient magnitudes and because the long-term dependencies are hidden by the effect of short-term dependencies \cite{GRU}. The other variants explored in this work are designed to handle this vanishing/exploding gradient problem.
 
 \subsection{LSTM-RNN}
-The \ac{LSTM-RNN} \cite{LSTM} deals with the vanishing/exploding gradient problem by proposing a new architecture (cell) and gradient-based learning algorithm. The \ac{LSTM-RNN} can learn to bridge time intervals in excess of 1000 steps by utilizing a constant (neither vanishing nor exploding) error flow throughout the architecture. The core idea behind the \ac{LSTM-RNN} is its \emph{cell state}. The architecture can remove or add information to the cell state by the use of \emph{gates}.
+The \ac{LSTM-RNN} \cite{LSTM} deals with the vanishing/exploding gradient problem by proposing a new architecture and gradient-based learning algorithm. The \ac{LSTM-RNN} can learn to bridge time intervals in excess of 1000 steps by utilizing a constant (neither vanishing nor exploding) error flow throughout the architecture. The core idea behind the \ac{LSTM-RNN} is its \emph{cell state} whose size is the number of hidden \ac{LSTM-RNN} nodes specified by the researcher. The architecture removes or adds information to the cell state by the use of \emph{gates}.
 
-The first step in the \ac{LSTM-RNN} is the forget gate $f_{t}$ which decides what information is thrown away or ``forgotten" from the cell state. It combines the prior hidden state $h_{t-1}$ and the current input $x_{t}$ with learnable weights and biases $W_{if}$, $W_{hf}$, $b_{if}$, and $b_{hf}$ in
+The first step in the \ac{LSTM-RNN} is the forget gate $\vec{f}_{t}$ which decides what information is thrown away or ``forgotten" from the cell state. It combines the prior hidden state $\vec{h}_{t-1}$ and the current input $\vec{x}_{t}$ with learnable weights and biases $\textbf{W}_{if}$, $\textbf{W}_{hf}$, $\vec{b}_{if}$, and $\vec{b}_{hf}$ in
 \begin{equation} \label{eq:LSTM_forget_gate}
-	f_{t} = \sigma\left(W_{if}x_{t} + b_{if} + W_{hf}h_{\left(t-1\right)} + b_{hf}\right).
+	\vec{f}_{t} = \sigma\left(\textbf{W}_{if} \vec{x}_{t} + \vec{b}_{if} + \textbf{W}_{hf} \vec{h}_{\left(t-1\right)} + \vec{b}_{hf}\right).
 \end{equation}
-The non-linear activation function is the sigmoid which squishes the values inside from 0 (zero) to 1. An output of 1 indicates to completely keep the prior information and an output of 0 (zero) indicates to completely remove the prior information. Note that Equation \ref{eq:LSTM_forget_gate} and further \ac{LSTM-RNN} equations are the PyTorch \cite{PyTorch} implementations.
+The non-linear activation function is the sigmoid which squishes the values inside from 0 (zero) to 1. An output of 1 indicates to completely keep the prior information and an output of 0 (zero) indicates to completely remove the prior information.
 
-The next step in the cell state update combines the input $i_{t}$ and cell $g_{t}$ gates to determine what new information is passed into the cell state. The calculation of these gates is 
+The next step in the \ac{LSTM-RNN} combines the input gate $\vec{i}_{t}$ and cell gate $\vec{g}_{t}$ to determine what new information is passed into the cell state. The calculation of these gates is 
 \begin{align}
-i_{t} &= \sigma\left(W_{ii}x_{t} + b_{ii} + W_{hi}h_{\left(t-1\right)} + b_{hi}\right) \label{eq:LSTM_input_gate} \\
-g_{t} &= \tanh\left(W_{ig}x_{t} + b_{ig} + W_{hg}h_{\left(t-1\right)} + b_{hg}\right). \label{eq:LSTM_cell_gate}
+\vec{i}_{t} &= \sigma\left(\textbf{W}_{ii} \vec{x}_{t} + \vec{b}_{ii} + \textbf{W}_{hi} \vec{h}_{\left(t-1\right)} + \vec{b}_{hi}\right) \label{eq:LSTM_input_gate} \\
+\vec{g}_{t} &= \tanh\left(\textbf{W}_{ig} \vec{x}_{t} + \vec{b}_{ig} + \textbf{W}_{hg} \vec{h}_{\left(t-1\right)} + \vec{b}_{hg}\right), \label{eq:LSTM_cell_gate}
 \end{align}
-Both gates again manipulate the prior hidden state $\vec{h_{t-1}}$ and current input $\vec{x_{t}}$ with learnable weights and biases. The input gate $i_{t}$ decides how much to update the cell state, and the cell gate $g_{t}$ are the new candidate values \cite{olah}.
+where $\textbf{W}_{ii}$, $\textbf{W}_{hi}$, $\textbf{W}_{ig}$, and $\textbf{W}_{hg}$ are the learnable weights and $\vec{b}_{ii}$, $\vec{b}_{hi}$, $\vec{b}_{ig}$, and $\vec{b}_{hg}$ are the learnable biases. Like the forget gate, these learnable weights and biases are applied to the inputs $\vec{x}_{t}$ and prior hidden state $\vec{h}_{\left(t-1\right)}$. The $\sigma$ activation function around the input gate $\vec{i}_{t}$ decides how much to update the cell state where a value of 1 indicates to completely update the cell state and a value of 0 does not update at all. The $\tanh$ activation around the cell gate $\vec{g}_{t}$ squishes the values between -1 and +1 to be the new candidate node activations \cite{olah}.
 
-The next step in the sequence combines the forget, input, and cell gates to update the cell state $C_{t}$:
+The input gate $\vec{i}_{t}$ controls how much of the candidate node activations from cell gate $\vec{g}_{t}$ are passed into the cell state $C_{t}$ by
 \begin{equation} \label{eq:LSTM_update_cell_state}
-	C_{t} = f_{t} \odot C_{\left(t-1\right)} + i_{t} \odot g_{t},
+	\vec{C}_{t} = \vec{f}_{t} \odot \vec{C}_{\left(t-1\right)} + \vec{i}_{t} \odot \vec{g}_{t},
 \end{equation}
-where $\odot$ is element-wise multiplication. Finally, the new hidden state $h_{t}$ is calculated by combining the updated cell state $C_{t}$ with the output gate $o_{t}$ that decides how to filter the output. This is computed by
-\begin{align}
-o_{t} &= \sigma\left(W_{io}x_{t} + b_{io} + W_{ho}h_{\left(t-1\right)} + b_{ho}\right) \label{eq:LSTM_output_gate} \\
-h_{t} &= o_{t} \odot \tanh\left(c_{t}\right). \label{eq:LSTM_updated_hidden_state}
-\end{align}
-The output gate $\sigma$ decides the part of the outputs to keep, and the $\tanh$ multiplication pushes the value between -1 and +1.
+where $\vec{f}_{t}$ is the forget gate that controls how much information is kept from the prior cell state $\vec{C}_{\left(t-1\right)}$, and $\odot$ is element-wise multiplication. As an example, if the \ac{LSTM-RNN} calculated to keep 25\% of the prior cell state and update with 50\% of the new candidate activations then Equation \ref{eq:LSTM_update_cell_state} would update the cell state by
+\[
+\vec{C}_{t} = 0.25 \odot \vec{C}_{\left(t-1\right)} + 0.50 \odot \vec{g}_{t}.
+\]
 
-The calculations outlined in this section are performed in every step of the input time series. Like in the simple \ac{RNN}, the learnable weights and biases are shared through time, i.e., they do not change between hidden state updates.
+The final calculation in the \ac{LSTM-RNN} updates the hidden state $\vec{h}_{t}$ by combining the updated cell state $C_{t}$ with the output gate $\vec{o}_{t}$ by
+\begin{align}
+\vec{o}_{t} &= \sigma\left(\textbf{W}_{io} \vec{x}_{t} + \vec{b}_{io} + \textbf{W}_{ho} \vec{h}_{\left(t-1\right)} + \vec{b}_{ho}\right) \label{eq:LSTM_output_gate} \\
+\vec{h}_{t} &= \vec{o}_{t} \odot \tanh\left(\vec{C}_{t}\right), \label{eq:LSTM_updated_hidden_state}
+\end{align}
+where $\textbf{W}_{io}$ and $\textbf{W}_{ho}$ are the learnable weights, and $\vec{b}_{io}$ and $\vec{b}_{ho}$ are the learnable biases. The output gate combines these learnable parameters with the input $\vec{x}_{t}$ and prior hidden state $\vec{h}_{\left(t-1\right)}$ then squishes them from 0 (zero) to 1 with the $\sigma$ activation function. This gate controls how much of the updated cell state $\vec{C}_{t}$ (squished between -1 and +1 with the $\tanh$) is passed to the updated hidden state $\vec{h}_{t}$. A value of 0 (zero) for the output gate passes none of the cell state and a value of 1 passes everything from the cell state to the updated hidden state.
+
+The calculations outlined in this section are performed in every step of the input time series. Like in the simple \ac{RNN}, the learnable weights and biases are shared through time, i.e., they do not change between hidden state updates. According to PyTorch \cite{PyTorch} the number of learnable parameters goes as follows. The learnable input-hidden weights ($\textbf{W}_{ii}$, $\textbf{W}_{if}$, $\textbf{W}_{ig}$, $\textbf{W}_{io}$) are of size $\left[\text{4} \times \text{hidden size} \times \text{input size}\right]$ in the first \ac{LSTM-RNN} layer and $\left[\text{4} \times \text{hidden size} \times \text{hidden size}\right]$ in subsequent layers of a stacked \ac{LSTM-RNN}. The learnable hidden-hidden weights ($\textbf{W}_{hi}$, $\textbf{W}_{hf}$, $\textbf{W}_{hg}$, $\textbf{W}_{ho}$) are of size $\left[4 \times \text{hidden size} \times \text{hidden size}\right]$ in each layer of the \ac{LSTM-RNN}. The learnable input-hidden bias of each \ac{LSTM-RNN} layer ($\vec{b}_{ii}$, $\vec{b}_{if}$, $\vec{b}_{ig}$, $\vec{b}_{io}$) are size $\left[4 \times \text{hidden size}\right]$, and the learnable hidden-hidden bias of each \ac{LSTM-RNN} layer ($\vec{b}_{hi}$, $\vec{b}_{hf}$, $\vec{b}_{hg}$, $\vec{b}_{ho}$) are also size $\left[4 \times \text{hidden size}\right]$. Note that the multiplication by 4 does not apply to each weight or bias, but rather accounts for the combined size of all the biases. So for example bias $\vec{b}_{hi}$ is of size $\left[\text{hidden size}\right]$, but all four hidden-hidden biases are combined size $\left[4 \times \text{hidden size}\right]$. ``Hidden size" in this context is the number of hidden nodes in the \ac{LSTM-RNN} layer, and ``input size" is the number of features (variables) of the input vector.
 
 \subsection{GRU-RNN}
-The last variant of the \ac{RNN} cell is the \ac{GRU-RNN} that is motivated by the \ac{LSTM-RNN} but is much simpler to compute and implement \cite{GRU_original}. Instead of incorporating a cell state like the \ac{LSTM-RNN}, this cell architecture only applies updates to the hidden state. There are three gates in the \ac{GRU-RNN} architecture that are more general than the \ac{LSTM-RNN}: the reset gate $r_{t}$, update gate $z_{t}$, and the new gate $n_{t}$.
+The last variant of the \ac{RNN} cell is the \ac{GRU-RNN} that is motivated by the \ac{LSTM-RNN} but is much simpler to compute and implement \cite{GRU_original}. Instead of incorporating a cell state like the \ac{LSTM-RNN}, this cell architecture only applies updates to the hidden state. There are three gates in the \ac{GRU-RNN} architecture that are more general than the \ac{LSTM-RNN} gates: the reset gate $\vec{r}_{t}$, update gate $\vec{z}_{t}$, and the new gate $\vec{n}_{t}$.
 
 The first calculation in the hidden state update for a single time step is the reset gate $r_{t}$ computed by
 \begin{equation} \label{eq:GRU_reset_gate}
-	r_{t} = \sigma\left(\textbf{W}_{ir} \vec{x}_{t} + \vec{b}_{ir} + \textbf{W}_{hr} \vec{h}_{\left(t-1\right)} + \vec{b}_{hr}\right),
+	\vec{r}_{t} = \sigma\left(\textbf{W}_{ir} \vec{x}_{t} + \vec{b}_{ir} + \textbf{W}_{hr} \vec{h}_{\left(t-1\right)} + \vec{b}_{hr}\right),
 \end{equation}
 where $\sigma$ is the sigmoid activation function, and $\vec{x}_{t}$ and $\vec{h}_{t-1}$ are the input and previous hidden state, respectively. $\textbf{W}_{ir}$ and $\textbf{W}_{hr}$ are the learnable input and hidden weight matrices, and $\vec{b}_{ir}$ and $\vec{b}_{hr}$ are the learnable input and hidden bias vectors.
 
 Next, the update gate is computed by
 \begin{equation} \label{eq:GRU_update_gate}
-	z_{t} = \sigma\left(\textbf{W}_{iz} \vec{x}_{t} + \vec{b}_{iz} + \textbf{W}_{hz} \vec{h}_{\left(t-1\right)} + \vec{b}_{hz}\right),
+	\vec{z}_{t} = \sigma\left(\textbf{W}_{iz} \vec{x}_{t} + \vec{b}_{iz} + \textbf{W}_{hz} \vec{h}_{\left(t-1\right)} + \vec{b}_{hz}\right),
 \end{equation}
-where $\sigma$ is another sigmoid activation function, and $x_{t}$ and $h_{t-1}$ are the input and previous hidden state, respectively. $\textbf{W}_{iz}$ and $\textbf{W}_{hz}$ are again the learnable input and hidden weight matrices, and $\vec{b}_{iz}$ and $\vec{b}_{hz}$ are the learnable input and hidden biases.
+where $\sigma$ is again the sigmoid activation function, and $\vec{x}_{t}$ and $\vec{h}_{t-1}$ are the input and previous hidden state, respectively. $\textbf{W}_{iz}$ and $\textbf{W}_{hz}$ are again the learnable input and hidden weight matrices, and $\vec{b}_{iz}$ and $\vec{b}_{hz}$ are the learnable input and hidden biases.
 
 The proposed new hidden state is computed by
 \begin{equation} \label{eq:GRU_new_gate}
 		\vec{n}_{t} = \tanh\left(\textbf{W}_{in} \vec{x}_{t} + \vec{b}_{in} + \vec{r}_{t} \odot \left(\textbf{W}_{hn} \vec{h}_{\left(t-1\right)} + \vec{b}_{hn}\right)\right),
 \end{equation}
-where $\tanh$ is the activation function to range the values between -1 and +1, and $x_{t}$ and $h_{t-1}$ are the input and previous hidden state, respectively. $\textbf{W}_{in}$ and $\textbf{W}_{hn}$ are the learnable input and hidden weights, and $\vec{b}_{in}$ and $\vec{b}_{hn}$ are the learnable input and hidden biases. $\vec{r}_{t}$ is the reset gate from Equation \ref{eq:GRU_reset_gate}, and $\odot$ is element-wise multiplication.
+where $\tanh$ is the activation function to range the values between -1 and +1, and $\vec{x}_{t}$ and $\vec{h}_{t-1}$ are the input and previous hidden state, respectively. $\textbf{W}_{in}$ and $\textbf{W}_{hn}$ are the learnable input and hidden weights, and $\vec{b}_{in}$ and $\vec{b}_{hn}$ are the learnable input and hidden biases. $\vec{r}_{t}$ is the reset gate from Equation \ref{eq:GRU_reset_gate}, and $\odot$ is element-wise multiplication.
 
 The hidden state passed through the cell is computed by
 \begin{equation} \label{eq:GRU_new_hidden_state}
@@ -214,12 +222,14 @@ The hidden state passed through the cell is computed by
 \end{equation}
 where $\vec{z}_{t}$ is the update gate , $\vec{n}_{t}$ is the new gate, $\vec{h}_{t-1}$ is the previous hidden state, and $\odot$ is the element-wise multiplication.
 
-When the reset gate $r_{t}$ is close to 0 (zero), the hidden state is forced to ignore the previous hidden state and reset with the current input only. This effectively allows the hidden state to drop any information found to be irrelevant in the future. The update gate $z_{j}$ controls how much information from the previous hidden state carries over to the current hidden state and helps the network remember long-term information. Each node in the hidden \ac{GRU-RNN} cell has separate reset and update gates, so each node learns to capture dependencies over different time scales. The nodes that learn short-term dependencies tend to have reset gates that are frequently active, but nodes that capture longer-term dependencies have update gates that are mostly active \cite{GRU_original}.
+When the reset gate $\vec{r}_{t}$ is close to 0 (zero), the hidden state is forced to ignore the previous hidden state and reset with the current input only. This effectively allows the hidden state to drop any information found to be irrelevant in the future. The update gate $\vec{z}_{j}$ controls how much information from the previous hidden state carries over to the current hidden state and helps the network remember long-term information. Each node in the hidden \ac{GRU-RNN} cell has separate reset and update gates, so each node learns to capture dependencies over different time scales. The nodes that learn short-term dependencies tend to have reset gates that are frequently active, but nodes that capture longer-term dependencies have update gates that are mostly active \cite{GRU_original}.
+
+According to PyTorch \cite{PyTorch} the number of learnable parameters goes as follows. The learnable input-hidden weights ($\textbf{W}_{ir}$, $\textbf{W}_{iz}$, $\textbf{W}_{in}$) are of size $\left[3 \times \text{hidden size} \times \text{input size}\right]$ for the first layer and $\left[3 \times \text{hidden size} \times \text{hidden size}\right]$ for subsequent layers in the stacked \ac{GRU-RNN}. The learnable hidden-hidden weights ($\textbf{W}_{hr}$, $\textbf{W}_{hz}$, $\textbf{W}_{hn}$) in each layer are of size $\left[3 \times \text{hidden size} \times \text{hidden size}\right]$. The learnable input-hidden bias ($\vec{b}_{ir}$, $\vec{b}_{iz}$, $\vec{b}_{in}$) of each layer are size $\left[3 \times \text{hidden size}\right]$, and the learnable hidden-hidden bias ($\vec{b}_{hr}$, $\vec{b}_{hz}$, $\vec{b}_{hn}$) of each layer are size $\left[3 \times \text{hidden size}\right]$. Like described for the \ac{LSTM-RNN}, the multiplication by 3 is not for every weight and bias, but rather accounts for the combined size of all the weights or biases. ``Input size" is the number of features (variable) in the input vector and ``hidden size" is the number of hidden nodes per \ac{GRU-RNN} layer.
 
 \section{Full Architectures}
 This section applies the fundamental architectures described in Section \ref{sec:architectures} to the problem addressed in this work. Described later as part of the data formatting in Chapter \ref{ch3} and the grid search in Chapter \ref{ch4}, a time series (sequence) of weather variables is the input to the architectures and a time series of eight $log_{10}(C_{n}^{2})$ forecast values is the output. The nodal representation of the \ac{MLP} and \ac{RNN} architectures applied specifically to turbulence forecasting are illustrated here.
 
-Figure \ref{fig:architecture_MLP_forecast} illustrates a regression \ac{MLP} with two hidden layers. The input is a flattened layer of weather variables at multiple time steps of size $N_{t} X 6$ where $N_{t}$ is the number of time steps in the input sequence. The multiplication by 6 is for the number of input variables considered in this work. Thus, if 10 time steps of input variables are sent into the model, the input layer is 60 nodes wide. The first 6 nodes are the first time step, the furthest away from the forecast. The last 6 nodes are the last time step, the closest time to the forecast.
+Figure \ref{fig:architecture_MLP_forecast} illustrates a regression \ac{MLP} with two hidden layers. The input is a flattened layer of weather variables at multiple time steps and is size $N_{t} \times 6$ where $N_{t}$ is the number of time steps in the input sequence. The multiplication by 6 is for the number of input variables considered in this work. Thus, if 10 time steps of input variables are sent into the model, the input layer is 60 nodes wide. The first 6 nodes are the first time step, the furthest away from the forecast. The last 6 nodes are the last time step, the closest time to the forecast.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.99\textwidth]
@@ -228,9 +238,9 @@ Figure \ref{fig:architecture_MLP_forecast} illustrates a regression \ac{MLP} wit
 	\caption{Multi-layer MLP architecture with multiple time steps of weather as inputs and eight forecasts of turbulence as outputs}
 	\label{fig:architecture_MLP_forecast}
 \end{figure}
-The output is a layer of eight nodes whose truth activations are eight time steps of $log_{10}(C_{n}^{2})$ \emph{after} the last time step in the input layer. The first node is the first time step in the forecast, the second node the second time step, and so on until the eighth node which is the eighth time step in the forecast. The \ac{ReLU} activation function is applied to the nodes of each hidden layer, but not the output layer so the trained model is not bounded during inference.
+The output is a layer of eight nodes whose activations are eight time steps of measured $log_{10}(C_{n}^{2})$ \emph{after} the last time step in the input layer. The first node is the first time step in the forecast, the second node the second time step, and so on until the eighth node which is the eighth time step in the forecast. The \ac{ReLU} activation function is applied to the nodes of each hidden layer, but not the output layer so the trained model is not bounded during inference.
 
-The flattening of input variables at multiple time steps to a single layer in the \ac{MLP} removes all information about the temporal relationship of all the nodes. The \ac{RNN} architecture, however, preserves the temporal relationship of the model inputs as described above. Figure \ref{fig:architecture_RNN_single_layer_unrolled_to_outputs} illustrates a single-layer \ac{RNN} architecture and how its final hidden state $h_{t}$ is processed to predict the eight $log_{10}(C_{n}^{2})$ forecasts.
+The flattening of input variables at multiple time steps to a single layer in the \ac{MLP} removes all information about the temporal relationship between the nodes. The \ac{RNN} architecture, however, preserves the temporal relationship of the model inputs as described above. Figure \ref{fig:architecture_RNN_single_layer_unrolled_to_outputs} illustrates a single-layer \ac{RNN} architecture and how its final hidden state $h_{t}$ is processed to predict the eight $log_{10}(C_{n}^{2})$ forecasts.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.99\textwidth]
@@ -239,34 +249,34 @@ The flattening of input variables at multiple time steps to a single layer in th
 	\caption{Single-layer RNN architecture with multiple time steps of weather as inputs and eight forecasts of turbulence as outputs}
 	\label{fig:architecture_RNN_single_layer_unrolled_to_outputs}
 \end{figure}
-The input $x_{t}$ is combined with the previous hidden state $h_{t-1}$ to update the current hidden state $h_{t}$ according to the type of \ac{RNN} cell employed. The final hidden state is simply a single layer N-nodes wide, and can be fully-connected to the eight nodes in the output layer like in the \ac{MLP}. Throughout this manuscript, Figure \ref{fig:architecture_RNN_single_layer_unrolled_to_outputs} illustrates the exact architecture of an \ac{RNN} architecture with a single layer. Figure \ref{fig:architecture_RNN_multi_layer_unrolled_to_outputs} illustrates the exact architecture when two \ac{RNN} layers are employed.
+The input $x_{t}$ is combined with the previous hidden state $h_{t-1}$ to update the current hidden state $h_{t}$ according to the type of \ac{RNN} cell employed. The final hidden state is simply a single layer of N-nodes and is fully-connected to the eight nodes in the output layer like in the \ac{MLP}. Throughout this manuscript, Figure \ref{fig:architecture_RNN_single_layer_unrolled_to_outputs} illustrates the exact architecture of an \ac{RNN} model with a single hidden layer. Figure \ref{fig:architecture_RNN_multi_layer_unrolled_to_outputs} illustrates the exact architecture when two hidden \ac{RNN} layers are employed.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.99\textwidth]
 	{architecture_RNN_multi_layer_unrolled_to_outputs.png}
 	\hfill
-	\caption{Single-layer RNN architecture with multiple time steps of weather as inputs and eight forecasts of turbulence as outputs}
+	\caption{Multi-layer RNN architecture with multiple time steps of weather as inputs and eight forecasts of turbulence as outputs}
 	\label{fig:architecture_RNN_multi_layer_unrolled_to_outputs}
 \end{figure}
-Note that in Figures \ref{fig:architecture_RNN_single_layer_unrolled_to_outputs} and \ref{fig:architecture_RNN_multi_layer_unrolled_to_outputs} the initial hidden state in the entire process is 0 (zero) as illustrated by the purple nodes on the far left of each Figure. This is the default behavior in PyTorch \cite{PyTorch} and is used throughout this work. Also, in the application of the \ac{RNN} architectures, $x_{t} = \left(\text{temp}, \text{press}, \text{rh}, \text{wind spd}, \text{solar irr}, log_{10}(C_{n}^{2})\right)_{t}$.
+Note that in Figures \ref{fig:architecture_RNN_single_layer_unrolled_to_outputs} and \ref{fig:architecture_RNN_multi_layer_unrolled_to_outputs} the initial hidden state in the entire process is 0 (zero) as illustrated by the purple nodes on the far left of each Figure. This is the default behavior in PyTorch \cite{PyTorch} and is used throughout this work. The \ac{RNN} updating of the hidden state is considered to be a ``warming up" process to make a prediction at the end. In the application of the \ac{RNN} architectures presented here, $x_{t} = \left(\text{temp}, \text{press}, \text{rh}, \text{wind spd}, \text{solar irr}, log_{10}(C_{n}^{2})\right)_{t}$.
 
 \section{Optimization and the Loss Function}
 There are two steps in training a model. First is forward propagation in which the network makes a prediction by passing input values through the architecture and applying the learned parameters (weights and biases). The second step is backward propagation where the network adjusts its parameters according to their gradients (derivatives) with respect to the loss. The adjustment of the parameters is done by an optimization algorithm, the most common being gradient descent. Gradient descent is an algorithm used to find the values of the model parameters that minimizes the loss function (also called the cost function).
 
 Gradient descent starts with an initial value such as 0 (zero) or a small random value. Next, the loss (cost) is calculated between model output and truth using a loss function such as \ac{MSE} in
 \begin{equation} \label{eq:MSE}
-	l = \frac{1}{N} \sum_{n=1}^{N} \left(x_{n} - y_{n}\right)^{2},
+	\text{MSE} = \frac{1}{N} \sum_{n=1}^{N} \left(x_{n} - y_{n}\right)^{2},
 \end{equation}
 where $x$ is model output and $y$ is truth. \ac{MSE} is a popular loss function in regression models and is used exclusively in this work for model training. The gradient (first partial derivative) of the loss with respect to each model parameter (weights and biases) is calculated and it indicates the direction and magnitude of greatest \emph{ascent} of the loss function. Since the algorithm is trying to minimize the loss function, the negative gradient (hence gradient \emph{descent}) is employed. One modeling hyperparameter is the \emph{learning rate} which scales the size of the adjustment to the parameters. Figure \ref{fig:gradient_descent_trivial} \cite{gradient_descent_trivial} illustrates a very simple example of gradient descent of the loss function with respect to a single parameter, weight $w$.
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.99\textwidth]
+	\includegraphics[width=0.7\textwidth]
 	{gradient_descent_simple.png}
 	\hfill
 	\caption{Gradient descent of a trivial loss (cost) function}
 	\label{fig:gradient_descent_trivial}
 \end{figure}
-The loss is plotted with respect to the weight's value where the orange curve is the derivative of the loss function with respect to the weight. The initial weight is shown at the top right of the derivative curve and the gradient is the dashed tangent line. As stated, the gradient is actually the direction and magnitude of steepest \emph{ascent} but the negative is used for steepest \emph{descent}. Multiple incremental steps of the weight's value is shown, each getting slightly smaller than the previous because the slope of the derivative curve is less steep as the minimum is reached. The learning rate hyperparameter adjusts the size of the incremental steps in Figure \ref{fig:gradient_descent_trivial}.
+The loss is plotted with respect to the weight's value where the orange curve is the derivative of the loss function with respect to the weight. The initial weight is shown at the top right of the derivative curve and the gradient is the dashed tangent line. As stated, the gradient is actually the direction and magnitude of steepest \emph{ascent} but the negative is used for steepest \emph{descent}. Multiple incremental steps of the weight's value is shown, each getting slightly smaller than the previous because the slope of the derivative curve is less steep as the minimum is reached. The learning rate hyperparameter proportionately adjusts the size of the incremental steps in Figure \ref{fig:gradient_descent_trivial}.
 
 Figure \ref{fig:gradient_descent_trivial} illustrates a trivial example of gradient descent. In practice, the loss function with respect to model parameters is very complicated. A nontrivial case of gradient descent is in Figure \ref{fig:gradient_descent_nontrivial} \cite{gradient_descent_nontrivial}.
 \begin{figure}[h!]
@@ -285,4 +295,5 @@ There are three common variations of gradient descent. \emph{Batch} gradient des
 
 The optimization algorithm used explicitly in this work is \textit{AdamW} \cite{loshchilov2019decoupled} which is a variant of the originally proposed \textit{Adam} \cite{kingma2017adam}. The name \textit{Adam} is derived from adaptive moment estimation because it computes individual adaptive learning rates for different parameters from estimates of first and second moments of the gradients. Adaptive gradient methods have become the default method of choice for training feed-forward and recurrent neural networks. The variant AdamW modifies the original Adam to correctly apply weight decay regularization. The modification substantially improves Adam's generalization on image classification datasets of which it previously performed worse. The improved generalization motivates the use of AdamW in this work.
 
-\section{Chapter Summary?}
+\section{Chapter Summary}
+The chapter has laid the foundation of machine learning modeling including the very basics of training and testing, the fundamental \ac{MLP} and \ac{RNN} architectures and how they apply to turbulence modeling, popular variants of the \ac{RNN} cells, and the algorithm for parameter optimization.

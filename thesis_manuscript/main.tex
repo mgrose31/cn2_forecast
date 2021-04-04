@@ -12,6 +12,7 @@
 \usepackage{epsfig}
 \usepackage{amsmath}
 \usepackage{acronym}
+\usepackage{url}
 
 \graphicspath{
 	{./figures/machine_learning/}
@@ -20,15 +21,12 @@
 	{./figures/grid_search_results/}
 	{./figures/test_results/}}
 
-%\input{glossary.tex}
-
-
 \begin{document}
 \pagestyle{intropage}
 
 \authorLastFirstMiddle{Grose}{Mitchell Gene}
-\firsttitle{FORECASTING ATMOSPHERIC TURBULENCE CONDITIONS FROM PRIOR ENVIRONMENTAL PARAMETERS WITH ARTIFICIAL NEURAL NETWORKS: AN ENSEMBLE STUDY}
-\title{FORECASTING ATMOSPHERIC TURBULENCE CONDITIONS FROM PRIOR ENVIRONMENTAL PARAMETERS WITH ARTIFICIAL NEURAL NETWORKS: AN ENSEMBLE STUDY}
+\firsttitle{FORECASTING ATMOSPHERIC TURBULENCE CONDITIONS FROM PRIOR ENVIRONMENTAL PARAMETERS USING ARTIFICIAL NEURAL NETWORKS: AN ENSEMBLE STUDY}
+\title{FORECASTING ATMOSPHERIC TURBULENCE CONDITIONS FROM PRIOR ENVIRONMENTAL PARAMETERS USING ARTIFICIAL NEURAL NETWORKS: AN ENSEMBLE STUDY}
 
 \graduationyear{2021}%
 \graduationmonth{May}%
@@ -36,8 +34,8 @@
 \dept{Electro-Optics and Photonics}
 %\dept{Engineering}
 
-\advisorFirstLast{Edward Watson}{, Ph.D.}{Advisory Committee
-	Chairman}{Graduate Professor}{Electrical and Computer Engineering} %
+\advisorFirstLast{Edward A. Watson}{, Ph.D.}{Advisory Committee
+	Chairman}{Graduate Faculty}{Electro-Optics and Photonics} %
 \Membera{Vijayan K. Asari}{, Ph.D.}{Committee Member}{Professor}{Electrical and Computer Engineering}%
 \Memberb{Yakov Diskin}{, Ph.D.}{Committee Member}{Adjunct Professor}{Electrical and Computer Engineering}%
 
@@ -52,7 +50,7 @@
 \abstract
 \input{abstract.tex}
 
-\dedication{For name of person(s) to whom you are dedicating your thesis}
+\dedication{This thesis is dedicated to my parents for their unconditional love and support.}
 
 \acknowledgments
 \input{ack.tex}
@@ -77,16 +75,13 @@
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 
-\appendix
+%\appendix
 
-\begin{appendices}
-	\appendix
-	\addtocontents{toc}{\protect\setChapterprefix{}} % CDM Remove labels in table of contents for Appendix sections
-	
-    \chapter{More Stuff at the End}
-
-    This is Appendix A.  Appendix A should span multiple lines so I can see if the margins are correct.  We need to ensure that we have 1.5 inches on the LHS margin.
-\end{appendices}
+%\begin{appendices}
+%	\appendix
+%	\addtocontents{toc}{\protect\setChapterprefix{}} % CDM Remove labels in table of contents for Appendix sections
+%    \chapter{More Stuff at the End}
+%\end{appendices}
 
 \clearpage
 \begin{center}
