@@ -11,7 +11,7 @@
 \usepackage{subfig}
 \usepackage{epsfig}
 \usepackage{amsmath}
-\usepackage{acronym}
+\usepackage[nolist]{acronym}
 \usepackage{url}
 
 \graphicspath{
@@ -57,12 +57,12 @@
 
 \tableofcontents
 
-
 \listoffigures
 \listoftables
 
 \pagestyle{plain}
 %Remember to put all chapter titles in CAPS
+
 \addtocontents{toc}{\protect\setChapterprefix{CHAPTER }} % CDM Establish CHAPTER label in table of contents
 
 \input{chapter1.tex}
@@ -75,18 +75,10 @@
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 
-%\appendix
-
-%\begin{appendices}
-%	\appendix
-%	\addtocontents{toc}{\protect\setChapterprefix{}} % CDM Remove labels in table of contents for Appendix sections
-%    \chapter{More Stuff at the End}
-%\end{appendices}
-
-\clearpage
-\begin{center}
-	\Large{\textbf{List of Acronyms}}
-\end{center}
+%\clearpage
+%\begin{center}
+%	LIST OF ACRONYMS
+%\end{center}
 \input{acronyms.tex}
 
 \end{document}
