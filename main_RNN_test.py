@@ -233,7 +233,7 @@ for d0 in ds_unique:
               datetime.combine(d0 + timedelta(days=1), time(0, 0, 0)))
     plt.ylim(1e-17, 1e-14)
     plt.title(d0.strftime('%m-%d-%Y'))
-    plt.xlabel('local time')
+    plt.xlabel('local time (EDT)')
     plt.ylabel('$C_{n}^{2} (m^{-2/3})$')
     plt.legend(loc='upper right')
     plt.xticks(rotation=30)
